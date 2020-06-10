@@ -43,7 +43,6 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Contexts\AbstractContext.cs" />
     <Compile Include="Contexts\Controls.cs" />
     <Compile Include="Contexts\Exceptions.cs" />
