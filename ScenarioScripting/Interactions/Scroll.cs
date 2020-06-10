@@ -17,14 +17,10 @@ namespace ScenarioScripting.Interactions
             VerticalScroll = verticalScroll;
         }
 
-        public override void Do(IContext context)
+        public override void Do()
         {
-            ScrollPattern pattern = GetPattern(context);
-            if (pattern == null)
-            {
-                throw new InteractionUnavailableException();
-            }
-            pattern.Scroll(HorizontalScroll, VerticalScroll);
+            base.Do();
+            Pattern.Scroll(HorizontalScroll, VerticalScroll);
         }
     }
 }

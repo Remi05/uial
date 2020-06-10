@@ -8,14 +8,10 @@ namespace ScenarioScripting.Interactions
         public override string Name => "CloseWindow";
         protected override AutomationPattern AutomationPattern => WindowPattern.Pattern;
 
-        public override void Do(IContext context)
+        public override void Do()
         {
-            WindowPattern pattern = GetPattern(context);
-            if (pattern == null)
-            {
-                throw new InteractionUnavailableException();
-            }
-            pattern.Close();
+            base.Do();
+            Pattern.Close();
         }
     }
 }

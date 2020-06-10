@@ -15,14 +15,10 @@ namespace ScenarioScripting.Interactions
             Value = value;
         }
 
-        public override void Do(IContext context)
+        public override void Do()
         {
-            ValuePattern pattern = GetPattern(context);
-            if (pattern == null)
-            {
-                throw new InteractionUnavailableException();
-            }
-            pattern.SetValue(Value);
+            base.Do();
+            Pattern.SetValue(Value);
         }
     }
 }

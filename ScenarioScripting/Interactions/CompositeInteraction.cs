@@ -9,24 +9,22 @@ namespace ScenarioScripting.Interactions
 
         protected List<IInteraction> Interactions { get; set; }
 
-        public CompositeInteraction(string name, List<IInteraction> interactions)
+        protected IContext Context { get; set; }
+
+        public CompositeInteraction(IContext context, string name, List<IInteraction> interactions)
         {
-            // throw if either param is null
+            // throw if any param is null
+            Context = context;
             Name = name;
             Interactions = interactions;
         }
 
-        public void Do(IContext context)
+        public void Do()
         {
             foreach (IInteraction interaction in Interactions)
             {
-                interaction.Do(context);
+                interaction.Do();
             }
-        }
-
-        public bool IsAvailable(IContext context)
-        {
-            return true;
         }
     }
 }

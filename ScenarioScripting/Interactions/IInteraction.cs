@@ -6,8 +6,6 @@ namespace ScenarioScripting.Interactions
     {
         string Name { get; }
         
-        void Do(IContext context);
-
-        bool IsAvailable(IContext context);
+        void Do();
     }
 }

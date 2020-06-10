@@ -8,14 +8,10 @@ namespace ScenarioScripting.Interactions
         public override string Name => "Toggle";
         protected override AutomationPattern AutomationPattern => TogglePattern.Pattern;
 
-        public override void Do(IContext context)
+        public override void Do()
         {
-            TogglePattern pattern = GetPattern(context);
-            if (pattern == null)
-            {
-                throw new InteractionUnavailableException();
-            }
-            pattern.Toggle();
+            base.Do();
+            Pattern.Toggle();
         }
 
     }

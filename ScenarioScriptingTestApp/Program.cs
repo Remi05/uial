@@ -17,7 +17,7 @@ namespace ScenarioScriptingTestApp
 
             Console.Write("Enter scenario: ");
             string scenarioName = Console.ReadLine();
-            script.Scenarios[scenarioName].Do(null);
+            script.Scenarios[scenarioName].Do();
         }
     }
 }

@@ -8,14 +8,10 @@ namespace ScenarioScripting.Interactions
         public override string Name => "Select";
         protected override AutomationPattern AutomationPattern => SelectionItemPattern.Pattern;
 
-        public override void Do(IContext context)
+        public override void Do()
         {
-            SelectionItemPattern pattern = GetPattern(context);
-            if (pattern == null)
-            {
-                throw new InteractionUnavailableException();
-            }
-            pattern.Select();
+            base.Do();
+            Pattern.Select();
         }
     }
 }

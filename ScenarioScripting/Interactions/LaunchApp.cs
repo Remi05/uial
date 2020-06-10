@@ -13,15 +13,9 @@ namespace ScenarioScripting.Interactions
             AppId = appId;
         }
 
-        public void Do(IContext context)
+        public void Do()
         {
             
         }
-
-        public bool IsAvailable(IContext context)
-        {
-            return true;
-        }
-
     }
 }

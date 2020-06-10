@@ -10,19 +10,24 @@ namespace ScenarioScripting.Interactions
 
         protected abstract AutomationPattern AutomationPattern { get; }
 
-        public abstract void Do(IContext context);
+        protected IContext Context { get; set; }
 
-        public virtual bool IsAvailable(IContext context)
+        protected T Pattern => GetPattern(Context, AutomationPattern);
+
+        public virtual void Do()
         {
-            return GetPattern(context) != null;
+            if (Pattern == null)
+            {
+                throw new InteractionUnavailableException();
+            }
         }
 
-        protected T GetPattern(IContext context) 
+        private static T GetPattern(IContext context, AutomationPattern automationPattern) 
         {
             T pattern = null;
             try
             {
-                pattern = context.RootElement.GetCurrentPattern(AutomationPattern) as T;
+                pattern = context.RootElement.GetCurrentPattern(automationPattern) as T;
             }
             catch (InvalidOperationException)
             {

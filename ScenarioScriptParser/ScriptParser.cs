@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -119,7 +118,7 @@ namespace ScenarioScriptParser
             return new Context(parentContext, name, rootElementCondition, uniqueCondition);
         }
 
-        IContext ParseContext(IContext rootContext, IContext currentContext, List<string> lines)
+        IContext ParseContext(IContext currentContext, List<string> lines)
         {
             List<IContext> childrenContexts = new List<IContext>();
             List<IInteraction> interactionDefinitions = new List<IInteraction>();
@@ -137,12 +136,12 @@ namespace ScenarioScriptParser
 
                 if (IsContext(lines[curLine]))
                 {
-                    IContext childContext = ParseContext(rootContext, context, childBloc);
+                    IContext childContext = ParseContext(context, childBloc);
                     childrenContexts.Add(childContext);
                 }
                 else if (IsInteraction(lines[curLine]))
                 {
-                    IInteraction interaction = ParseInteraction(rootContext, context, childBloc);
+                    IInteraction interaction = ParseInteraction(context, childBloc);
                     interactionDefinitions.Add(interaction);
                 }
                 else
@@ -155,7 +154,7 @@ namespace ScenarioScriptParser
             return context;
         }
 
-        IInteraction ParseInteraction(IContext rootContext, IContext currentContext, List<string> lines)
+        IInteraction ParseInteraction(IContext currentContext, List<string> lines)
         {
             string declarationLine = lines[0].Trim();
             Regex interactionRegex = new Regex(InteractionPattern);
@@ -165,26 +164,22 @@ namespace ScenarioScriptParser
             List<IInteraction> childrenInteractions = new List<IInteraction>();
             for (int curLine = 1; curLine < lines.Count; ++curLine)
             {
-                childrenInteractions.Add(ParseBaseInteraction(rootContext, currentContext, lines[curLine]));
+                childrenInteractions.Add(ParseBaseInteraction(currentContext, lines[curLine]));
             }
 
-            return new CompositeInteraction(name, childrenInteractions);
+            return new CompositeInteraction(currentContext, name, childrenInteractions);
         }
 
-        IContext GetBaseInteractionContext(IContext rootContext, IContext currentContext, string contextName)
+        IContext GetBaseInteractionContext(IContext currentContext, string contextName)
         {
-            if (currentContext.ChildrenContexts.ContainsKey(contextName))
+            if (!currentContext.ChildrenContexts.ContainsKey(contextName))
             {
-                return currentContext.ChildrenContexts[contextName];
+                throw new ContextNotFoundException(contextName, currentContext);
             }
-            if (rootContext.ChildrenContexts.ContainsKey(contextName))
-            {
-                return rootContext.ChildrenContexts[contextName];
-            }
-            throw new ContextNotFoundException(contextName, currentContext);
+            return currentContext.ChildrenContexts[contextName];
         }
 
-        IInteraction ParseBaseInteraction(IContext rootContext, IContext currentContext, string line)
+        IInteraction ParseBaseInteraction(IContext currentContext, string line)
         {
             Regex baseInterationRegex = new Regex(BaseInteractionPattern);
             Match regexMatch = baseInterationRegex.Match(line);
@@ -196,7 +191,7 @@ namespace ScenarioScriptParser
                 string composedContextStr = regexMatch.Groups[NamedGroups.Context].Value;
                 string[] contextsStrings = composedContextStr.Split(new string[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
 
-                context = GetBaseInteractionContext(rootContext, currentContext, contextsStrings[0]);
+                context = GetBaseInteractionContext(currentContext, contextsStrings[0]);
                 for (int i = 1; i < contextsStrings.Length; ++i)
                 {
                     string contextName = contextsStrings[i];
@@ -230,7 +225,7 @@ namespace ScenarioScriptParser
             return interaction;
         }
 
-        Scenario ParseScenario(IContext rootContext, List<string> lines)
+        Scenario ParseScenario(IContext currentContext, List<string> lines)
         {
             string declarationLine = lines[0].Trim();
             Regex scenarioRegex = new Regex(ScenarioPattern);
@@ -240,10 +235,10 @@ namespace ScenarioScriptParser
             List<IInteraction> childrenInteractions = new List<IInteraction>();
             for (int i = 1; i < lines.Count; ++i)
             {
-                childrenInteractions.Add(ParseBaseInteraction(rootContext, rootContext, lines[0]));
+                childrenInteractions.Add(ParseBaseInteraction(currentContext, lines[0]));
             }
 
-            return new Scenario(name, childrenInteractions);
+            return new Scenario(currentContext, name, childrenInteractions);
         }
 
         Script ParseScript(List<string> lines)
@@ -266,7 +261,7 @@ namespace ScenarioScriptParser
                 }
                 else if (IsContext(lines[curLine]))
                 {
-                    IContext context = ParseContext(rootContext, rootContext, lines.GetRange(curLine, blocEnd));
+                    IContext context = ParseContext(rootContext, lines.GetRange(curLine, blocEnd));
                     script.Contexts.Add(context.Name, context);
                 }
 
