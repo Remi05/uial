@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,6 +18,7 @@ namespace ScenarioScriptParser
         static class BlocIdentifiers
         {
             public const string Context = "context";
+            public const string Import = "import";
             public const string Interaction = "interaction";
             public const string Scenario = "scenario";
         }
@@ -29,6 +30,7 @@ namespace ScenarioScriptParser
             public const string CustomContext = "customContext";
             public const string ControlCondition = "controlCondition";
             public const string ControlType = "controlType";
+            public const string ImportName = "importName"; 
             public const string Interaction = "interaction";
             public const string Litteral = "litteral";
             public const string Name = "name";
@@ -52,25 +54,32 @@ namespace ScenarioScriptParser
         const string ControlPattern = "((?<controlType>[a-zA-Z]+)\\[(?<controlCondition>" + ConditionPattern + ")\\])";
         const string CustomContextPattern = "(?<customContext>(?<contextName>[a-zA-Z]+)" + ParamsPattern + "?)";
         const string BaseContextPattern = "(?:" + CustomContextPattern + "|" + ControlPattern + ")";
+        const string ImportNamePattern = "(?<importName>[a-zA-Z0-9]+\\.uial)";
 
+        const string ImportPattern = BlocIdentifiers.Import + "\\s+'" + ImportNamePattern + "'";
         const string ContextPattern = BlocIdentifiers.Context + "\\s+(?<name>[a-zA-Z]+)\\s*(?:" + ParamsDeclarationPattern + ")?\\s+(?:\\[\\s*(?<rootCondition>" + ConditionPattern + ")\\s*\\])?\\s*?(?:\\s+\\{\\s*(?<uniqueCondition>" + ConditionPattern + ")\\s*\\})?\\s*:";
         const string InteractionPattern = BlocIdentifiers.Interaction + "\\s+(?<name>[a-zA-Z]+)\\s*(?:" + ParamsDeclarationPattern + ")?\\s*:";
         const string ScenarioPattern = BlocIdentifiers.Scenario + "\\s+(?<name>[a-zA-Z]+)\\s*:";
         const string BaseInteractionPattern = "(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern;
 
+        bool IsImport(string line)
+        {
+            return new Regex(ImportPattern).IsMatch(line);
+        }
+
         bool IsContext(string line)
         {
-            return new Regex(ContextPattern).Match(line).Success;
+            return new Regex(ContextPattern).IsMatch(line);
         }
 
         bool IsInteraction(string line)
         {
-            return new Regex(InteractionPattern).Match(line).Success;
+            return new Regex(InteractionPattern).IsMatch(line);
         }
 
         bool IsScenario(string line)
         {
-            return new Regex(ScenarioPattern).Match(line).Success;
+            return new Regex(ScenarioPattern).IsMatch(line);
         }
 
         int CountIndentSpaces(string line)
@@ -148,6 +157,11 @@ namespace ScenarioScriptParser
 
         IInteractionDefinition ParseInteractionDefinition(DefinitionScope scope, List<string> lines)
         {
+            if (lines.Count == 0)
+            {
+                throw new Exception("Could not parse interaction definition, no lines provided.");
+            }
+
             DefinitionScope currentScope = new DefinitionScope(scope);
 
             string declarationLine = lines[0].Trim();
@@ -304,7 +318,16 @@ namespace ScenarioScriptParser
             return new ScenarioDefinition(name, baseInteractionDefinitions);
         }
 
-        Script ParseScript(List<string> lines)
+        Script ParseImport(string importStr, string executionDirPath)
+        {
+            Regex importRegex = new Regex(ImportPattern);
+            Match importMatch = importRegex.Match(importStr);
+            string importName = importMatch.Groups[NamedGroups.ImportName].Value;
+            string importFilePath = Path.Combine(executionDirPath, importName);
+            return ParseScript(importFilePath);
+        }
+
+        Script ParseScript(List<string> lines, string executionDirPath)
         {
             Script script = new Script();
 
@@ -312,6 +335,13 @@ namespace ScenarioScriptParser
             {
                 if (string.IsNullOrWhiteSpace(lines[curLine]))
                 {
+                    continue;
+                }
+
+                if (IsImport(lines[curLine]))
+                {
+                    Script importedScript = ParseImport(lines[curLine], executionDirPath);
+                    script.AddScript(importedScript);
                     continue;
                 }
 
@@ -333,11 +363,23 @@ namespace ScenarioScriptParser
             return script;
         }
 
-        public Script ParseScript(StreamReader streamReader)
+        public Script ParseScript(StreamReader streamReader, string executionDirPath)
         {
             List<string> lines = streamReader.ReadToEnd().Split('\n').ToList();
             lines = lines.Select((string line) => line.Replace("\t", new string(' ', 4))).ToList();
-            return ParseScript(lines);
+            return ParseScript(lines, executionDirPath);
+        }
+
+        public Script ParseScript(string filePath)
+        {
+            string executionDirPath = Path.GetDirectoryName(filePath);
+
+            Script script;
+            using (StreamReader fileReader = new StreamReader(filePath))
+            {
+                script = ParseScript(fileReader, executionDirPath);
+            }
+            return script;
         }
     }
 }

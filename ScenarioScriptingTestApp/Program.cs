@@ -13,11 +13,10 @@ namespace ScenarioScriptingTestApp
     {
         static void Main(string[] args)
         {
-            string filePath = "C:\\Users\\remi_\\Desktop\\launchteams.txt";
-            StreamReader fileReader = new StreamReader(filePath);
+            string filePath = "C:\\Users\\remi_\\Desktop\\launchteams.uial";
+
             ScriptParser parser = new ScriptParser();
-            Script script = parser.ParseScript(fileReader);
-            fileReader.Close();
+            Script script = parser.ParseScript(filePath);
 
             Console.Write("Enter scenario: ");
             string scenarioName = Console.ReadLine();
