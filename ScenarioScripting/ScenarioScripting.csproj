@@ -43,6 +43,9 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assertions\AreEqual.cs" />
+    <Compile Include="Assertions\IAssertion.cs" />
+    <Compile Include="Assertions\IsAvailable.cs" />
     <Compile Include="Conditions\IConditionDefinition.cs" />
     <Compile Include="Contexts\AbstractContext.cs" />
     <Compile Include="Conditions\CompositeConditionDefinition.cs" />
@@ -56,14 +59,15 @@
     <Compile Include="Contexts\BaseContextDefinition.cs" />
     <Compile Include="Contexts\RootContext.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="Interactions\AbstractInteraction.cs" />
     <Compile Include="Interactions\AbstractPatternInteraction.cs" />
     <Compile Include="Interactions\BaseInteractionDefinition.cs" />
-    <Compile Include="Interactions\Core\Click.cs" />
+    <Compile Include="Interactions\Core\Focus.cs" />
     <Compile Include="Interactions\Core\Maximize.cs" />
     <Compile Include="Interactions\Core\Minimize.cs" />
+    <Compile Include="Interactions\Core\Move.cs" />
     <Compile Include="Interactions\Core\Resize.cs" />
     <Compile Include="Interactions\Core\Restore.cs" />
-    <Compile Include="Interactions\Core\RightClick.cs" />
     <Compile Include="Interactions\Core\Scroll.cs" />
     <Compile Include="Interactions\Core\SetRangeValue.cs" />
     <Compile Include="Interactions\Exceptions.cs" />
