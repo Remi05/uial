@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ScenarioScripting.Contexts;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ScenarioScripting.Interactions
 {
@@ -7,14 +7,14 @@ namespace ScenarioScripting.Interactions
     {
         public string Name { get; protected set; }
 
-        protected List<IInteraction> Interactions { get; set; }
+        protected IEnumerable<IInteraction> Interactions { get; set; }
 
-        protected IContext Context { get; set; }
-
-        public CompositeInteraction(IContext context, string name, List<IInteraction> interactions)
+        public CompositeInteraction(string name, IEnumerable<IInteraction> interactions)
         {
-            // throw if any param is null
-            Context = context;
+            if (name == null || interactions == null)
+            {
+                throw new ArgumentNullException(name == null ? "name" : "interactions");
+            }
             Name = name;
             Interactions = interactions;
         }

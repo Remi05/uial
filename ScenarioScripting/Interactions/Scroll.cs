@@ -1,17 +1,23 @@
-﻿using System.Windows.Automation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Automation;
 using ScenarioScripting.Contexts;
 
 namespace ScenarioScripting.Interactions
 {
     public class Scroll : AbstractPatternInteraction<ScrollPattern>, IInteraction
     {
-        public override string Name => "Scroll";
+        public const string Key = "Scroll";
+
+        public override string Name => Key;
         protected override AutomationPattern AutomationPattern => ScrollPattern.Pattern;
 
         private ScrollAmount HorizontalScroll { get; set; }
         private ScrollAmount VerticalScroll { get; set; }
 
-        public Scroll(ScrollAmount horizontalScroll, ScrollAmount verticalScroll)
+        public Scroll(IContext context, ScrollAmount horizontalScroll, ScrollAmount verticalScroll)
+            : base(context)
         {
             HorizontalScroll = horizontalScroll;
             VerticalScroll = verticalScroll;
@@ -21,6 +27,34 @@ namespace ScenarioScripting.Interactions
         {
             base.Do();
             Pattern.Scroll(HorizontalScroll, VerticalScroll);
+        }
+
+        public static Scroll FromRuntimeValues(IContext context, IEnumerable<object> paramValues)
+        {
+            if (paramValues.Count() != 2)
+            {
+                throw new InvalidParameterCountException(2, paramValues.Count());
+            }
+            ScrollAmount horizontalScroll = ScrollAmountFromString(paramValues.ElementAt(0) as string);
+            ScrollAmount verticalScroll = ScrollAmountFromString(paramValues.ElementAt(1) as string);
+            return new Scroll(context, horizontalScroll, verticalScroll);
+        }
+
+        private static ScrollAmount ScrollAmountFromString(string scrollAmountStr)
+        {
+            Dictionary<string, ScrollAmount> scrollAmountMap = new Dictionary<string, ScrollAmount>()
+            {
+                {  "NoAmount",       ScrollAmount.NoAmount },
+                {  "LargeDecrement", ScrollAmount.LargeDecrement },
+                {  "LargeIncrement", ScrollAmount.LargeIncrement },
+                {  "SmallDecrement", ScrollAmount.SmallDecrement },
+                {  "SmallIncrement", ScrollAmount.SmallIncrement },
+            };
+            if (!scrollAmountMap.ContainsKey(scrollAmountStr))
+            {
+                throw new ArgumentException($"\"{scrollAmountStr}\" is not a valid ScrollAmount.");
+            }
+            return scrollAmountMap[scrollAmountStr];
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Automation;
+using ScenarioScripting.Scopes;
 
 namespace ScenarioScripting.Contexts
 {
@@ -18,11 +19,15 @@ namespace ScenarioScripting.Contexts
             }
         }
 
-        public Context(IContext parent, string name, Condition rootElementCondition = null, Condition uniqueCondition = null)
+        public Context(IContext parent, RuntimeScope scope, string name, Condition rootElementCondition = null, Condition uniqueCondition = null)
         {
-            // throw if parent == null
-            Name = name;
+            if (parent == null)
+            {
+                throw new ArgumentNullException("parent");
+            }
             Parent = parent;
+            Scope = scope;
+            Name = name;
             RootElementCondition = rootElementCondition;
             UniqueCondition = uniqueCondition;
         }

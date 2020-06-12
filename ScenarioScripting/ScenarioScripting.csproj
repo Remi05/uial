@@ -43,13 +43,24 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conditions\IConditionDefinition.cs" />
     <Compile Include="Contexts\AbstractContext.cs" />
+    <Compile Include="Conditions\CompositeConditionDefinition.cs" />
+    <Compile Include="Contexts\BaseControlDefinition.cs" />
+    <Compile Include="Contexts\ContextDefinition.cs" />
     <Compile Include="Contexts\Controls.cs" />
     <Compile Include="Contexts\Exceptions.cs" />
-    <Compile Include="Contexts\ExecutionContext.cs" />
+    <Compile Include="Conditions\PropertyConditionDefinition.cs" />
+    <Compile Include="Contexts\IBaseContextDefinition.cs" />
+    <Compile Include="Contexts\IContextDefinition.cs" />
+    <Compile Include="Contexts\BaseContextDefinition.cs" />
     <Compile Include="Contexts\RootContext.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="Interactions\AbstractPatternInteraction.cs" />
+    <Compile Include="Interactions\BaseInteractionDefinition.cs" />
     <Compile Include="Interactions\Exceptions.cs" />
+    <Compile Include="Interactions\IInteractionDefinition.cs" />
+    <Compile Include="Interactions\InteractionDefinition.cs" />
     <Compile Include="Interactions\Interactions.cs" />
     <Compile Include="Interactions\CloseWindow.cs" />
     <Compile Include="Interactions\CompositeInteraction.cs" />
@@ -61,10 +72,15 @@
     <Compile Include="Interactions\Toggle.cs" />
     <Compile Include="Interactions\SetValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scenario.cs" />
+    <Compile Include="Scenarios\IScenarioDefinition.cs" />
+    <Compile Include="Scenarios\Scenario.cs" />
     <Compile Include="Contexts\IContext.cs" />
     <Compile Include="Contexts\Context.cs" />
+    <Compile Include="Scenarios\ScenarioDefinition.cs" />
+    <Compile Include="Scopes\RuntimeScope.cs" />
+    <Compile Include="Scopes\Scope.cs" />
     <Compile Include="Script.cs" />
+    <Compile Include="ValueDefinition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

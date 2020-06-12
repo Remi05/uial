@@ -5,8 +5,12 @@ namespace ScenarioScripting.Interactions
 {
     public class Toggle : AbstractPatternInteraction<TogglePattern>, IInteraction
     {
-        public override string Name => "Toggle";
+        public const string Key = "Toggle";
+
+        public override string Name => Key;
         protected override AutomationPattern AutomationPattern => TogglePattern.Pattern;
+
+        public Toggle(IContext context) : base(context) { }
 
         public override void Do()
         {

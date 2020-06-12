@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Automation;
-using ScenarioScripting.Interactions;
+﻿using System.Windows.Automation;
+using ScenarioScripting.Scopes;
 
 namespace ScenarioScripting.Contexts
 {
     public abstract class AbstractContext : IContext
     {
         public string Name { get; protected set; }
+        public RuntimeScope Scope { get; protected set; }
         public Condition UniqueCondition { get; protected set; }
-        public Dictionary<string, IContext> ChildrenContexts { get; protected set; } = new Dictionary<string, IContext>();
-        public Dictionary<string, IInteraction> Interactions { get; protected set; } = new Dictionary<string, IInteraction>();
-
         public abstract AutomationElement RootElement { get; }
 
         public bool IsAvailable()

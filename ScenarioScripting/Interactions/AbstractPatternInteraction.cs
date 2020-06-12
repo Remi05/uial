@@ -14,11 +14,16 @@ namespace ScenarioScripting.Interactions
 
         protected T Pattern => GetPattern(Context, AutomationPattern);
 
+        public AbstractPatternInteraction(IContext context)
+        {
+            Context = context;
+        }
+
         public virtual void Do()
         {
             if (Pattern == null)
             {
-                throw new InteractionUnavailableException();
+                throw new InteractionUnavailableException(Name);
             }
         }
 

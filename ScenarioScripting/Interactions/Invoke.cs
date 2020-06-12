@@ -5,8 +5,12 @@ namespace ScenarioScripting.Interactions
 {
     public class Invoke : AbstractPatternInteraction<InvokePattern>, IInteraction
     {
-        public override string Name => "Invoke";
+        public const string Key = "Invoke";
+
+        public override string Name => Key;
         protected override AutomationPattern AutomationPattern => InvokePattern.Pattern;
+
+        public Invoke(IContext context) : base(context) { }
 
         public override void Do()
         {

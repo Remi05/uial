@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScenarioScripting.Contexts;
+﻿using System.Collections.Generic;
+using ScenarioScripting.Scenarios;
+using ScenarioScripting.Scopes;
 
 namespace ScenarioScripting
 {
     public class Script
     {
-        public Dictionary<string, Scenario> Scenarios { get; private set; }
-
-        public Dictionary<string, IContext> Contexts { get; private set; }
+        public Scope RootScope { get; private set; } = new Scope();
+        public Dictionary<string, IScenarioDefinition> ScenarioDefinitions { get; private set; } = new Dictionary<string, IScenarioDefinition>();
     }
 }

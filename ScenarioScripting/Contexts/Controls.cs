@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Automation;
+using ScenarioScripting.Conditions;
 
 namespace ScenarioScripting.Contexts
 {
@@ -77,11 +77,11 @@ namespace ScenarioScripting.Contexts
             return valueStr;
         }
 
-        public static IContext GetContextFromControl(IContext parentContext, string controlTypeName, Condition identifyingCondition)
+        public static IConditionDefinition GetControlConditionDefinition(string controlTypeName, IConditionDefinition identifyingCondition)
         {
-            Condition controlTypeCondition = new PropertyCondition(AutomationElement.ControlTypeProperty, ControlTypeMap[controlTypeName]);
-            Condition contextCondition = new AndCondition(controlTypeCondition, identifyingCondition);
-            return new Context(parentContext, controlTypeName, contextCondition);
+            ValueDefinition controlTypeRuntimeValue = ValueDefinition.FromLitteral(controlTypeName);
+            IConditionDefinition controlTypeCondition = new PropertyConditionDefinition(AutomationElement.ControlTypeProperty, controlTypeRuntimeValue);
+            return new CompositeConditionDefinition(new List<IConditionDefinition>() { controlTypeCondition, identifyingCondition });
         }
     }
 }

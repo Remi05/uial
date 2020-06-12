@@ -5,8 +5,12 @@ namespace ScenarioScripting.Interactions
 {
     public class CloseWindow : AbstractPatternInteraction<WindowPattern>, IInteraction
     {
-        public override string Name => "CloseWindow";
+        public const string Key = "CloseWindow";
+
+        public override string Name => Key;
         protected override AutomationPattern AutomationPattern => WindowPattern.Pattern;
+
+        public CloseWindow(IContext context) : base(context) { }
 
         public override void Do()
         {
