@@ -46,6 +46,7 @@
     <Compile Include="Assertions\AreEqual.cs" />
     <Compile Include="Assertions\IAssertion.cs" />
     <Compile Include="Assertions\IsAvailable.cs" />
+    <Compile Include="Assertions\Not.cs" />
     <Compile Include="Conditions\IConditionDefinition.cs" />
     <Compile Include="Contexts\AbstractContext.cs" />
     <Compile Include="Conditions\CompositeConditionDefinition.cs" />
