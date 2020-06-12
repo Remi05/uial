@@ -13,6 +13,8 @@ namespace ScenarioScripting.Interactions.Core
                     return new Close(context);
                 case Invoke.Key:
                     return new Invoke(context);
+                case Maximize.Key:
+                    return new Maximize(context);
                 case Scroll.Key:
                     return Scroll.FromRuntimeValues(context, paramValues);
                 case Select.Key:
