@@ -26,7 +26,7 @@ namespace ScenarioScripting.Conditions
         public Condition Resolve(RuntimeScope scope)
         {
             Condition condition = null;
-            foreach (CompositeConditionDefinition conditionDefinition in ConditionDefinitions)
+            foreach (IConditionDefinition conditionDefinition in ConditionDefinitions)
             {
                 Condition childCondition = conditionDefinition.Resolve(scope);
                 condition = condition == null ? childCondition : new AndCondition(condition, childCondition);
