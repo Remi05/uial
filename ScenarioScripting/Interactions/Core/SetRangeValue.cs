@@ -23,6 +23,7 @@ namespace ScenarioScripting.Interactions.Core
         public override void Do()
         {
             base.Do();
+            // TODO: Add check for range bounds.
             Pattern.SetValue(Value);
         }
 
