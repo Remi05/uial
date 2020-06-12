@@ -81,8 +81,18 @@ namespace ScenarioScriptParser
         int FindBlocLength(List<string> lines, int blocStart)
         {
             int blocStartIndent = CountIndentSpaces(lines[blocStart]);
-            var linesSameOrShorterIndent = lines.Where((string line, int index) => index > blocStart && !string.IsNullOrWhiteSpace(line) && CountIndentSpaces(line) <= blocStartIndent);
-            int blocEnd = linesSameOrShorterIndent.Count() == 0 ? lines.Count - 1 : lines.IndexOf(linesSameOrShorterIndent.First()) - 1;
+            int blocEnd = blocStart;
+            for (int i = blocStart + 1; i < lines.Count; ++i)
+            {
+                if (!string.IsNullOrWhiteSpace(lines[i]))
+                {
+                    if (CountIndentSpaces(lines[i]) <= blocStartIndent)
+                    {
+                        break;
+                    }
+                    blocEnd = i;
+                }
+            }
             return blocEnd - blocStart + 1;
         }
 
@@ -322,7 +332,7 @@ namespace ScenarioScriptParser
                     script.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
                 }
 
-                curLine += blocLength;
+                curLine += blocLength - 1;
             }
 
             return script;
