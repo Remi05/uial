@@ -11,6 +11,8 @@ namespace ScenarioScripting.Interactions.Core
             {
                 case Close.Key:
                     return new Close(context);
+                case Focus.Key:
+                    return new Focus(context);
                 case Invoke.Key:
                     return new Invoke(context);
                 case Maximize.Key:
