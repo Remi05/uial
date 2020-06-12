@@ -16,8 +16,8 @@ namespace ScenarioScripting.Assertions
 
         public bool Assert()
         {
-            return (First == null && Second == null)
-                || First.Equals(Second);
+            return First == null && Second == null
+                || First != null && First.Equals(Second);
         }
     }
 }
