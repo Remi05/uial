@@ -17,6 +17,8 @@ namespace ScenarioScripting.Interactions.Core
                     return Scroll.FromRuntimeValues(context, paramValues);
                 case Select.Key:
                     return new Select(context);
+                case SetRangeValue.Key:
+                    return SetRangeValue.FromRuntimeValues(context, paramValues);
                 case SetTextValue.Key:
                     return SetTextValue.FromRuntimeValues(context, paramValues);
                 case Toggle.Key:
