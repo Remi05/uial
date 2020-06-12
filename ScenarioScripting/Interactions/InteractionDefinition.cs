@@ -7,12 +7,12 @@ namespace ScenarioScripting.Interactions
 {
     public class InteractionDefinition : IInteractionDefinition
     {
-        protected Scope Scope { get; set; }
+        protected DefinitionScope Scope { get; set; }
         public string Name { get; protected set; }
         protected IEnumerable<string> ParamNames { get; set; }
         protected IEnumerable<BaseInteractionDefinition> BaseInteractionDefinitions { get; set; }
 
-        public InteractionDefinition(Scope scope, string name, IEnumerable<string> paramNames, IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions)
+        public InteractionDefinition(DefinitionScope scope, string name, IEnumerable<string> paramNames, IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions)
         {
             // throw if any param is null
             Scope = scope;

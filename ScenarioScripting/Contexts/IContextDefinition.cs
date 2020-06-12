@@ -7,7 +7,7 @@ namespace ScenarioScripting.Contexts
     {
         string Name { get; }
 
-        Scope Scope { get; }
+        DefinitionScope Scope { get; }
 
         IContext Resolve(IContext parentContext, IEnumerable<object> paramValues);
     }

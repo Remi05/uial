@@ -12,11 +12,11 @@ namespace ScenarioScripting.Scopes
         public Dictionary<string, IContextDefinition> ContextDefinitions { get; private set; } = new Dictionary<string, IContextDefinition>();
         public Dictionary<string, IInteractionDefinition> InteractionDefinitions { get; private set; } = new Dictionary<string, IInteractionDefinition>();
 
-        public RuntimeScope(Scope scope, Dictionary<string, object> referenceValues)
+        public RuntimeScope(DefinitionScope definitionScope, Dictionary<string, object> referenceValues)
         {
             ReferenceValues = referenceValues;
-            ContextDefinitions = new Dictionary<string, IContextDefinition>(scope.ContextDefinitions);
-            InteractionDefinitions = new Dictionary<string, IInteractionDefinition>(scope.InteractionDefinitions);
+            ContextDefinitions = new Dictionary<string, IContextDefinition>(definitionScope.ContextDefinitions);
+            InteractionDefinitions = new Dictionary<string, IInteractionDefinition>(definitionScope.InteractionDefinitions);
         }
     }
 }

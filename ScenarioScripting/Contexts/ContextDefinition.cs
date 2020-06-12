@@ -10,13 +10,13 @@ namespace ScenarioScripting.Contexts
 {
     public class ContextDefinition : IContextDefinition
     {
-        public Scope Scope { get; private set; }
+        public DefinitionScope Scope { get; private set; }
         public string Name { get; private set; }
         public IEnumerable<string> ParamNames { get; private set; }
         private IConditionDefinition RootElementConditionDefiniton { get; set; }
         private IConditionDefinition UniqueConditionDefinition { get; set; }
 
-        public ContextDefinition(Scope scope, string name, IEnumerable<string> paramNames, IConditionDefinition rootElementConditionDefiniton = null, IConditionDefinition uniqueConditionDefinition = null)
+        public ContextDefinition(DefinitionScope scope, string name, IEnumerable<string> paramNames, IConditionDefinition rootElementConditionDefiniton = null, IConditionDefinition uniqueConditionDefinition = null)
         {
             if (name == null)
             {

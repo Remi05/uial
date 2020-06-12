@@ -6,7 +6,7 @@ namespace ScenarioScripting
 {
     public class Script
     {
-        public Scope RootScope { get; private set; } = new Scope();
+        public DefinitionScope RootScope { get; private set; } = new DefinitionScope();
         public Dictionary<string, IScenarioDefinition> ScenarioDefinitions { get; private set; } = new Dictionary<string, IScenarioDefinition>();
     }
 }

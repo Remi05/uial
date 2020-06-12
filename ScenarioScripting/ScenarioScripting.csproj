@@ -78,7 +78,7 @@
     <Compile Include="Contexts\Context.cs" />
     <Compile Include="Scenarios\ScenarioDefinition.cs" />
     <Compile Include="Scopes\RuntimeScope.cs" />
-    <Compile Include="Scopes\Scope.cs" />
+    <Compile Include="Scopes\DefinitionScope.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="ValueDefinition.cs" />
   </ItemGroup>

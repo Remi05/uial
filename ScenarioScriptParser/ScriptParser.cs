@@ -86,7 +86,7 @@ namespace ScenarioScriptParser
             return blocEnd - blocStart;
         }
 
-        ValueDefinition ParseRuntimeValue(Scope scope, string valueStr)
+        ValueDefinition ParseRuntimeValue(DefinitionScope scope, string valueStr)
         {
             Regex valueRegex = new Regex(ValuePattern);
             Match valueMatch = valueRegex.Match(valueStr);
@@ -103,7 +103,7 @@ namespace ScenarioScriptParser
             return ValueDefinition.FromReference(referenceName); 
         }
 
-        IEnumerable<ValueDefinition> ParseParamValues(Scope scope, string paramsStr)
+        IEnumerable<ValueDefinition> ParseParamValues(DefinitionScope scope, string paramsStr)
         {
             List<ValueDefinition> paramValues = new List<ValueDefinition>();
             Regex valueRegex = new Regex(ValuePattern);
@@ -127,7 +127,7 @@ namespace ScenarioScriptParser
             return paramNames;
         }
 
-        IConditionDefinition ParseConditionDefinition(Scope scope, string conditionStr)
+        IConditionDefinition ParseConditionDefinition(DefinitionScope scope, string conditionStr)
         {
             Regex conditionRegex = new Regex(PropertyConditionPattern);
             MatchCollection matches = conditionRegex.Matches(conditionStr);
@@ -141,9 +141,9 @@ namespace ScenarioScriptParser
             return new CompositeConditionDefinition(conditionDefinitions);
         }
 
-        IInteractionDefinition ParseInteractionDefinition(Scope scope, List<string> lines)
+        IInteractionDefinition ParseInteractionDefinition(DefinitionScope scope, List<string> lines)
         {
-            Scope currentScope = new Scope(scope);
+            DefinitionScope currentScope = new DefinitionScope(scope);
 
             string declarationLine = lines[0].Trim();
             Regex interactionRegex = new Regex(InteractionPattern);
@@ -163,7 +163,7 @@ namespace ScenarioScriptParser
             return new InteractionDefinition(currentScope, name, paramNames, baseInteractionDefinitions);
         }
 
-        IContextDefinition ParseContextDefinitionDeclaration(Scope scope, string line)
+        IContextDefinition ParseContextDefinitionDeclaration(DefinitionScope scope, string line)
         {
             line = line.Trim();
             Regex contextRegex = new Regex(ContextPattern);
@@ -195,9 +195,9 @@ namespace ScenarioScriptParser
             return new ContextDefinition(scope, name, paramNames, rootElementCondition, uniqueCondition);
         }
 
-        IContextDefinition ParseContextDefinition(Scope scope, List<string> lines)
+        IContextDefinition ParseContextDefinition(DefinitionScope scope, List<string> lines)
         {
-            Scope currentScope = new Scope(scope);
+            DefinitionScope currentScope = new DefinitionScope(scope);
             IContextDefinition contextDefinition = ParseContextDefinitionDeclaration(currentScope, lines[0]);
 
             for (int curLine = 1; curLine < lines.Count; ++curLine)
@@ -230,7 +230,7 @@ namespace ScenarioScriptParser
             return contextDefinition;
         }
 
-        IBaseContextDefinition ParseBaseContext(Scope scope, IEnumerable<string> contextStrings)
+        IBaseContextDefinition ParseBaseContext(DefinitionScope scope, IEnumerable<string> contextStrings)
         {
             if (contextStrings.Count() == 0)
             {
@@ -262,7 +262,7 @@ namespace ScenarioScriptParser
             return new BaseContextDefinition(contextName, paramValues, ParseBaseContext(scope, contextStrings.Skip(1)));
         }
 
-        BaseInteractionDefinition ParseBaseInteractionDefinition(Scope scope, string line)
+        BaseInteractionDefinition ParseBaseInteractionDefinition(DefinitionScope scope, string line)
         {
             Regex baseInteractionRegex = new Regex(BaseInteractionPattern);
             Match baseInteractionMatch = baseInteractionRegex.Match(line);
@@ -287,7 +287,7 @@ namespace ScenarioScriptParser
             return new BaseInteractionDefinition(interactionName, paramValues, interactionContext);
         }
 
-        IScenarioDefinition ParseScenarioDefinition(Scope scope, List<string> lines)
+        IScenarioDefinition ParseScenarioDefinition(DefinitionScope scope, List<string> lines)
         {
             string declarationLine = lines[0].Trim();
             Regex scenarioRegex = new Regex(ScenarioPattern);
