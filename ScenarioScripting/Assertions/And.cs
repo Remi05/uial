@@ -1,12 +1,14 @@
 ﻿
 namespace ScenarioScripting.Assertions
 {
-    public class AndAssertion : IAssertion
+    public class And : IAssertion
     {
+        public string Name => "And";
+
         private IAssertion First { get; set; }
         private IAssertion Second { get; set; }
 
-        public AndAssertion(IAssertion first, IAssertion second)
+        public And(IAssertion first, IAssertion second)
         {
             First = first;
             Second = second;

@@ -3,6 +3,8 @@ namespace ScenarioScripting.Assertions
 {
     public class AreEqual : IAssertion
     {
+        public string Name => "AreEqual";
+
         private object First { get; set; }
         private object Second { get; set; }
 

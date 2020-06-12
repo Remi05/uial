@@ -1,11 +1,13 @@
 ﻿
 namespace ScenarioScripting.Assertions
 {
-    public class NotAssertion : IAssertion
+    public class Not : IAssertion
     {
+        public string Name => "Not";
+
         private IAssertion Assertion { get; set; } 
 
-        public NotAssertion(IAssertion assertion)
+        public Not(IAssertion assertion)
         {
             Assertion = assertion;
         }

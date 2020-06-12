@@ -4,6 +4,8 @@ namespace ScenarioScripting.Assertions
 {
     public class IsAvailable : IAssertion
     {
+        public string Name => "IsAvailable";
+
         private IContext Context { get; set; }
 
         public IsAvailable(IContext context)
