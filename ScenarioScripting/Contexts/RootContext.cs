@@ -13,5 +13,10 @@ namespace ScenarioScripting.Contexts
         {
             Scope = scope;
         }
+
+        public bool IsAvailable()
+        {
+            return RootElement != null;
+        }
     }
 }

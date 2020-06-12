@@ -15,4 +15,16 @@ namespace ScenarioScripting.Contexts
             CurrentContext = currentContext;
         }
     }
+
+    public class ContextUnavailableException : Exception
+    {
+        private string ContextName { get; set; }
+
+        public override string Message => $"Context \"{ContextName}\" is not currently available.";
+
+        public ContextUnavailableException(string contextName)
+        {
+            ContextName = contextName;
+        }
+    }
 }

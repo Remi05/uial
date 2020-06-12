@@ -10,5 +10,7 @@ namespace ScenarioScripting.Contexts
         string Name { get; }
 
         AutomationElement RootElement { get; }
+
+        bool IsAvailable();
     }
 }

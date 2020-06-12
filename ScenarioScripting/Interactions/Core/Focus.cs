@@ -2,21 +2,17 @@
 
 namespace ScenarioScripting.Interactions.Core
 {
-    public class Focus : IInteraction
+    public class Focus : AbstractInteraction, IInteraction
     {
         public const string Key = "Focus";
 
-        public string Name => Key;
+        public override string Name => Key;
 
-        private IContext Context { get; set; }
+        public Focus(IContext context) : base(context) { }
 
-        public Focus(IContext context)
+        public override void Do()
         {
-            Context = context;
-        }
-
-        public void Do()
-        {
+            base.Do();
             Context.RootElement.SetFocus();
         }
     }

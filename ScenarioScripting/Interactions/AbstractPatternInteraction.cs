@@ -4,23 +4,20 @@ using ScenarioScripting.Contexts;
 
 namespace ScenarioScripting.Interactions
 {
-    public abstract class AbstractPatternInteraction<T> : IInteraction where T : BasePattern
+    public abstract class AbstractPatternInteraction<T> : AbstractInteraction, IInteraction where T : BasePattern
     {
-        public abstract string Name { get; }
-
         protected abstract AutomationPattern AutomationPattern { get; }
-
-        protected IContext Context { get; set; }
-
         protected T Pattern => GetPattern(Context, AutomationPattern);
 
-        public AbstractPatternInteraction(IContext context)
-        {
-            Context = context;
-        }
+        public AbstractPatternInteraction(IContext context) : base(context) { }
 
-        public virtual void Do()
+        public override void Do()
         {
+            base.Do();
+            if (!Context.IsAvailable())
+            {
+                throw new ContextUnavailableException(Context.Name);
+            }
             if (Pattern == null)
             {
                 throw new InteractionUnavailableException(Name);
@@ -29,7 +26,7 @@ namespace ScenarioScripting.Interactions
 
         private static T GetPattern(IContext context, AutomationPattern automationPattern) 
         {
-            T pattern = null;
+            T pattern;
             try
             {
                 pattern = context.RootElement.GetCurrentPattern(automationPattern) as T;

@@ -15,7 +15,7 @@ namespace ScenarioScripting.Contexts
             {
                 return RootElementCondition == null
                      ? Parent.RootElement
-                     : Parent.RootElement.FindFirst(TreeScope.Subtree, RootElementCondition);
+                     : Parent.RootElement?.FindFirst(TreeScope.Subtree, RootElementCondition);
             }
         }
 
