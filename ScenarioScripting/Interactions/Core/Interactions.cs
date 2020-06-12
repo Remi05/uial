@@ -17,6 +17,8 @@ namespace ScenarioScripting.Interactions.Core
                     return new Maximize(context);
                 case Minimize.Key:
                     return new Minimize(context);
+                case Move.Key:
+                    return Move.FromRuntimeValues(context, paramValues);
                 case Resize.Key:
                     return Resize.FromRuntimeValues(context, paramValues);
                 case Restore.Key:
