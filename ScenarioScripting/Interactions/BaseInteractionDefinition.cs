@@ -28,7 +28,7 @@ namespace ScenarioScripting.Interactions
                 return context.Scope.InteractionDefinitions[InteractionName].Resolve(context, paramValues);
             }
 
-            return Interactions.GetBasicInteractionByName(context, InteractionName, paramValues);
+            return Core.Interactions.GetCoreInteractionByName(context, InteractionName, paramValues);
         }
     }
 }

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Automation;
+﻿using System.Collections.Generic;
 using ScenarioScripting.Contexts;
 
-namespace ScenarioScripting.Interactions
+namespace ScenarioScripting.Interactions.Core
 {
     public class Interactions
     {
-        public static IInteraction GetBasicInteractionByName(IContext context, string interactionName, IEnumerable<object> paramValues)
+        public static IInteraction GetCoreInteractionByName(IContext context, string interactionName, IEnumerable<object> paramValues)
         {
             switch (interactionName)
             {
@@ -19,8 +17,8 @@ namespace ScenarioScripting.Interactions
                     return Scroll.FromRuntimeValues(context, paramValues);
                 case Select.Key:
                     return new Select(context);
-                case SetValue.Key:
-                    return SetValue.FromRuntimeValues(context, paramValues);
+                case SetTextValue.Key:
+                    return SetTextValue.FromRuntimeValues(context, paramValues);
                 case Toggle.Key:
                     return new Toggle(context);
                 default:

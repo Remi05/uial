@@ -1,7 +1,7 @@
 ﻿using System.Windows.Automation;
 using ScenarioScripting.Contexts;
 
-namespace ScenarioScripting.Interactions
+namespace ScenarioScripting.Interactions.Core
 {
     public class Toggle : AbstractPatternInteraction<TogglePattern>, IInteraction
     {
