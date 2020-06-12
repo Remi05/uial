@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -83,7 +83,7 @@ namespace ScenarioScriptParser
             int blocStartIndent = CountIndentSpaces(lines[blocStart]);
             var linesSameOrShorterIndent = lines.Where((string line, int index) => index > blocStart && !string.IsNullOrWhiteSpace(line) && CountIndentSpaces(line) <= blocStartIndent);
             int blocEnd = linesSameOrShorterIndent.Count() == 0 ? lines.Count - 1 : lines.IndexOf(linesSameOrShorterIndent.First()) - 1;
-            return blocEnd - blocStart;
+            return blocEnd - blocStart + 1;
         }
 
         ValueDefinition ParseRuntimeValue(DefinitionScope scope, string valueStr)
