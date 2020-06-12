@@ -41,22 +41,22 @@ namespace ScenarioScriptParser
             public const string Value = "value";
         }
 
-        const string LitteralPatern = "\"(?<litteral>[^\"]*)\"";
-        const string ReferencePattern = "(?<ref>\\$[A-z]+)";
-        const string ValuePattern = "(?<value>(?:" + LitteralPatern + ")|(?:" + ReferencePattern + "))";
-        const string PropertyConditionPattern = "(?<property>[A-z]+)\\s*=\\s*" + ValuePattern;
-        const string SingleConditionPattern = "[A-z]+\\s*=\\s*" + ValuePattern;
+        const string LitteralPattern = "\"(?<litteral>[^\"]*)\"";
+        const string ReferencePattern = "(?<ref>\\$[a-zA-Z]+)";
+        const string ValuePattern = "(?<value>(?:" + LitteralPattern + ")|(?:" + ReferencePattern + "))";
+        const string PropertyConditionPattern = "(?<property>[a-zA-Z]+)\\s*=\\s*" + ValuePattern;
+        const string SingleConditionPattern = "[a-zA-Z]+\\s*=\\s*" + ValuePattern;
         const string ConditionPattern = SingleConditionPattern + "(?:\\s*,\\s*" + SingleConditionPattern + ")*";
         const string ParamsDeclarationPattern = "\\(\\s*(?<paramsDecl>" + ReferencePattern + "(?:\\s*,\\s*" + ReferencePattern + ")*)?\\s*\\)"; 
-        const string ParamsPattern = "\\(\\s*(?<params>" + ValuePattern + "(?:\\s*,\\s*" + ValuePattern + ")*)?\\s*\\)";
-        const string ControlPattern = "(?<controlType>[A-z]+)\\[(?<controlCondition>" + ConditionPattern + ")\\])";
-        const string CustomContextPattern = "(?<customContext>(?<contextName>[A-z]+)" + ParamsPattern + "?)";
+        const string ParamsPattern = "(?:\\(\\s*(?<params>" + ValuePattern + "(?:\\s*,\\s*" + ValuePattern + ")*)?\\s*\\))";
+        const string ControlPattern = "((?<controlType>[a-zA-Z]+)\\[(?<controlCondition>" + ConditionPattern + ")\\])";
+        const string CustomContextPattern = "(?<customContext>(?<contextName>[a-zA-Z]+)" + ParamsPattern + "?)";
         const string BaseContextPattern = "(?:" + CustomContextPattern + "|" + ControlPattern + ")";
 
-        const string ContextPattern = BlocIdentifiers.Context + "\\s+(?<name>[A-z]+)\\s*(?:" + ParamsDeclarationPattern + ")?\\s+(?:\\[\\s*(?<rootCondition>" + ConditionPattern + ")\\s*\\])?\\s*?(?:\\s+\\{\\s*(?<uniqueCondition>" + ConditionPattern + ")\\s*\\})?\\s*:";
-        const string InteractionPattern = BlocIdentifiers.Interaction + "\\s+(?<name>[A-z]+)\\s*(?:" + ParamsDeclarationPattern + ")?\\s*:";
-        const string ScenarioPattern = BlocIdentifiers.Scenario + "\\s+(?<name>[A-z]+)\\s*:";
-        const string BaseInteractionPattern = "(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[A-z]+)" + ParamsPattern;
+        const string ContextPattern = BlocIdentifiers.Context + "\\s+(?<name>[a-zA-Z]+)\\s*(?:" + ParamsDeclarationPattern + ")?\\s+(?:\\[\\s*(?<rootCondition>" + ConditionPattern + ")\\s*\\])?\\s*?(?:\\s+\\{\\s*(?<uniqueCondition>" + ConditionPattern + ")\\s*\\})?\\s*:";
+        const string InteractionPattern = BlocIdentifiers.Interaction + "\\s+(?<name>[a-zA-Z]+)\\s*(?:" + ParamsDeclarationPattern + ")?\\s*:";
+        const string ScenarioPattern = BlocIdentifiers.Scenario + "\\s+(?<name>[a-zA-Z]+)\\s*:";
+        const string BaseInteractionPattern = "(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern;
 
         bool IsContext(string line)
         {
@@ -78,15 +78,12 @@ namespace ScenarioScriptParser
             return line.TakeWhile(char.IsWhiteSpace).Count();
         }
 
-        int FindBlocEnd(List<string> lines, int blocStart)
+        int FindBlocLength(List<string> lines, int blocStart)
         {
             int blocStartIndent = CountIndentSpaces(lines[blocStart]);
-            var linesSameOrShorterIndent = lines.Where((string line, int index) => index > blocStart && CountIndentSpaces(line) <= blocStartIndent);       
-            if (linesSameOrShorterIndent.Count() == 0)
-            {
-                return lines.Count - 1;
-            }
-            return lines.IndexOf(linesSameOrShorterIndent.First()) - 1;
+            var linesSameOrShorterIndent = lines.Where((string line, int index) => index > blocStart && !string.IsNullOrWhiteSpace(line) && CountIndentSpaces(line) <= blocStartIndent);
+            int blocEnd = linesSameOrShorterIndent.Count() == 0 ? lines.Count - 1 : lines.IndexOf(linesSameOrShorterIndent.First()) - 1;
+            return blocEnd - blocStart;
         }
 
         ValueDefinition ParseRuntimeValue(Scope scope, string valueStr)
@@ -98,11 +95,11 @@ namespace ScenarioScriptParser
                 return ValueDefinition.FromLitteral(valueMatch.Groups[NamedGroups.Litteral].Value);
             }
             string referenceName = valueMatch.Groups[NamedGroups.Reference].Value;
-            if (!scope.ReferenceValues.ContainsKey(referenceName))
-            {
-                // TODO: Throw more specific exception.
-                throw new Exception($"Use of undeclared reference value \"{referenceName}\".");
-            }
+            //if (!scope.ReferenceValues.ContainsKey(referenceName))
+            //{
+            //    // TODO: Throw more specific exception.
+            //    throw new Exception($"Use of undeclared reference value \"{referenceName}\".");
+            //}
             return ValueDefinition.FromReference(referenceName); 
         }
 
@@ -142,6 +139,28 @@ namespace ScenarioScriptParser
                 conditionDefinitions.Add(new PropertyConditionDefinition(property, value));
             }
             return new CompositeConditionDefinition(conditionDefinitions);
+        }
+
+        IInteractionDefinition ParseInteractionDefinition(Scope scope, List<string> lines)
+        {
+            Scope currentScope = new Scope(scope);
+
+            string declarationLine = lines[0].Trim();
+            Regex interactionRegex = new Regex(InteractionPattern);
+            Match interactionMatch = interactionRegex.Match(declarationLine);
+            
+            string name = interactionMatch.Groups[NamedGroups.Name].Value;
+
+            IEnumerable<string> paramNames = new List<string>();
+            if (interactionMatch.Groups[NamedGroups.ParamsDeclaration].Success)
+            {
+                string paramsStr = interactionMatch.Groups[NamedGroups.ParamsDeclaration].Value;
+                paramNames = ParseParamsDeclaration(paramsStr);
+            }
+
+            IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1).Select((line) => ParseBaseInteractionDefinition(currentScope, line));
+
+            return new InteractionDefinition(currentScope, name, paramNames, baseInteractionDefinitions);
         }
 
         IContextDefinition ParseContextDefinitionDeclaration(Scope scope, string line)
@@ -188,8 +207,8 @@ namespace ScenarioScriptParser
                     continue;
                 }
 
-                int blocEnd = FindBlocEnd(lines, curLine);
-                List<string> childBloc = lines.GetRange(curLine, blocEnd);
+                int blocLength = FindBlocLength(lines, curLine);
+                List<string> childBloc = lines.GetRange(curLine, blocLength);
 
                 if (IsContext(lines[curLine]))
                 {
@@ -205,30 +224,10 @@ namespace ScenarioScriptParser
                 {
                     throw new Exception(); // TODO: Specify exception
                 }
-                curLine = blocEnd;
+                curLine += blocLength;
             }
 
             return contextDefinition;
-        }
-
-        IInteractionDefinition ParseInteractionDefinition(Scope scope, List<string> lines)
-        {
-            string declarationLine = lines[0].Trim();
-            Regex interactionRegex = new Regex(InteractionPattern);
-            Match interactionMatch = interactionRegex.Match(declarationLine);
-            
-            string name = interactionMatch.Groups[NamedGroups.Name].Value;
-
-            IEnumerable<string> paramNames = new List<string>();
-            if (interactionMatch.Groups[NamedGroups.ParamsDeclaration].Success)
-            {
-                string paramsStr = interactionMatch.Groups[NamedGroups.ParamsDeclaration].Value;
-                paramNames = ParseParamsDeclaration(paramsStr);
-            }
-
-            IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1).Select((line) => ParseBaseInteractionDefinition(scope, line));
-
-            return new InteractionDefinition(scope, name, paramNames, baseInteractionDefinitions);
         }
 
         IBaseContextDefinition ParseBaseContext(Scope scope, IEnumerable<string> contextStrings)
@@ -239,22 +238,25 @@ namespace ScenarioScriptParser
             }
 
             string contextStr = contextStrings.First();
-            Regex baseContextRegex = new Regex(BaseContextPattern);
-            Match baseContextMatch = baseContextRegex.Match(contextStr);
 
-            if (baseContextMatch.Groups[NamedGroups.ControlType].Success && baseContextMatch.Groups[NamedGroups.ControlCondition].Success)
+            Regex controlRegex = new Regex(ControlPattern);
+            Match controlMatch = controlRegex.Match(contextStr);
+            if (controlMatch.Success)
             {
-                string controlTypeName = baseContextMatch.Groups[NamedGroups.ControlType].Value;
-                string conditionStr = baseContextMatch.Groups[NamedGroups.ControlCondition].Value;
+                string controlTypeName = controlMatch.Groups[NamedGroups.ControlType].Value;
+                string conditionStr = controlMatch.Groups[NamedGroups.ControlCondition].Value;
                 IConditionDefinition identifyingCondition = ParseConditionDefinition(scope, conditionStr);
                 return new BaseControlDefinition(controlTypeName, identifyingCondition, ParseBaseContext(scope, contextStrings.Skip(1)));
             }
 
-            string contextName = baseContextMatch.Groups[NamedGroups.ContextName].Value;
+            Regex customContextRegex = new Regex(CustomContextPattern);
+            Match customContextMatch = customContextRegex.Match(contextStr);
+            string contextName = customContextMatch.Groups[NamedGroups.ContextName].Value;
+
             IEnumerable<ValueDefinition> paramValues = new List<ValueDefinition>();
-            if (baseContextMatch.Groups[NamedGroups.Params].Success)
+            if (customContextMatch.Groups[NamedGroups.Params].Success)
             {
-                string paramsStr = baseContextMatch.Groups[NamedGroups.Params].Value;
+                string paramsStr = customContextMatch.Groups[NamedGroups.Params].Value;
                 paramValues = ParseParamValues(scope, paramsStr);
             }
             return new BaseContextDefinition(contextName, paramValues, ParseBaseContext(scope, contextStrings.Skip(1)));
@@ -292,7 +294,7 @@ namespace ScenarioScriptParser
             Match scenarioMatch = scenarioRegex.Match(declarationLine);
 
             string name = scenarioMatch.Groups[NamedGroups.Name].Value;
-            IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions = lines.Select((line) => ParseBaseInteractionDefinition(scope, line));
+            IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1).Select((line) => ParseBaseInteractionDefinition(scope, line));
             
             return new ScenarioDefinition(name, baseInteractionDefinitions);
         }
@@ -308,19 +310,19 @@ namespace ScenarioScriptParser
                     continue;
                 }
 
-                int blocEnd = FindBlocEnd(lines, curLine);
+                int blocLength = FindBlocLength(lines, curLine);
                 if (IsScenario(lines[curLine]))
                 {
-                    IScenarioDefinition scenarioDefinition = ParseScenarioDefinition(script.RootScope, lines.GetRange(curLine, blocEnd));
+                    IScenarioDefinition scenarioDefinition = ParseScenarioDefinition(script.RootScope, lines.GetRange(curLine, blocLength));
                     script.ScenarioDefinitions.Add(scenarioDefinition.Name, scenarioDefinition);
                 }
                 else if (IsContext(lines[curLine]))
                 {
-                    IContextDefinition contextDefinition = ParseContextDefinition(script.RootScope, lines.GetRange(curLine, blocEnd));
+                    IContextDefinition contextDefinition = ParseContextDefinition(script.RootScope, lines.GetRange(curLine, blocLength));
                     script.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
                 }
 
-                curLine = blocEnd;
+                curLine += blocLength;
             }
 
             return script;
