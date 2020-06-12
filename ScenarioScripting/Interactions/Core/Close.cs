@@ -3,14 +3,14 @@ using ScenarioScripting.Contexts;
 
 namespace ScenarioScripting.Interactions.Core
 {
-    public class CloseWindow : AbstractPatternInteraction<WindowPattern>, IInteraction
+    public class Close : AbstractPatternInteraction<WindowPattern>, IInteraction
     {
-        public const string Key = "CloseWindow";
+        public const string Key = "Close";
 
         public override string Name => Key;
         protected override AutomationPattern AutomationPattern => WindowPattern.Pattern;
 
-        public CloseWindow(IContext context) : base(context) { }
+        public Close(IContext context) : base(context) { }
 
         public override void Do()
         {

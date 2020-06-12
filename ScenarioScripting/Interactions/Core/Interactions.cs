@@ -9,8 +9,8 @@ namespace ScenarioScripting.Interactions.Core
         {
             switch (interactionName)
             {
-                case CloseWindow.Key:
-                    return new CloseWindow(context);
+                case Close.Key:
+                    return new Close(context);
                 case Invoke.Key:
                     return new Invoke(context);
                 case Scroll.Key:
