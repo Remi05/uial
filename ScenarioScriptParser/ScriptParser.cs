@@ -105,11 +105,6 @@ namespace ScenarioScriptParser
                 return ValueDefinition.FromLitteral(valueMatch.Groups[NamedGroups.Litteral].Value);
             }
             string referenceName = valueMatch.Groups[NamedGroups.Reference].Value;
-            //if (!scope.ReferenceValues.ContainsKey(referenceName))
-            //{
-            //    // TODO: Throw more specific exception.
-            //    throw new Exception($"Use of undeclared reference value \"{referenceName}\".");
-            //}
             return ValueDefinition.FromReference(referenceName); 
         }
 
