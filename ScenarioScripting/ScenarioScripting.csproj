@@ -43,6 +43,11 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assertions\Contains.cs" />
+    <Compile Include="Assertions\PropertyEquals.cs" />
+    <Compile Include="Assertions\StartsWith.cs" />
+    <Compile Include="Assertions\Or.cs" />
+    <Compile Include="Assertions\And.cs" />
     <Compile Include="Assertions\AreEqual.cs" />
     <Compile Include="Assertions\IAssertion.cs" />
     <Compile Include="Assertions\IsAvailable.cs" />
