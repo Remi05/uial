@@ -6,7 +6,7 @@ namespace ScenarioScripting.Scopes
 {
     public class DefinitionScope
     {
-        public Dictionary<string, ValueDefinition> ReferenceValues { get; private set; } = new Dictionary<string, ValueDefinition>();
+        public ISet<string> ReferenceValuesNames { get; private set; } = new HashSet<string>();
         public Dictionary<string, IContextDefinition> ContextDefinitions { get; private set; } = new Dictionary<string, IContextDefinition>();
         public Dictionary<string, IInteractionDefinition> InteractionDefinitions { get; private set; } = new Dictionary<string, IInteractionDefinition>();
 
@@ -14,7 +14,7 @@ namespace ScenarioScripting.Scopes
 
         public DefinitionScope(DefinitionScope scope)
         {
-            ReferenceValues = new Dictionary<string, ValueDefinition>(scope.ReferenceValues);
+            ReferenceValuesNames = new HashSet<string>(scope.ReferenceValuesNames);
             ContextDefinitions = new Dictionary<string, IContextDefinition>(scope.ContextDefinitions);
             InteractionDefinitions = new Dictionary<string, IInteractionDefinition>(scope.InteractionDefinitions);
         }
