@@ -224,7 +224,7 @@ namespace ScenarioScriptParser
                 {
                     throw new Exception(); // TODO: Specify exception
                 }
-                curLine += blocLength;
+                curLine += blocLength - 1;
             }
 
             return contextDefinition;
