@@ -29,14 +29,14 @@ namespace ScenarioScripting.Interactions.Core
             Pattern.Scroll(HorizontalScroll, VerticalScroll);
         }
 
-        public static Scroll FromRuntimeValues(IContext context, IEnumerable<object> paramValues)
+        public static Scroll FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 2)
             {
                 throw new InvalidParameterCountException(2, paramValues.Count());
             }
-            ScrollAmount horizontalScroll = ScrollAmountFromString(paramValues.ElementAt(0) as string);
-            ScrollAmount verticalScroll = ScrollAmountFromString(paramValues.ElementAt(1) as string);
+            ScrollAmount horizontalScroll = ScrollAmountFromString(paramValues.ElementAt(0));
+            ScrollAmount verticalScroll = ScrollAmountFromString(paramValues.ElementAt(1));
             return new Scroll(context, horizontalScroll, verticalScroll);
         }
 

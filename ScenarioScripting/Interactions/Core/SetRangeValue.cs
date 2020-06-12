@@ -12,7 +12,7 @@ namespace ScenarioScripting.Interactions.Core
         public override string Name => Key;
         protected override AutomationPattern AutomationPattern => RangeValuePattern.Pattern;
 
-        public double Value { get; set; }
+        private double Value { get; set; }
 
         public SetRangeValue(IContext context, double value)
             : base(context)
@@ -27,13 +27,13 @@ namespace ScenarioScripting.Interactions.Core
             Pattern.SetValue(Value);
         }
 
-        public static SetRangeValue FromRuntimeValues(IContext context, IEnumerable<object> paramValues)
+        public static SetRangeValue FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 1)
             {
                 throw new InvalidParameterCountException(1, paramValues.Count());
             }
-            double rangeValue = double.Parse(paramValues.ElementAt(0) as string);
+            double rangeValue = double.Parse(paramValues.ElementAt(0));
             return new SetRangeValue(context, rangeValue);
         }
     }

@@ -26,7 +26,7 @@ namespace ScenarioScripting.Conditions
 
         public Condition Resolve(RuntimeScope scope)
         {
-            object propertyValue = Controls.GetPropertyValue(Property, Value.Resolve(scope) as string);
+            object propertyValue = Controls.GetPropertyValue(Property, Value.Resolve(scope));
             return new PropertyCondition(Property, propertyValue);
         }
     }

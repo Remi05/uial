@@ -6,12 +6,12 @@ namespace ScenarioScripting
 {
     public class ValueDefinition
     {
-        private object LitteralValue { get; set; }
+        private string LitteralValue { get; set; }
         private string ReferenceName { get; set; }
 
         private ValueDefinition() { }
 
-        public object Resolve(RuntimeScope scope)
+        public string Resolve(RuntimeScope scope)
         {
             if (LitteralValue != null)
             {
@@ -31,7 +31,7 @@ namespace ScenarioScripting
             return valueDefinition;
         }
 
-        public static ValueDefinition FromLitteral(object litteralValue)
+        public static ValueDefinition FromLitteral(string litteralValue)
         {
             ValueDefinition valueDefinition = new ValueDefinition();
             valueDefinition.LitteralValue = litteralValue;

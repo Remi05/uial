@@ -5,7 +5,7 @@ namespace ScenarioScripting.Interactions.Core
 {
     public class Interactions
     {
-        public static IInteraction GetCoreInteractionByName(IContext context, string interactionName, IEnumerable<object> paramValues)
+        public static IInteraction GetCoreInteractionByName(IContext context, string interactionName, IEnumerable<string> paramValues)
         {
             switch (interactionName)
             {

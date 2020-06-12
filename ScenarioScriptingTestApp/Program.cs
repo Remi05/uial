@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using ScenarioScripting;
@@ -20,7 +20,7 @@ namespace ScenarioScriptingTestApp
 
             Console.Write("Enter scenario: ");
             string scenarioName = Console.ReadLine();
-            RuntimeScope scope = new RuntimeScope(script.RootScope, new Dictionary<string, object>());
+            RuntimeScope scope = new RuntimeScope(script.RootScope, new Dictionary<string, string>());
             IContext rootContext = new RootContext(scope);
             Scenario scenario = script.ScenarioDefinitions[scenarioName].Resolve(rootContext);
             scenario.Do();

@@ -21,14 +21,14 @@ namespace ScenarioScripting.Interactions
             BaseInteractionDefinitions = baseInteractionDefinitions;
         }
 
-        public IInteraction Resolve(IContext parentContext, IEnumerable<object> paramValues)
+        public IInteraction Resolve(IContext parentContext, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != ParamNames.Count())
             {
                 throw new InvalidParameterCountException(ParamNames.Count(), paramValues.Count());
             }
 
-            Dictionary<string, object> referenceValues = new Dictionary<string, object>(parentContext.Scope.ReferenceValues);
+            Dictionary<string, string> referenceValues = new Dictionary<string, string>(parentContext.Scope.ReferenceValues);
             for (int i = 0; i < ParamNames.Count(); ++i)
             {
                 referenceValues[ParamNames.ElementAt(i)] = paramValues.ElementAt(i);

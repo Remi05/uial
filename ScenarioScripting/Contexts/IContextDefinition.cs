@@ -9,6 +9,6 @@ namespace ScenarioScripting.Contexts
 
         DefinitionScope Scope { get; }
 
-        IContext Resolve(IContext parentContext, IEnumerable<object> paramValues);
+        IContext Resolve(IContext parentContext, IEnumerable<string> paramValues);
     }
 }

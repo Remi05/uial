@@ -25,7 +25,7 @@ namespace ScenarioScripting.Contexts
                 // TODO: Throw more specific exception.
                 throw new Exception($"Context \"{ContextName}\" doesn't exist in the current scope.");
             }
-            IEnumerable<object> paramValues = ParamsValueDefinitions.Select((valueDefinition) => valueDefinition.Resolve(currentScope));
+            IEnumerable<string> paramValues = ParamsValueDefinitions.Select((valueDefinition) => valueDefinition.Resolve(currentScope));
             IContext context = parentContext.Scope.ContextDefinitions[ContextName].Resolve(parentContext, paramValues);
             return Child?.Resolve(context, currentScope) ?? context;
         }

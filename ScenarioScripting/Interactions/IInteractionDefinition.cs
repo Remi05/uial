@@ -7,6 +7,6 @@ namespace ScenarioScripting.Interactions
     {
         string Name { get; }
 
-        IInteraction Resolve(IContext context, IEnumerable<object> paramValues);
+        IInteraction Resolve(IContext context, IEnumerable<string> paramValues);
     }
 }

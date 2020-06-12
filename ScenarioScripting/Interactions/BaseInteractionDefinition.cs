@@ -21,7 +21,7 @@ namespace ScenarioScripting.Interactions
         public IInteraction Resolve(IContext parentContext, RuntimeScope currentScope)
         {
             IContext context = ContextDefinition?.Resolve(parentContext, currentScope) ?? parentContext;
-            IEnumerable<object> paramValues = ParamsValueDefinitions.Select((valueDefinition) => valueDefinition.Resolve(currentScope));
+            IEnumerable<string> paramValues = ParamsValueDefinitions.Select((valueDefinition) => valueDefinition.Resolve(currentScope));
 
             if (context.Scope.InteractionDefinitions.ContainsKey(InteractionName))
             {

@@ -29,14 +29,14 @@ namespace ScenarioScripting.Interactions.Core
             Pattern.Resize(Width, Height);
         }
 
-        public static Resize FromRuntimeValues(IContext context, IEnumerable<object> paramValues)
+        public static Resize FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 2)
             {
                 throw new InvalidParameterCountException(2, paramValues.Count());
             }
-            double width = double.Parse(paramValues.ElementAt(0) as string);
-            double height = double.Parse(paramValues.ElementAt(1) as string);
+            double width = double.Parse(paramValues.ElementAt(0));
+            double height = double.Parse(paramValues.ElementAt(1));
             return new Resize(context, width, height);
         }
     }

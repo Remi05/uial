@@ -12,7 +12,7 @@ namespace ScenarioScripting.Interactions.Core
         public override string Name => Key;
         protected override AutomationPattern AutomationPattern => ValuePattern.Pattern;
 
-        public string Value { get; set; }
+        private string Value { get; set; }
 
         public SetTextValue(IContext context, string value)
             : base(context)
@@ -26,13 +26,13 @@ namespace ScenarioScripting.Interactions.Core
             Pattern.SetValue(Value);
         }
 
-        public static SetTextValue FromRuntimeValues(IContext context, IEnumerable<object> paramValues)
+        public static SetTextValue FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 1)
             {
                 throw new InvalidParameterCountException(1, paramValues.Count());
             }
-            return new SetTextValue(context, paramValues.ElementAt(0) as string);
+            return new SetTextValue(context, paramValues.ElementAt(0));
         }
     }
 }
