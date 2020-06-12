@@ -17,6 +17,8 @@ namespace ScenarioScripting.Interactions.Core
                     return new Maximize(context);
                 case Minimize.Key:
                     return new Minimize(context);
+                case Restore.Key:
+                    return new Restore(context);
                 case Scroll.Key:
                     return Scroll.FromRuntimeValues(context, paramValues);
                 case Select.Key:
