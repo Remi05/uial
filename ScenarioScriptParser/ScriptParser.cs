@@ -17,6 +17,7 @@ namespace ScenarioScriptParser
     {
         static class BlocIdentifiers
         {
+            public const string Comment = "//";
             public const string Context = "context";
             public const string Import = "import";
             public const string Interaction = "interaction";
@@ -61,6 +62,11 @@ namespace ScenarioScriptParser
         const string InteractionPattern = BlocIdentifiers.Interaction + "\\s+(?<name>[a-zA-Z]+)\\s*(?:" + ParamsDeclarationPattern + ")?\\s*:";
         const string ScenarioPattern = BlocIdentifiers.Scenario + "\\s+(?<name>[a-zA-Z]+)\\s*:";
         const string BaseInteractionPattern = "(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern;
+
+        bool IsComment(string line)
+        {
+            return line.Trim().StartsWith(BlocIdentifiers.Comment);
+        }
 
         bool IsImport(string line)
         {
@@ -333,7 +339,7 @@ namespace ScenarioScriptParser
 
             for (int curLine = 0; curLine < lines.Count; ++curLine)
             {
-                if (string.IsNullOrWhiteSpace(lines[curLine]))
+                if (string.IsNullOrWhiteSpace(lines[curLine]) || IsComment(lines[curLine]))
                 {
                     continue;
                 }
