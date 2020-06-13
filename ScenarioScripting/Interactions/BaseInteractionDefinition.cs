@@ -5,7 +5,7 @@ using ScenarioScripting.Scopes;
 
 namespace ScenarioScripting.Interactions
 {
-    public class BaseInteractionDefinition
+    public class BaseInteractionDefinition : IBaseInteractionDefinition
     {
         private string InteractionName { get; set; }
         private IEnumerable<ValueDefinition> ParamsValueDefinitions { get; set; }
