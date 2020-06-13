@@ -3,7 +3,7 @@ using ScenarioScripting.Scopes;
 
 namespace ScenarioScripting.Interactions
 {
-    interface IBaseInteractionDefinition
+    public interface IBaseInteractionDefinition
     {
         IInteraction Resolve(IContext parentContext, RuntimeScope currentScope);
     }
