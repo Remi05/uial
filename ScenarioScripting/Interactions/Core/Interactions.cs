@@ -35,6 +35,8 @@ namespace ScenarioScripting.Interactions.Core
                     return SetTextValue.FromRuntimeValues(context, paramValues);
                 case Toggle.Key:
                     return new Toggle(context);
+                case Wait.Key:
+                    return Wait.FromRuntimeValues(paramValues);
                 default:
                     throw new InteractionUnavailableException(interactionName);
             }
