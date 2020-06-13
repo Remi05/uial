@@ -81,6 +81,7 @@
     <Compile Include="Interactions\Getters\GetRangeValue.cs" />
     <Compile Include="Interactions\Getters\GetTextValue.cs" />
     <Compile Include="Interactions\Getters\GetPropertyValue.cs" />
+    <Compile Include="Interactions\IBaseInteractionDefinition.cs" />
     <Compile Include="Interactions\IInteractionDefinition.cs" />
     <Compile Include="Interactions\InteractionDefinition.cs" />
     <Compile Include="Interactions\Core\Interactions.cs" />
