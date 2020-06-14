@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Automation;
+﻿using System.Windows.Automation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ScenarioScripting;
 using ScenarioScripting.Conditions;
-using ScenarioScripting.Contexts;
-using ScenarioScriptingUnitTests.Interactions;
 
 namespace ScenarioScriptingUnitTests.Conditions
 {
