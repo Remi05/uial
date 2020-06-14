@@ -54,6 +54,7 @@
     <Compile Include="Conditions\CompositeConditionDefinition.cs" />
     <Compile Include="Conditions\PropertyConditionDefinition.cs" />
     <Compile Include="Contexts\MockContext.cs" />
+    <Compile Include="Interactions\CompositeInteraction.cs" />
     <Compile Include="Interactions\MockBaseInteractionDefinition.cs" />
     <Compile Include="Interactions\MockInteraction.cs" />
     <Compile Include="ValueDefinition.cs" />

@@ -2,19 +2,18 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ScenarioScripting.Interactions;
-using ScenarioScripting.Scenarios;
 using ScenarioScriptingUnitTests.Interactions;
 
-namespace ScenarioScriptingUnitTests.Scenarios
+namespace ScenarioScriptingUnitTests.Conditions
 {
     [TestClass]
-    public class ScenarioTests
+    public class CompositeInteractionTests
     {
         [TestMethod]
         public void VerifyNameIsSet()
         {
-            string expectedName = "TestScenario";
-            var scenario= new Scenario(expectedName, new List<IInteraction>());
+            string expectedName = "TestCompositeInteraction";
+            var scenario = new CompositeInteraction(expectedName, new List<IInteraction>());
             Assert.AreEqual(expectedName, scenario.Name);
         }
 
@@ -28,7 +27,7 @@ namespace ScenarioScriptingUnitTests.Scenarios
                 (interactionName) => new MockInteraction(interactionName, () => interactionsCalled.Add(interactionName))
             ).ToList();
 
-            var scenario = new Scenario("TestScenario", mockInteractions);
+            var scenario = new CompositeInteraction("TestCompositeInteraction", mockInteractions);
             scenario.Do();
 
             Assert.IsTrue(mockInteractions.All((interaction) => interaction.WasRun), "All the interactions should be run.");
