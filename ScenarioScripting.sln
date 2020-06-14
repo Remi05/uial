@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioScripting.Parser", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioScripting.UnitTests", "ScenarioScripting.UnitTests\ScenarioScripting.UnitTests.csproj", "{3102E81A-0C01-427B-9DDA-380B0BF3F414}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioScripting.Parser.UnitTests", "ScenarioScripting.Parser.UnitTests\ScenarioScripting.Parser.UnitTests.csproj", "{07A59CE0-CAEF-4906-B057-D74179461265}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,26 @@ Global
 		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|x64.Build.0 = Release|Any CPU
 		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|x86.ActiveCfg = Release|Any CPU
 		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|x86.Build.0 = Release|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Debug|ARM.Build.0 = Debug|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Debug|x64.Build.0 = Debug|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Debug|x86.Build.0 = Debug|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Release|ARM.ActiveCfg = Release|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Release|ARM.Build.0 = Release|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Release|ARM64.Build.0 = Release|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Release|x64.ActiveCfg = Release|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Release|x64.Build.0 = Release|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Release|x86.ActiveCfg = Release|Any CPU
+		{07A59CE0-CAEF-4906-B057-D74179461265}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
