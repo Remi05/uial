@@ -11,8 +11,12 @@ namespace ScenarioScriptingUnitTests.Interactions
     {
         public string Name { get; protected set; }
         protected Action DoAction { get; set; }
+        protected int DoCalledCount { get; set; } = 0;
 
-        public MockInteraction(string name, Action doAction)
+        public bool WasCalled => DoCalledCount > 0;
+        public bool WasCalledOnce => DoCalledCount == 1;
+
+        public MockInteraction(string name, Action doAction = null)
         {
             Name = name;
             DoAction = doAction;
@@ -20,7 +24,11 @@ namespace ScenarioScriptingUnitTests.Interactions
 
         public void Do()
         {
-            DoAction();
+            if (DoAction != null)
+            {
+                DoAction();
+            }
+            ++DoCalledCount;
         }
     }
 }
