@@ -12,7 +12,7 @@ using ScenarioScripting.Scopes;
 
 namespace ScenarioScripting.Parser
 {
-    public class ScriptParser
+    public class ScriptParser : IScriptParser
     {
         static class BlocIdentifiers
         {
@@ -44,7 +44,7 @@ namespace ScenarioScripting.Parser
         }
 
         const string LitteralPattern = "\"(?<litteral>[^\"]*)\"";
-        const string ReferencePattern = "(?<ref>\\$[a-zA-Z]+)";
+        const string ReferencePattern = "(?<ref>\\$[a-zA-Z]+[0-9]+)";
         const string ValuePattern = "(?<value>(?:" + LitteralPattern + ")|(?:" + ReferencePattern + "))";
         const string PropertyConditionPattern = "(?<property>[a-zA-Z]+)\\s*=\\s*" + ValuePattern;
         const string SingleConditionPattern = "[a-zA-Z]+\\s*=\\s*" + ValuePattern;
@@ -62,37 +62,37 @@ namespace ScenarioScripting.Parser
         const string ScenarioPattern = BlocIdentifiers.Scenario + "\\s+(?<name>[a-zA-Z]+)\\s*:";
         const string BaseInteractionPattern = "(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern;
 
-        bool IsComment(string line)
+        private bool IsComment(string line)
         {
             return line.Trim().StartsWith(BlocIdentifiers.Comment);
         }
 
-        bool IsImport(string line)
+        private bool IsImport(string line)
         {
             return new Regex(ImportPattern).IsMatch(line);
         }
 
-        bool IsContext(string line)
+        private bool IsContext(string line)
         {
             return new Regex(ContextPattern).IsMatch(line);
         }
 
-        bool IsInteraction(string line)
+        private bool IsInteraction(string line)
         {
             return new Regex(InteractionPattern).IsMatch(line);
         }
 
-        bool IsScenario(string line)
+        private bool IsScenario(string line)
         {
             return new Regex(ScenarioPattern).IsMatch(line);
         }
 
-        int CountIndentSpaces(string line)
+        private int CountIndentSpaces(string line)
         {
             return line.TakeWhile(char.IsWhiteSpace).Count();
         }
 
-        int FindBlocLength(List<string> lines, int blocStart)
+        private int FindBlocLength(List<string> lines, int blocStart)
         {
             int blocStartIndent = CountIndentSpaces(lines[blocStart]);
             int blocEnd = blocStart;
@@ -110,7 +110,7 @@ namespace ScenarioScripting.Parser
             return blocEnd - blocStart + 1;
         }
 
-        ValueDefinition ParseRuntimeValue(DefinitionScope scope, string valueStr)
+        public ValueDefinition ParseRuntimeValue(DefinitionScope scope, string valueStr)
         {
             Regex valueRegex = new Regex(ValuePattern);
             Match valueMatch = valueRegex.Match(valueStr);
@@ -122,7 +122,7 @@ namespace ScenarioScripting.Parser
             return ValueDefinition.FromReference(referenceName); 
         }
 
-        IEnumerable<ValueDefinition> ParseParamValues(DefinitionScope scope, string paramsStr)
+        public IEnumerable<ValueDefinition> ParseParamValues(DefinitionScope scope, string paramsStr)
         {
             List<ValueDefinition> paramValues = new List<ValueDefinition>();
             Regex valueRegex = new Regex(ValuePattern);
@@ -134,7 +134,7 @@ namespace ScenarioScripting.Parser
             return paramValues;
         }
 
-        IEnumerable<string> ParseParamsDeclaration(string paramsStr)
+        public IEnumerable<string> ParseParamsDeclaration(string paramsStr)
         {
             List<string> paramNames = new List<string>();
             Regex paramRegex = new Regex(ReferencePattern);
@@ -146,7 +146,7 @@ namespace ScenarioScripting.Parser
             return paramNames;
         }
 
-        IConditionDefinition ParseConditionDefinition(DefinitionScope scope, string conditionStr)
+        public IConditionDefinition ParseConditionDefinition(DefinitionScope scope, string conditionStr)
         {
             Regex conditionRegex = new Regex(PropertyConditionPattern);
             MatchCollection matches = conditionRegex.Matches(conditionStr);
@@ -160,7 +160,7 @@ namespace ScenarioScripting.Parser
             return new CompositeConditionDefinition(conditionDefinitions);
         }
 
-        IInteractionDefinition ParseInteractionDefinition(DefinitionScope scope, List<string> lines)
+        public IInteractionDefinition ParseInteractionDefinition(DefinitionScope scope, List<string> lines)
         {
             if (lines.Count == 0)
             {
@@ -182,12 +182,12 @@ namespace ScenarioScripting.Parser
                 paramNames = ParseParamsDeclaration(paramsStr);
             }
 
-            IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1).Select((line) => ParseBaseInteractionDefinition(currentScope, line));
+            IEnumerable<IBaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1).Select((line) => ParseBaseInteractionDefinition(currentScope, line));
 
             return new InteractionDefinition(currentScope, name, paramNames, baseInteractionDefinitions);
         }
 
-        IContextDefinition ParseContextDefinitionDeclaration(DefinitionScope scope, string line)
+        public IContextDefinition ParseContextDefinitionDeclaration(DefinitionScope scope, string line)
         {
             line = line.Trim();
             Regex contextRegex = new Regex(ContextPattern);
@@ -219,7 +219,7 @@ namespace ScenarioScripting.Parser
             return new ContextDefinition(scope, name, paramNames, rootElementCondition, uniqueCondition);
         }
 
-        IContextDefinition ParseContextDefinition(DefinitionScope scope, List<string> lines)
+        public IContextDefinition ParseContextDefinition(DefinitionScope scope, List<string> lines)
         {
             DefinitionScope currentScope = new DefinitionScope(scope);
             IContextDefinition contextDefinition = ParseContextDefinitionDeclaration(currentScope, lines[0]);
@@ -254,7 +254,7 @@ namespace ScenarioScripting.Parser
             return contextDefinition;
         }
 
-        IBaseContextDefinition ParseBaseContext(DefinitionScope scope, IEnumerable<string> contextStrings)
+        public IBaseContextDefinition ParseBaseContext(DefinitionScope scope, IEnumerable<string> contextStrings)
         {
             if (contextStrings.Count() == 0)
             {
@@ -286,7 +286,7 @@ namespace ScenarioScripting.Parser
             return new BaseContextDefinition(contextName, paramValues, ParseBaseContext(scope, contextStrings.Skip(1)));
         }
 
-        BaseInteractionDefinition ParseBaseInteractionDefinition(DefinitionScope scope, string line)
+        public IBaseInteractionDefinition ParseBaseInteractionDefinition(DefinitionScope scope, string line)
         {
             Regex baseInteractionRegex = new Regex(BaseInteractionPattern);
             Match baseInteractionMatch = baseInteractionRegex.Match(line);
@@ -311,19 +311,19 @@ namespace ScenarioScripting.Parser
             return new BaseInteractionDefinition(interactionName, paramValues, interactionContext);
         }
 
-        IScenarioDefinition ParseScenarioDefinition(DefinitionScope scope, List<string> lines)
+        public IScenarioDefinition ParseScenarioDefinition(DefinitionScope scope, List<string> lines)
         {
             string declarationLine = lines[0].Trim();
             Regex scenarioRegex = new Regex(ScenarioPattern);
             Match scenarioMatch = scenarioRegex.Match(declarationLine);
 
             string name = scenarioMatch.Groups[NamedGroups.Name].Value;
-            IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1).Select((line) => ParseBaseInteractionDefinition(scope, line));
+            IEnumerable<IBaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1).Select((line) => ParseBaseInteractionDefinition(scope, line));
             
             return new ScenarioDefinition(name, baseInteractionDefinitions);
         }
 
-        Script ParseImport(string importStr, string executionDirPath)
+        public Script ParseImport(string importStr, string executionDirPath)
         {
             Regex importRegex = new Regex(ImportPattern);
             Match importMatch = importRegex.Match(importStr);
@@ -332,7 +332,7 @@ namespace ScenarioScripting.Parser
             return ParseScript(importFilePath);
         }
 
-        Script ParseScript(List<string> lines, string executionDirPath)
+        public Script ParseScript(List<string> lines, string executionDirPath)
         {
             Script script = new Script();
 

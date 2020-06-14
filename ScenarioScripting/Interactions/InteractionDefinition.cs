@@ -10,9 +10,9 @@ namespace ScenarioScripting.Interactions
         protected DefinitionScope Scope { get; set; }
         public string Name { get; protected set; }
         protected IEnumerable<string> ParamNames { get; set; }
-        protected IEnumerable<BaseInteractionDefinition> BaseInteractionDefinitions { get; set; }
+        protected IEnumerable<IBaseInteractionDefinition> BaseInteractionDefinitions { get; set; }
 
-        public InteractionDefinition(DefinitionScope scope, string name, IEnumerable<string> paramNames, IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions)
+        public InteractionDefinition(DefinitionScope scope, string name, IEnumerable<string> paramNames, IEnumerable<IBaseInteractionDefinition> baseInteractionDefinitions)
         {
             // throw if any param is null
             Scope = scope;
