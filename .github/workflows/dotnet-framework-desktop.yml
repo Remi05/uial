@@ -32,7 +32,6 @@ jobs:
       with:
         dotnet-version: 3.1.101
 
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@2008f912f56e61277eefaac6d1888b750582aa16
 
@@ -42,6 +41,9 @@ jobs:
     - name: Restore NuGet Packages
       run: nuget restore ScenarioScripting.sln
     
+    - name: Build Solution
+      run: msbuild ScenarioScripting.sln /p:Configuration=Release
+      
     # Execute all unit tests in the solution
     #- name: Execute unit tests
     #  run: dotnet test
