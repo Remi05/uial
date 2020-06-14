@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScenarioScripting.Contexts;
+﻿using ScenarioScripting.Contexts;
 using ScenarioScripting.Interactions;
 using ScenarioScripting.Scopes;
 
-namespace ScenarioScriptingUnitTests.Interactions
+namespace ScenarioScripting.UnitTests.Interactions
 {
     class MockBaseInteractionDefinition : IBaseInteractionDefinition
     {

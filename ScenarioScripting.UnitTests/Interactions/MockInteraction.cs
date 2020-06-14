@@ -1,11 +1,7 @@
-﻿using ScenarioScripting.Interactions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using ScenarioScripting.Interactions;
 
-namespace ScenarioScriptingUnitTests.Interactions
+namespace ScenarioScripting.UnitTests.Interactions
 {
     class MockInteraction : IInteraction
     {

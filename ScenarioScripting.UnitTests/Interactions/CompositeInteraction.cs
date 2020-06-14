@@ -2,9 +2,9 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ScenarioScripting.Interactions;
-using ScenarioScriptingUnitTests.Interactions;
+using ScenarioScripting.UnitTests.Interactions;
 
-namespace ScenarioScriptingUnitTests.Conditions
+namespace ScenarioScripting.UnitTests.Conditions
 {
     [TestClass]
     public class CompositeInteractionTests

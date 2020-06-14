@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Automation;
+﻿using System.Windows.Automation;
 using ScenarioScripting.Contexts;
 using ScenarioScripting.Scopes;
 
-namespace ScenarioScriptingUnitTests.Contexts
+namespace ScenarioScripting.UnitTests.Contexts
 {
     class MockContext : IContext
     {

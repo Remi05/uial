@@ -3,9 +3,9 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ScenarioScripting.Interactions;
 using ScenarioScripting.Scenarios;
-using ScenarioScriptingUnitTests.Interactions;
+using ScenarioScripting.UnitTests.Interactions;
 
-namespace ScenarioScriptingUnitTests.Scenarios
+namespace ScenarioScripting.UnitTests.Scenarios
 {
     [TestClass]
     public class ScenarioTests

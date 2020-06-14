@@ -2,10 +2,9 @@
 using System.Linq;
 using System.Windows.Automation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ScenarioScripting;
 using ScenarioScripting.Conditions;
 
-namespace ScenarioScriptingUnitTests.Conditions
+namespace ScenarioScripting.UnitTests.Conditions
 {
     [TestClass]
     public class CompositeConditionDefinitionTests

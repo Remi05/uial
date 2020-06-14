@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ScenarioScripting;
-using ScenarioScripting.Interactions;
-using ScenarioScripting.Scenarios;
 using ScenarioScripting.Scopes;
-using ScenarioScriptingUnitTests.Interactions;
 
-namespace ScenarioScriptingUnitTests.Scenarios
+namespace ScenarioScripting.UnitTests.Scenarios
 {
     [TestClass]
     public class ValueDefinitionTests
