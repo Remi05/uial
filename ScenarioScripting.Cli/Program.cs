@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using ScenarioScripting;
 using ScenarioScripting.Contexts;
 using ScenarioScripting.Scenarios;
 using ScenarioScripting.Scopes;
 using ScenarioScripting.Parser;
 
-namespace ScenarioScriptingTestApp
+namespace ScenarioScripting.Cli
 {
     class Program
     {
