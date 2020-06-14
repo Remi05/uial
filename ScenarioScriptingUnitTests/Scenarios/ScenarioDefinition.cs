@@ -19,7 +19,7 @@ namespace ScenarioScriptingUnitTests
         }
 
         [TestMethod]
-        public void ResolvedScenarioHasSameName()
+        public void VerifyResolvedScenarioHasSameName()
         {
             string expectedName = "TestScenario";
             ScenarioDefinition scenarioDefinition = new ScenarioDefinition(expectedName, new List<IBaseInteractionDefinition>());
@@ -28,7 +28,7 @@ namespace ScenarioScriptingUnitTests
         }
 
         [TestMethod]
-        public void ResolvedScenarioInteractionDefinitionsAreResolved()
+        public void VerifyResolvedScenarioInteractionDefinitionsAreResolved()
         {
             List<string> interactionsToCall = new List<string>() { "MockInteraction1", "MockInteraction2", "MockInteraction3", };
             List<string> interactionsCalled = new List<string>();
