@@ -10,9 +10,9 @@ namespace ScenarioScripting.Scenarios
     public class ScenarioDefinition : IScenarioDefinition
     {
         public string Name { get; private set; }
-        private IEnumerable<BaseInteractionDefinition> BaseInteractionDefinitions { get; set; }
+        private IEnumerable<IBaseInteractionDefinition> BaseInteractionDefinitions { get; set; }
 
-        public ScenarioDefinition(string name, IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions)
+        public ScenarioDefinition(string name, IEnumerable<IBaseInteractionDefinition> baseInteractionDefinitions)
         {
             if (name == null)
             {
@@ -28,7 +28,7 @@ namespace ScenarioScripting.Scenarios
 
         public Scenario Resolve(IContext context)
         {
-            IEnumerable<IInteraction> interactions = BaseInteractionDefinitions.Select((interactionDefinition) => interactionDefinition.Resolve(context, context.Scope));
+            IEnumerable<IInteraction> interactions = BaseInteractionDefinitions.Select((interactionDefinition) => interactionDefinition.Resolve(context, context?.Scope));
             return new Scenario(Name, interactions);
         }
     }
