@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioScripting", "Scenar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioScriptParser", "ScenarioScriptParser\ScenarioScriptParser.csproj", "{B72D4A7E-8798-4FA7-B2B4-B66AC3AF9FFB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioScriptingUnitTests", "ScenarioScriptingUnitTests\ScenarioScriptingUnitTests.csproj", "{3102E81A-0C01-427B-9DDA-380B0BF3F414}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,26 @@ Global
 		{B72D4A7E-8798-4FA7-B2B4-B66AC3AF9FFB}.Release|x64.Build.0 = Release|Any CPU
 		{B72D4A7E-8798-4FA7-B2B4-B66AC3AF9FFB}.Release|x86.ActiveCfg = Release|Any CPU
 		{B72D4A7E-8798-4FA7-B2B4-B66AC3AF9FFB}.Release|x86.Build.0 = Release|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Debug|ARM.Build.0 = Debug|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Debug|x64.Build.0 = Debug|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Debug|x86.Build.0 = Debug|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|ARM.ActiveCfg = Release|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|ARM.Build.0 = Release|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|ARM64.Build.0 = Release|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|x64.ActiveCfg = Release|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|x64.Build.0 = Release|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|x86.ActiveCfg = Release|Any CPU
+		{3102E81A-0C01-427B-9DDA-380B0BF3F414}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
