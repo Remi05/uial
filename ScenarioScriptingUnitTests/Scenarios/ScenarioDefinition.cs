@@ -30,12 +30,12 @@ namespace ScenarioScriptingUnitTests
         [TestMethod]
         public void VerifyResolvedScenarioInteractionDefinitionsAreResolved()
         {
-            List<string> interactionsToCall = new List<string>() { "MockInteraction1", "MockInteraction2", "MockInteraction3", };
-            List<string> interactionsCalled = new List<string>();
-
-            IEnumerable<IInteraction> mockInteractions = interactionsToCall.Select(
-                (interactionName) => new MockInteraction(interactionName, () => interactionsCalled.Add(interactionName))
-            );
+            List<MockInteraction> mockInteractions = new List<MockInteraction>
+            {    
+                new MockInteraction("MockInteraction1"),
+                new MockInteraction("MockInteraction2"),
+                new MockInteraction("MockInteraction3"),
+            };
             IEnumerable<IBaseInteractionDefinition> mockBaseInteractions = mockInteractions.Select(
                 (interaction) => new MockBaseInteractionDefinition(interaction)
             );
@@ -44,7 +44,7 @@ namespace ScenarioScriptingUnitTests
             Scenario scenario = scenarioDefinition.Resolve(null);
             scenario.Do();
 
-            Assert.IsTrue(interactionsToCall.SequenceEqual(interactionsCalled));
+            Assert.IsTrue(mockInteractions.All((interaction) => interaction.WasCalledOnce));
         }
     }
 }

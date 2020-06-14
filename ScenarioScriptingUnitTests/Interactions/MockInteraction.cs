@@ -10,17 +10,17 @@ namespace ScenarioScriptingUnitTests.Interactions
     class MockInteraction : IInteraction
     {
         public string Name { get; protected set; }
-        protected Action DoAction { get; set; }
+        protected int DoCalledCount { get; set; } = 0;
+        public bool WasCalledOnce => DoCalledCount == 1;
 
-        public MockInteraction(string name, Action doAction)
+        public MockInteraction(string name)
         {
             Name = name;
-            DoAction = doAction;
         }
 
         public void Do()
         {
-            DoAction();
+            ++DoCalledCount;
         }
     }
 }
