@@ -13,10 +13,10 @@ namespace ScenarioScriptingUnitTests.Conditions
         {
             AutomationProperty expectedProperty = AutomationElement.ControlTypeProperty;
             ControlType expectedControlType = ControlType.Button;
-            ValueDefinition valueDefinition = ValueDefinition.FromLitteral("Button");
+            var valueDefinition = ValueDefinition.FromLitteral("Button");
 
-            PropertyConditionDefinition propertyConditionDefinition = new PropertyConditionDefinition(expectedProperty, valueDefinition);
-            PropertyCondition actualCondition = propertyConditionDefinition.Resolve(null) as PropertyCondition;
+            var propertyConditionDefinition = new PropertyConditionDefinition(expectedProperty, valueDefinition);
+            var actualCondition = propertyConditionDefinition.Resolve(null) as PropertyCondition;
 
             Assert.IsNotNull(actualCondition);
             Assert.AreEqual(expectedProperty, actualCondition.Property);
@@ -28,10 +28,10 @@ namespace ScenarioScriptingUnitTests.Conditions
         {
             AutomationProperty expectedProperty = AutomationElement.NameProperty;
             string expectedName = "TestControlName";
-            ValueDefinition valueDefinition = ValueDefinition.FromLitteral(expectedName);
+            var valueDefinition = ValueDefinition.FromLitteral(expectedName);
 
-            PropertyConditionDefinition propertyConditionDefinition = new PropertyConditionDefinition(expectedProperty, valueDefinition);
-            PropertyCondition actualCondition = propertyConditionDefinition.Resolve(null) as PropertyCondition;
+            var propertyConditionDefinition = new PropertyConditionDefinition(expectedProperty, valueDefinition);
+            var actualCondition = propertyConditionDefinition.Resolve(null) as PropertyCondition;
 
             Assert.IsNotNull(actualCondition);
             Assert.AreEqual(expectedProperty, actualCondition.Property);
