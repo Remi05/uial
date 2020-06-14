@@ -14,7 +14,7 @@ namespace ScenarioScriptingUnitTests
         public void VerifyNameIsSet()
         {
             string expectedName = "TestScenario";
-            ScenarioDefinition scenarioDefinition = new ScenarioDefinition(expectedName, new List<IBaseInteractionDefinition>());
+            var scenarioDefinition = new ScenarioDefinition(expectedName, new List<IBaseInteractionDefinition>());
             Assert.AreEqual(expectedName, scenarioDefinition.Name);
         }
 
@@ -22,7 +22,7 @@ namespace ScenarioScriptingUnitTests
         public void VerifyResolvedScenarioHasSameName()
         {
             string expectedName = "TestScenario";
-            ScenarioDefinition scenarioDefinition = new ScenarioDefinition(expectedName, new List<IBaseInteractionDefinition>());
+            var scenarioDefinition = new ScenarioDefinition(expectedName, new List<IBaseInteractionDefinition>());
             Scenario scenario = scenarioDefinition.Resolve(null);
             Assert.AreEqual(expectedName, scenario.Name);
         }
@@ -30,8 +30,8 @@ namespace ScenarioScriptingUnitTests
         [TestMethod]
         public void VerifyResolvedScenarioInteractionDefinitionsAreResolved()
         {
-            List<string> interactionsToCall = new List<string>() { "MockInteraction1", "MockInteraction2", "MockInteraction3", };
-            List<string> interactionsCalled = new List<string>();
+            var interactionsToCall = new List<string>() { "MockInteraction1", "MockInteraction2", "MockInteraction3", };
+            var interactionsCalled = new List<string>();
 
             IEnumerable<IInteraction> mockInteractions = interactionsToCall.Select(
                 (interactionName) => new MockInteraction(interactionName, () => interactionsCalled.Add(interactionName))
@@ -40,7 +40,7 @@ namespace ScenarioScriptingUnitTests
                 (interaction) => new MockBaseInteractionDefinition(interaction)
             );
 
-            ScenarioDefinition scenarioDefinition = new ScenarioDefinition("TestScenario", mockBaseInteractions);
+            var scenarioDefinition = new ScenarioDefinition("TestScenario", mockBaseInteractions);
             Scenario scenario = scenarioDefinition.Resolve(null);
             scenario.Do();
 

@@ -17,21 +17,21 @@ namespace ScenarioScriptingUnitTests.Scenarios
         public void VerifyNameIsSet()
         {
             string expectedName = "TestScenario";
-            Scenario scenario= new Scenario(expectedName, new List<IInteraction>());
+            var scenario= new Scenario(expectedName, new List<IInteraction>());
             Assert.AreEqual(expectedName, scenario.Name);
         }
 
         [TestMethod]
         public void VerifyAllInteractionsAreRun()
         {
-            List<MockInteraction> mockInteractions = new List<MockInteraction>()
+            var mockInteractions = new List<MockInteraction>()
             {
                 new MockInteraction("MockInteraction1"),
                 new MockInteraction("MockInteraction2"),
                 new MockInteraction("MockInteraction3"),
             };
 
-            Scenario scenario = new Scenario("TestScenario", mockInteractions);
+            var scenario = new Scenario("TestScenario", mockInteractions);
             scenario.Do();
 
             Assert.IsTrue(mockInteractions.All((interaction) => interaction.WasCalled));
@@ -40,14 +40,14 @@ namespace ScenarioScriptingUnitTests.Scenarios
         [TestMethod]
         public void VerifyAllInteractionsAreRunOnce()
         {
-            List<MockInteraction> mockInteractions = new List<MockInteraction>()
+            var mockInteractions = new List<MockInteraction>()
             {
                 new MockInteraction("MockInteraction1"),
                 new MockInteraction("MockInteraction2"),
                 new MockInteraction("MockInteraction3"),
             };
 
-            Scenario scenario = new Scenario("TestScenario", mockInteractions);
+            var scenario = new Scenario("TestScenario", mockInteractions);
             scenario.Do();
 
             Assert.IsTrue(mockInteractions.All((interaction) => interaction.WasCalledOnce));
@@ -56,14 +56,14 @@ namespace ScenarioScriptingUnitTests.Scenarios
         [TestMethod]
         public void VerifyAllInteractionsAreRunInCorrectOrder()
         {
-            List<string> interactionsToCall = new List<string>() { "MockInteraction1", "MockInteraction2", "MockInteraction3", };
-            List<string> interactionsCalled = new List<string>();
+            var interactionsToCall = new List<string>() { "MockInteraction1", "MockInteraction2", "MockInteraction3", };
+            var interactionsCalled = new List<string>();
 
             IEnumerable<IInteraction> mockInteractions = interactionsToCall.Select(
                 (interactionName) => new MockInteraction(interactionName, () => interactionsCalled.Add(interactionName))
             );
 
-            Scenario scenario = new Scenario("TestScenario", mockInteractions);
+            var scenario = new Scenario("TestScenario", mockInteractions);
             scenario.Do();
 
             Assert.IsTrue(interactionsToCall.SequenceEqual(interactionsCalled));
