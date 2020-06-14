@@ -54,6 +54,7 @@
     <Compile Include="Contexts\MockContext.cs" />
     <Compile Include="Interactions\MockBaseInteractionDefinition.cs" />
     <Compile Include="Interactions\MockInteraction.cs" />
+    <Compile Include="ValueDefinition.cs" />
     <Compile Include="Scenarios\Scenario.cs" />
     <Compile Include="Scenarios\ScenarioDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
