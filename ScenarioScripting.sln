@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioScriptingTestApp", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioScripting", "ScenarioScripting\ScenarioScripting.csproj", "{9B226D9E-1D49-4CE7-BCAC-8641E1A2433B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioScriptParser", "ScenarioScriptParser\ScenarioScriptParser.csproj", "{B72D4A7E-8798-4FA7-B2B4-B66AC3AF9FFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScenarioScripting.Parser", "ScenarioScripting.Parser\ScenarioScripting.Parser.csproj", "{B72D4A7E-8798-4FA7-B2B4-B66AC3AF9FFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

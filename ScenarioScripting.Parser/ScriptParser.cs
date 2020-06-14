@@ -4,14 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Automation;
-using ScenarioScripting;
 using ScenarioScripting.Conditions;
 using ScenarioScripting.Contexts;
 using ScenarioScripting.Interactions;
 using ScenarioScripting.Scenarios;
 using ScenarioScripting.Scopes;
 
-namespace ScenarioScriptParser
+namespace ScenarioScripting.Parser
 {
     public class ScriptParser
     {

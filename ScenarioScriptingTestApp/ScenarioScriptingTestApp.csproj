@@ -56,9 +56,9 @@
       <Project>{9b226d9e-1d49-4ce7-bcac-8641e1a2433b}</Project>
       <Name>ScenarioScripting</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ScenarioScriptParser\ScenarioScriptParser.csproj">
+    <ProjectReference Include="..\ScenarioScripting.Parser\ScenarioScripting.Parser.csproj">
       <Project>{b72d4a7e-8798-4fa7-b2b4-b66ac3af9ffb}</Project>
-      <Name>ScenarioScriptParser</Name>
+      <Name>ScenarioScripting.Parser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
