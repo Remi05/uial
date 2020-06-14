@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +7,7 @@ using System.Windows.Automation;
 using ScenarioScripting.Conditions;
 using ScenarioScripting.Contexts;
 using ScenarioScripting.Interactions;
+using ScenarioScripting.Parser.Exceptions;
 using ScenarioScripting.Scenarios;
 using ScenarioScripting.Scopes;
 
@@ -192,6 +193,10 @@ namespace ScenarioScripting.Parser
             line = line.Trim();
             Regex contextRegex = new Regex(ContextPattern);
             Match contextMatch = contextRegex.Match(line);
+            if (!contextMatch.Success)
+            {
+                throw new InvalidContextDeclarationException(line);
+            }
 
             string name = contextMatch.Groups[NamedGroups.Name].Value;
 
