@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseContexts.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="Scenarios.cs" />
     <Compile Include="ContextDeclarations.cs" />

@@ -259,7 +259,7 @@ namespace ScenarioScripting.Parser
             return contextDefinition;
         }
 
-        public IBaseContextDefinition ParseBaseContext(IEnumerable<string> contextStrings)
+        private IBaseContextDefinition ParseBaseContext(IEnumerable<string> contextStrings)
         {
             if (contextStrings.Count() == 0)
             {
@@ -291,6 +291,12 @@ namespace ScenarioScripting.Parser
             return new BaseContextDefinition(contextName, paramValues, ParseBaseContext(contextStrings.Skip(1)));
         }
 
+        public IBaseContextDefinition ParseBaseContextDefinition(string baseContextStr)
+        {
+            string[] contextStrings = baseContextStr.Split(new string[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+            return ParseBaseContext(contextStrings);
+        }
+
         public IBaseInteractionDefinition ParseBaseInteractionDefinition(string line)
         {
             Regex baseInteractionRegex = new Regex(BaseInteractionPattern);
@@ -298,12 +304,11 @@ namespace ScenarioScripting.Parser
             
             string interactionName = baseInteractionMatch.Groups[NamedGroups.Interaction].Value;
 
-            IBaseContextDefinition interactionContext = null;
+            IBaseContextDefinition baseContextDefinition = null;
             if (baseInteractionMatch.Groups[NamedGroups.Context].Success)
             {
-                string composedContextStr = baseInteractionMatch.Groups[NamedGroups.Context].Value;
-                string[] contextStrings = composedContextStr.Split(new string[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
-                interactionContext = ParseBaseContext(contextStrings);
+                string baseContextStr = baseInteractionMatch.Groups[NamedGroups.Context].Value;
+                baseContextDefinition = ParseBaseContextDefinition(baseContextStr);
             }
 
             IEnumerable<ValueDefinition> paramValues = new List<ValueDefinition>();
@@ -313,7 +318,7 @@ namespace ScenarioScripting.Parser
                 paramValues = ParseParamValues(paramsStr);
             }
 
-            return new BaseInteractionDefinition(interactionName, paramValues, interactionContext);
+            return new BaseInteractionDefinition(interactionName, paramValues, baseContextDefinition);
         }
 
         public IScenarioDefinition ParseScenarioDefinition(List<string> lines)
