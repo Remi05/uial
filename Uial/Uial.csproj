@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9B226D9E-1D49-4CE7-BCAC-8641E1A2433B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Uial</RootNamespace>
+    <AssemblyName>Uial</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationTypes" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assertions\Contains.cs" />
+    <Compile Include="Assertions\PropertyEquals.cs" />
+    <Compile Include="Assertions\StartsWith.cs" />
+    <Compile Include="Assertions\Or.cs" />
+    <Compile Include="Assertions\And.cs" />
+    <Compile Include="Assertions\AreEqual.cs" />
+    <Compile Include="Assertions\IAssertion.cs" />
+    <Compile Include="Assertions\IsAvailable.cs" />
+    <Compile Include="Assertions\Not.cs" />
+    <Compile Include="Conditions\IConditionDefinition.cs" />
+    <Compile Include="Contexts\AbstractContext.cs" />
+    <Compile Include="Conditions\CompositeConditionDefinition.cs" />
+    <Compile Include="Contexts\BaseControlDefinition.cs" />
+    <Compile Include="Contexts\ContextDefinition.cs" />
+    <Compile Include="Contexts\Controls.cs" />
+    <Compile Include="Contexts\Exceptions.cs" />
+    <Compile Include="Conditions\PropertyConditionDefinition.cs" />
+    <Compile Include="Contexts\IBaseContextDefinition.cs" />
+    <Compile Include="Contexts\IContextDefinition.cs" />
+    <Compile Include="Contexts\BaseContextDefinition.cs" />
+    <Compile Include="Contexts\RootContext.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Interactions\AbstractInteraction.cs" />
+    <Compile Include="Interactions\AbstractPatternInteraction.cs" />
+    <Compile Include="Interactions\BaseInteractionDefinition.cs" />
+    <Compile Include="Interactions\Core\Focus.cs" />
+    <Compile Include="Interactions\Core\Maximize.cs" />
+    <Compile Include="Interactions\Core\Minimize.cs" />
+    <Compile Include="Interactions\Core\Move.cs" />
+    <Compile Include="Interactions\Core\Resize.cs" />
+    <Compile Include="Interactions\Core\Restore.cs" />
+    <Compile Include="Interactions\Core\Scroll.cs" />
+    <Compile Include="Interactions\Core\SetRangeValue.cs" />
+    <Compile Include="Interactions\Core\Wait.cs" />
+    <Compile Include="Interactions\Exceptions.cs" />
+    <Compile Include="Interactions\Getters\GetRangeValue.cs" />
+    <Compile Include="Interactions\Getters\GetTextValue.cs" />
+    <Compile Include="Interactions\Getters\GetPropertyValue.cs" />
+    <Compile Include="Interactions\IBaseInteractionDefinition.cs" />
+    <Compile Include="Interactions\IInteractionDefinition.cs" />
+    <Compile Include="Interactions\InteractionDefinition.cs" />
+    <Compile Include="Interactions\Core\Interactions.cs" />
+    <Compile Include="Interactions\Core\Close.cs" />
+    <Compile Include="Interactions\CompositeInteraction.cs" />
+    <Compile Include="Interactions\IInteraction.cs" />
+    <Compile Include="Interactions\Core\Invoke.cs" />
+    <Compile Include="Interactions\Core\Select.cs" />
+    <Compile Include="Interactions\Core\Toggle.cs" />
+    <Compile Include="Interactions\Core\SetTextValue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenarios\IScenarioDefinition.cs" />
+    <Compile Include="Scenarios\Scenario.cs" />
+    <Compile Include="Contexts\IContext.cs" />
+    <Compile Include="Contexts\Context.cs" />
+    <Compile Include="Scenarios\ScenarioDefinition.cs" />
+    <Compile Include="Scopes\RuntimeScope.cs" />
+    <Compile Include="Scopes\DefinitionScope.cs" />
+    <Compile Include="Script.cs" />
+    <Compile Include="ValueDefinition.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
