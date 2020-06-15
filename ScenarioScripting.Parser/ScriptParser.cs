@@ -44,6 +44,9 @@ namespace ScenarioScripting.Parser
             public const string Value = "value";
         }
 
+        const string IsolatedLitteralPattern = "^\"(?<litteral>[^\"]*)\"$";
+        const string IsolatedReferencePattern = "^(?<ref>\\$[a-zA-Z]+(?:[0-9]+)?)$";
+        const string IsolatedValuePattern = "(?<value>(?:" + IsolatedLitteralPattern + ")|(?:" + IsolatedReferencePattern + "))";
         const string LitteralPattern = "\"(?<litteral>[^\"]*)\"";
         const string ReferencePattern = "(?<ref>\\$[a-zA-Z]+(?:[0-9]+)?)";
         const string ValuePattern = "(?<value>(?:" + LitteralPattern + ")|(?:" + ReferencePattern + "))";
@@ -111,10 +114,15 @@ namespace ScenarioScripting.Parser
             return blocEnd - blocStart + 1;
         }
 
-        public ValueDefinition ParseRuntimeValue(string valueStr)
+        public ValueDefinition ParseValueDefinition(string valueStr)
         {
-            Regex valueRegex = new Regex(ValuePattern);
+            Regex valueRegex = new Regex(IsolatedValuePattern);
             Match valueMatch = valueRegex.Match(valueStr);
+            if (!valueMatch.Success)
+            {
+                throw new InvalidValueDefinitionException(valueStr);
+            }
+
             if (valueMatch.Groups[NamedGroups.Litteral].Success)
             {
                 return ValueDefinition.FromLitteral(valueMatch.Groups[NamedGroups.Litteral].Value);
@@ -130,7 +138,7 @@ namespace ScenarioScripting.Parser
             MatchCollection matches = valueRegex.Matches(paramsStr);
             foreach (Match match in matches)
             {
-                paramValues.Add(ParseRuntimeValue(match.Value));
+                paramValues.Add(ParseValueDefinition(match.Value));
             }
             return paramValues;
         }
@@ -160,7 +168,7 @@ namespace ScenarioScripting.Parser
             foreach (Match match in matches)
             {
                 AutomationProperty property = Controls.GetPropertyByName(match.Groups[NamedGroups.Property].Value);
-                ValueDefinition value = ParseRuntimeValue(match.Groups[NamedGroups.Value].Value);
+                ValueDefinition value = ParseValueDefinition(match.Groups[NamedGroups.Value].Value);
                 conditionDefinitions.Add(new PropertyConditionDefinition(property, value));
             }
 
