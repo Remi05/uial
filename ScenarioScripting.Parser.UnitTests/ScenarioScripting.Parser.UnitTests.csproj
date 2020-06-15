@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseContexts.cs" />
+    <Compile Include="Conditions.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="Scenarios.cs" />
     <Compile Include="ContextDeclarations.cs" />

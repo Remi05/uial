@@ -151,6 +151,11 @@ namespace ScenarioScripting.Parser
         {
             Regex conditionRegex = new Regex(PropertyConditionPattern);
             MatchCollection matches = conditionRegex.Matches(conditionStr);
+            if (matches.Count == 0)
+            {
+                throw new InvalidConditionException(conditionStr);
+            }
+
             List<IConditionDefinition> conditionDefinitions = new List<IConditionDefinition>(matches.Count);
             foreach (Match match in matches)
             {
@@ -158,6 +163,7 @@ namespace ScenarioScripting.Parser
                 ValueDefinition value = ParseRuntimeValue(match.Groups[NamedGroups.Value].Value);
                 conditionDefinitions.Add(new PropertyConditionDefinition(property, value));
             }
+
             return new CompositeConditionDefinition(conditionDefinitions);
         }
 
