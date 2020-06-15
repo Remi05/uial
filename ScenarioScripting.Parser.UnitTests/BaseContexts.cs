@@ -25,7 +25,7 @@ namespace ScenarioScripting.Parser.UnitTests
         [DataRow(ValidBaseContexts.NamedContextAndControl, DisplayName = "ValidBaseContext_NamedContextAndControl")]
         [DataRow(ValidBaseContexts.ControlAndNamedContext, DisplayName = "ValidBaseContext_ControlAndNamedContext")]
         [DataTestMethod]
-        public void ValidBaseContextCanBeParsed(string baseContextStr)
+        public void ValidBaseContextsCanBeParsed(string baseContextStr)
         {
             ScriptParser parser = new ScriptParser();
             IBaseContextDefinition baseContextDefinition = parser.ParseBaseContextDefinition(baseContextStr);
