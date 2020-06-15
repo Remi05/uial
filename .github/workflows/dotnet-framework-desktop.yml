@@ -17,8 +17,8 @@ jobs:
     runs-on: windows-latest
 
     env:
-      Solution_Name: ScenarioScripting.sln
-      #Test_Project_Path: ScenarioScriptingUnitTests\ScenarioScripting.UnitTests.csproj
+      Solution_Name: Uial.sln
+      #Test_Project_Path: Uial.UnitTests\Uial.UnitTests.csproj
 
     steps:
     - name: Checkout
@@ -39,10 +39,10 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.2
      
     - name: Restore NuGet Packages
-      run: nuget restore ScenarioScripting.sln
+      run: nuget restore Uial.sln
     
     - name: Build Solution
-      run: msbuild ScenarioScripting.sln /p:Configuration=Release
+      run: msbuild Uial.sln /p:Configuration=Release
       
     # Execute all unit tests in the solution
     #- name: Execute unit tests
