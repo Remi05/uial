@@ -13,4 +13,16 @@ namespace ScenarioScripting.Parser.Exceptions
             ContextDeclaration = contextDeclaration;
         }
     }
+
+    public class InvalidConditionException : Exception
+    {
+        private string Condition { get; set; }
+
+        public override string Message => $"The given condition is invalid:\n{Condition}";
+
+        public InvalidConditionException(string condition)
+        {
+            Condition = condition;
+        }
+    }
 }
