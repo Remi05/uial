@@ -2,6 +2,18 @@
 
 namespace ScenarioScripting.Parser.Exceptions
 {
+    public class InvalidBaseInteractionException : Exception
+    {
+        private string BaseInteraction { get; set; }
+
+        public override string Message => $"The given base interaction is invalid: {BaseInteraction}";
+
+        public InvalidBaseInteractionException(string baseInteraction)
+        {
+            BaseInteraction = baseInteraction;
+        }
+    }
+
     public class InvalidConditionException : Exception
     {
         private string Condition { get; set; }

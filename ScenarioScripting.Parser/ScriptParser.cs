@@ -64,7 +64,7 @@ namespace ScenarioScripting.Parser
         const string ContextPattern = BlocIdentifiers.Context + "\\s+(?<name>[a-zA-Z]+)\\s*(?:" + ParamsDeclarationPattern + ")?(?:\\s+\\[\\s*(?<rootCondition>" + ConditionPattern + ")\\s*\\])?(?:\\s+\\{\\s*(?<uniqueCondition>" + ConditionPattern + ")\\s*\\})?\\s*:\\s*$";
         const string InteractionPattern = BlocIdentifiers.Interaction + "\\s+(?<name>[a-zA-Z]+)\\s*(?:" + ParamsDeclarationPattern + ")?\\s*:";
         const string ScenarioPattern = BlocIdentifiers.Scenario + "\\s+(?<name>[a-zA-Z]+)\\s*:";
-        const string BaseInteractionPattern = "(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern;
+        const string BaseInteractionPattern = "^\\s*(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern + "\\s*$";
 
         private bool IsComment(string line)
         {
@@ -273,7 +273,7 @@ namespace ScenarioScripting.Parser
             return contextDefinition;
         }
 
-        private IBaseContextDefinition ParseBaseContext(IEnumerable<string> contextStrings)
+        private IBaseContextDefinition ParseBaseContextDefinition(IEnumerable<string> contextStrings)
         {
             if (contextStrings.Count() == 0)
             {
@@ -289,7 +289,7 @@ namespace ScenarioScripting.Parser
                 string controlTypeName = controlMatch.Groups[NamedGroups.ControlType].Value;
                 string conditionStr = controlMatch.Groups[NamedGroups.ControlCondition].Value;
                 IConditionDefinition identifyingCondition = ParseConditionDefinition(conditionStr);
-                return new BaseControlDefinition(controlTypeName, identifyingCondition, ParseBaseContext(contextStrings.Skip(1)));
+                return new BaseControlDefinition(controlTypeName, identifyingCondition, ParseBaseContextDefinition(contextStrings.Skip(1)));
             }
 
             Regex customContextRegex = new Regex(CustomContextPattern);
@@ -302,19 +302,23 @@ namespace ScenarioScripting.Parser
                 string paramsStr = customContextMatch.Groups[NamedGroups.Params].Value;
                 paramValues = ParseParamValues(paramsStr);
             }
-            return new BaseContextDefinition(contextName, paramValues, ParseBaseContext(contextStrings.Skip(1)));
+            return new BaseContextDefinition(contextName, paramValues, ParseBaseContextDefinition(contextStrings.Skip(1)));
         }
 
         public IBaseContextDefinition ParseBaseContextDefinition(string baseContextStr)
         {
             string[] contextStrings = baseContextStr.Split(new string[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
-            return ParseBaseContext(contextStrings);
+            return ParseBaseContextDefinition(contextStrings);
         }
 
         public IBaseInteractionDefinition ParseBaseInteractionDefinition(string line)
         {
             Regex baseInteractionRegex = new Regex(BaseInteractionPattern);
             Match baseInteractionMatch = baseInteractionRegex.Match(line);
+            if (!baseInteractionMatch.Success)
+            {
+                throw new InvalidBaseInteractionException(line);
+            }
             
             string interactionName = baseInteractionMatch.Groups[NamedGroups.Interaction].Value;
 
