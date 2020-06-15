@@ -58,7 +58,7 @@ namespace ScenarioScripting.Parser
         const string ImportNamePattern = "(?<importName>[a-zA-Z0-9]+\\.uial)";
 
         const string ImportPattern = BlocIdentifiers.Import + "\\s+'" + ImportNamePattern + "'";
-        const string ContextPattern = BlocIdentifiers.Context + "\\s+(?<name>[a-zA-Z]+)\\s*(?:" + ParamsDeclarationPattern + ")?(?:\\s+\\[\\s*(?<rootCondition>" + ConditionPattern + ")\\s*\\])?(?:\\s+\\{\\s*(?<uniqueCondition>" + ConditionPattern + ")\\s*\\})?\\s*:";
+        const string ContextPattern = BlocIdentifiers.Context + "\\s+(?<name>[a-zA-Z]+)\\s*(?:" + ParamsDeclarationPattern + ")?(?:\\s+\\[\\s*(?<rootCondition>" + ConditionPattern + ")\\s*\\])?(?:\\s+\\{\\s*(?<uniqueCondition>" + ConditionPattern + ")\\s*\\})?\\s*:\\s*$";
         const string InteractionPattern = BlocIdentifiers.Interaction + "\\s+(?<name>[a-zA-Z]+)\\s*(?:" + ParamsDeclarationPattern + ")?\\s*:";
         const string ScenarioPattern = BlocIdentifiers.Scenario + "\\s+(?<name>[a-zA-Z]+)\\s*:";
         const string BaseInteractionPattern = "(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern;
