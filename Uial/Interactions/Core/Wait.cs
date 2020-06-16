@@ -28,7 +28,8 @@ namespace Uial.Interactions.Core
             {
                 throw new InvalidParameterCountException(1, paramValues.Count());
             }
-            TimeSpan duration = TimeSpan.Parse(paramValues.ElementAt(0));
+            double milliseconds = double.Parse(paramValues.ElementAt(0));
+            TimeSpan duration = TimeSpan.FromMilliseconds(milliseconds);
             return new Wait(duration);
         }
     }
