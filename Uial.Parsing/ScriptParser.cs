@@ -102,7 +102,7 @@ namespace Uial.Parsing
             int blocEnd = blocStart;
             for (int i = blocStart + 1; i < lines.Count; ++i)
             {
-                if (!string.IsNullOrWhiteSpace(lines[i]))
+                if (!string.IsNullOrWhiteSpace(lines[i]) && !IsComment(lines[i]))
                 {
                     if (CountIndentSpaces(lines[i]) <= blocStartIndent)
                     {
@@ -197,7 +197,9 @@ namespace Uial.Parsing
                 paramNames = ParseParamsDeclaration(paramsStr);
             }
 
-            IEnumerable<IBaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1).Select((line) => ParseBaseInteractionDefinition(line));
+            IEnumerable<IBaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1)
+                .Where((line) => !string.IsNullOrWhiteSpace(line) && !IsComment(line))
+                .Select((line) => ParseBaseInteractionDefinition(line));
 
             return new InteractionDefinition(currentScope, name, paramNames, baseInteractionDefinitions);
         }
@@ -245,7 +247,7 @@ namespace Uial.Parsing
 
             for (int curLine = 1; curLine < lines.Count; ++curLine)
             {
-                if (string.IsNullOrWhiteSpace(lines[curLine]))
+                if (string.IsNullOrWhiteSpace(lines[curLine]) || IsComment(lines[curLine]))
                 {
                     continue;
                 }
@@ -346,7 +348,9 @@ namespace Uial.Parsing
             Match scenarioMatch = scenarioRegex.Match(declarationLine);
 
             string name = scenarioMatch.Groups[NamedGroups.Name].Value;
-            IEnumerable<IBaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1).Select((line) => ParseBaseInteractionDefinition(line));
+            IEnumerable<IBaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1)
+                .Where((line) => !string.IsNullOrWhiteSpace(line) && !IsComment(line))
+                .Select((line) => ParseBaseInteractionDefinition(line));
             
             return new ScenarioDefinition(name, baseInteractionDefinitions);
         }
