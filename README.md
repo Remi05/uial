@@ -17,8 +17,8 @@ UIAL is licensed using an [MIT License](LICENSE.md).
 
 ## Core Concepts
 
-For more information on the core concepts of UIAL, refer to the [Concepts Guide](Concepts.md).
+For more information on the core concepts of UIAL, refer to the [Concepts wiki page](https://github.com/Remi05/uial/wiki/Concepts).
 
 ## Language Syntax
 
-For more information on the syntax of UIAL, refer to the [Syntax Guide](https://github.com/Remi05/uial/wiki/Syntax).
+For more information on the syntax of UIAL, refer to the [Syntax wiki page](https://github.com/Remi05/uial/wiki/Syntax).
