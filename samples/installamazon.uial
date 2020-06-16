@@ -1,0 +1,12 @@
+import 'contexts/taskbar.uial'
+import 'contexts/startmenu.uial'
+import 'contexts/microsoftstore.uial'
+import 'contexts/amazon.uial'
+
+scenario InstallAmazonAndSearch:
+    Taskbar::LaunchApp("Microsoft Store")
+    MicrosoftStore::InstallApp("Amazon")
+    MicrosoftStore::LaunchInstalledApp("Amazon")
+    Amazon::SearchProduct("espresso machine")
+    Amazon::Close()
+    MicrosoftStore::Close()

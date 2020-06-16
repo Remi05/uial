@@ -1,0 +1,25 @@
+
+context MicrosoftStore [ControlType="Window", Name="Microsoft Store"]:
+    context SearchButton [ControlType="Button", AutomationId="NavSearchButton"]:
+    context SearchTextBox [ControlType="Edit", Name="Search"]:
+    context ConfirmSearchButton [ControlType="Button", AutomationId="SearchBoxSearchButton"]:
+
+    context ProductPage($appName) {Name=$appName, AutomationId="DynamicHeading_productTitle"}:
+        context InstallButton [ControlType="Button", AutomationId="PlayBar_AppIdentityInstallButton"]:
+        context LaunchButton [ControlType="Button", AutomationId="PlayBar_AppIdentityOpenButton"]:
+
+    interaction Search($searchText):
+        SearchButton::Invoke()
+        SearchTextBox::SetTextValue($searchText)
+        ConfirmSearchButton::Invoke()
+
+    interaction InstallApp($appName):
+        ::Search($appName)
+        ListItem[Name=$appName]::Invoke()
+        ::Wait("1500")
+        ProductPage($appName)::InstallButton::Invoke()
+        ::Wait("25000")
+
+    interaction LaunchInstalledApp($appName):
+        ProductPage($appName)::LaunchButton::Invoke()
+        ::Wait("2000")
