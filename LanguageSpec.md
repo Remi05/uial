@@ -253,16 +253,18 @@ interaction MyInteraction($myParam):
 
 ## Core Base Interactions
 
-- Close() : Window
-- Invoke()
+- Close() : ToolTip, Window
+- Focus() : Any
+- Invoke() : Button, HeaderItem, Hyperlink, Image, ListItem, MenuItem, SplitButton, TabItem, TreeItem
 - Maximize() : Window
 - Minimize() : Window
-- Move() : Window
-- Resize() : Window
-- Select()
-- SetRangeValue()
-- SetTextValue()
-- Scroll()
+- Move() : Header, HeaderItem, MenuBar, Pane, Thumb, Toolbar, Window
+- Resize() : Header, HeaderItem, MenuBar, Pane, ToolBar, Window
+- Select() : DataItem, Image, ListItem, MenuItem, RadioButton, TabItem, TreeItem
+- SetRangeValue() : Edit, ScrollBar, Slider, Text
+- SetTextValue() : ComboBox, DataItem, Document, Edit, Hyperlink, ListItem, Text
+- Scroll() : ComboBox, DataGrid, Document, List, Pane, Scrollbar, Tab, Tree
+- Toggle() : CheckBox, DataItem, ListItem, MenuItem, RadioButton, TreeItem
 - Wait() : No/Any context
 
 ## Condition Properties
