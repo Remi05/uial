@@ -21,4 +21,4 @@ For more information on the core concepts of UIAL, refer to the [Concepts Guide]
 
 ## Language Syntax
 
-For more information on the syntax of UIAL, refer to the [Syntax Guide](Syntax.md).
+For more information on the syntax of UIAL, refer to the [Syntax Guide](https://github.com/Remi05/uial/wiki/Syntax).
