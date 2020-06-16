@@ -253,26 +253,30 @@ interaction MyInteraction($myParam):
 
 ## Core Base Interactions
 
-- Close() : ToolTip, Window
-- Focus() : Any
-- Invoke() : Button, HeaderItem, Hyperlink, Image, ListItem, MenuItem, SplitButton, TabItem, TreeItem
-- Maximize() : Window
-- Minimize() : Window
-- Move() : Header, HeaderItem, MenuBar, Pane, Thumb, Toolbar, Window
-- Resize() : Header, HeaderItem, MenuBar, Pane, ToolBar, Window
-- Select() : DataItem, Image, ListItem, MenuItem, RadioButton, TabItem, TreeItem
-- SetRangeValue() : Edit, ScrollBar, Slider, Text
-- SetTextValue() : ComboBox, DataItem, Document, Edit, Hyperlink, ListItem, Text
-- Scroll() : ComboBox, DataGrid, Document, List, Pane, Scrollbar, Tab, Tree
-- Toggle() : CheckBox, DataItem, ListItem, MenuItem, RadioButton, TreeItem
-- Wait() : No/Any context
+- **Close()**         : ToolTip, Window
+- *Collapse()         : Not yet implemented*
+- *Expand()           : Not yet implemented*
+- **Focus()**         : Any
+- **Invoke()**        : Button, HeaderItem, Hyperlink, Image, ListItem, MenuItem, SplitButton, TabItem, TreeItem
+- **Maximize()**      : Window
+- **Minimize()**      : Window
+- **Move()**          : Header, HeaderItem, MenuBar, Pane, Thumb, Toolbar, Window
+- **Resize()**        : Header, HeaderItem, MenuBar, Pane, ToolBar, Window
+- **Select()**        : DataItem, Image, ListItem, MenuItem, RadioButton, TabItem, TreeItem
+- **SetRangeValue()** : Edit, ScrollBar, Slider, Text
+- **SetTextValue()**  : ComboBox, DataItem, Document, Edit, Hyperlink, ListItem, Text
+- **Scroll()**        : ComboBox, DataGrid, Document, List, Pane, Scrollbar, Tab, Tree
+- **Toggle()**        : CheckBox, DataItem, ListItem, MenuItem, RadioButton, TreeItem
+- **Wait()**          : No/Any context
+
+*Note that the interactions are not guaranteed to be available for all instances of the listed controls, but those not listed definitely do not support the interaction.*
 
 ## Condition Properties
 
-- AutomationId : Any string
-- ClassName    : Any string
-- ControlType  : One of the control types in the section below.
-- Name         : Any string
+- **AutomationId** : Any string
+- **ClassName**    : Any string
+- **ControlType**  : One of the control types in the section below.
+- **Name**         : Any string
 
 ## Control Types
 
