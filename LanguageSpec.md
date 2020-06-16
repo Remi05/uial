@@ -118,7 +118,7 @@ context MyContext($myParam) [ControlType="Button", Name=$myParam]:
 
 ## Imports
 
-Imports are defined using the identifier `import` followed by the relative file path of the script to import, with at least one whitespace character between the identifier and the file path.
+Imports are defined using the identifier `import` followed by the relative file path of the script to import between single quotes (`''`), with at least one whitespace character between the identifier and the file path.
 
 If only a file name is given, the file is searched for in the directory where the script being parsed resides.
 If the file is in another direcotry, you can use the relative path to that file from the file currently being parsed.
