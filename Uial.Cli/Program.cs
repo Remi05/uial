@@ -11,14 +11,28 @@ namespace Uial.Cli
     {
         static void Main(string[] args)
         {
-            if (args.Length < 2)
+            string scriptFilePath;
+            string scenarioName;
+
+            if (args.Length == 0)
             {
-                Console.WriteLine("Expected two arguments: <script_file_path> <scenario_name>");
-                return;
+                Console.WriteLine("Script file path: ");
+                scriptFilePath = Console.ReadLine();
+            }
+            else
+            {
+                scriptFilePath = args[0];
             }
 
-            string scriptFilePath = args[0];
-            string scenarioName = args[1];
+            if (args.Length < 2)
+            {
+                Console.WriteLine("Scenario name: ");
+                scenarioName = Console.ReadLine();
+            }
+            else
+            {
+                scenarioName = args[1];
+            }
 
             RunScenario(scriptFilePath, scenarioName);
         }
