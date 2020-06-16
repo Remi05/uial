@@ -58,7 +58,7 @@ namespace Uial.Parsing
         const string ControlPattern = "((?<controlType>[a-zA-Z]+)\\[(?<controlCondition>" + ConditionPattern + ")\\])";
         const string CustomContextPattern = "(?<customContext>(?<contextName>[a-zA-Z]+)" + ParamsPattern + "?)";
         const string BaseContextPattern = "(?:" + CustomContextPattern + "|" + ControlPattern + ")";
-        const string ImportNamePattern = "(?<importName>(?:(?:(?:\\.)|(?:\\.\\.))/)?(?:[a-zA-Z0-9]+/)*[a-zA-Z0-9]+\\.uial)";
+        const string ImportNamePattern = "(?<importName>(?:[a-zA-Z0-9\\.]+/)*[a-zA-Z0-9]+\\.uial)";
 
         const string ImportPattern = BlocIdentifiers.Import + "\\s+'" + ImportNamePattern + "'";
         const string ContextPattern = BlocIdentifiers.Context + "\\s+(?<name>[a-zA-Z]+)\\s*(?:" + ParamsDeclarationPattern + ")?(?:\\s+\\[\\s*(?<rootCondition>" + ConditionPattern + ")\\s*\\])?(?:\\s+\\{\\s*(?<uniqueCondition>" + ConditionPattern + ")\\s*\\})?\\s*:\\s*$";
