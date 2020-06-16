@@ -73,22 +73,22 @@ namespace Uial.Parsing
 
         private bool IsImport(string line)
         {
-            return new Regex(ImportPattern).IsMatch(line);
+            return line.Trim().StartsWith(BlocIdentifiers.Import);
         }
 
         private bool IsContext(string line)
         {
-            return new Regex(ContextPattern).IsMatch(line);
+            return line.Trim().StartsWith(BlocIdentifiers.Context);
         }
 
         private bool IsInteraction(string line)
         {
-            return new Regex(InteractionPattern).IsMatch(line);
+            return line.Trim().StartsWith(BlocIdentifiers.Interaction);
         }
 
         private bool IsScenario(string line)
         {
-            return new Regex(ScenarioPattern).IsMatch(line);
+            return line.Trim().StartsWith(BlocIdentifiers.Scenario);
         }
 
         private int CountIndentSpaces(string line)
