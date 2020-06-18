@@ -77,6 +77,8 @@
     <Compile Include="Interactions\AssertionInteraction.cs" />
     <Compile Include="Interactions\BaseInteractionDefinition.cs" />
     <Compile Include="Interactions\Core\Focus.cs" />
+    <Compile Include="Interactions\Core\Expand.cs" />
+    <Compile Include="Interactions\Core\Collapse.cs" />
     <Compile Include="Interactions\Core\WaitUntilAvailable.cs" />
     <Compile Include="Interactions\Core\IsAvailable.cs" />
     <Compile Include="Interactions\Core\GetPropertyValue.cs" />
