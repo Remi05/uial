@@ -71,6 +71,8 @@
     <Compile Include="Interactions\AbstractPatternInteraction.cs" />
     <Compile Include="Interactions\BaseInteractionDefinition.cs" />
     <Compile Include="Interactions\Core\Focus.cs" />
+    <Compile Include="Interactions\Core\WaitUntilAvailable.cs" />
+    <Compile Include="Interactions\Core\IsAvailable.cs" />
     <Compile Include="Interactions\Core\GetPropertyValue.cs" />
     <Compile Include="Interactions\Core\Maximize.cs" />
     <Compile Include="Interactions\Core\Minimize.cs" />
