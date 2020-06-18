@@ -1,7 +1,19 @@
-﻿using System;
+using System;
 
 namespace Uial.Parsing.Exceptions
 {
+    public class UnrecognizedPatternExeception : Exception
+    {
+        private string Pattern { get; set; }
+
+        public override string Message => $"The given base interaction is invalid: {Pattern}";
+
+        public UnrecognizedPatternExeception(string pattern)
+        {
+            Pattern = pattern;
+        }
+    }
+
     public class InvalidBaseInteractionException : Exception
     {
         private string BaseInteraction { get; set; }
@@ -35,6 +47,18 @@ namespace Uial.Parsing.Exceptions
         public InvalidContextDeclarationException(string contextDeclaration)
         {
             ContextDeclaration = contextDeclaration;
+        }
+    }
+
+    public class InvalidContextDefinitionException : Exception
+    {
+        private string ContextDefinition { get; set; }
+
+        public override string Message => $"The given context definition is invalid: {ContextDefinition}";
+
+        public InvalidContextDefinitionException(string contextDefinition)
+        {
+            ContextDefinition = contextDefinition;
         }
     }
 

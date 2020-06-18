@@ -268,7 +268,7 @@ namespace Uial.Parsing
                 }
                 else
                 {
-                    throw new Exception(); // TODO: Specify exception
+                    throw new InvalidContextDefinitionException(string.Join("\n", lines));
                 }
                 curLine += blocLength - 1;
             }
@@ -393,6 +393,10 @@ namespace Uial.Parsing
                 {
                     IContextDefinition contextDefinition = ParseContextDefinition(script.RootScope, lines.GetRange(curLine, blocLength));
                     script.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
+                }
+                else
+                {
+                    throw new UnrecognizedPatternExeception(lines[curLine]);
                 }
 
                 curLine += blocLength - 1;
