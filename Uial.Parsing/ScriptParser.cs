@@ -483,6 +483,20 @@ namespace Uial.Parsing
                     IContextDefinition contextDefinition = ParseContextDefinition(script.RootScope, lines.GetRange(curLine, blocLength));
                     script.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
                 }
+                else if (IsTest(lines[curLine]))
+                {
+                    TestDefinition testDefinition = ParseTestDefinition(lines.GetRange(curLine, blocLength));
+                    script.TestDefinitions.Add(testDefinition.Name, testDefinition);
+                }
+                else if (IsTestGroup(lines[curLine]))
+                {
+                    TestGroupDefinition testGroupDefinition = ParseTestGroupDefinition(lines.GetRange(curLine, blocLength));
+                    script.TestDefinitions.Add(testGroupDefinition.Name, testGroupDefinition);
+                }
+                else
+                {
+                    throw new UnrecognizedPatternExeception(lines[curLine]);
+                }
 
                 curLine += blocLength - 1;
             }

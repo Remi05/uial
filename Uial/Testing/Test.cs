@@ -17,6 +17,7 @@ namespace Uial.Testing
                 throw new ArgumentNullException(name == null ? "name" : "interactions");
             }
             Name = name;
+            Interactions = interactions;
         }
 
         public ITestResults RunTest()
