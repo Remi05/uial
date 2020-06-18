@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -43,7 +43,11 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assertions\Assertions.cs" />
+    <Compile Include="Assertions\IsFalse.cs" />
+    <Compile Include="Assertions\IsTrue.cs" />
     <Compile Include="Assertions\Contains.cs" />
+    <Compile Include="Assertions\Exceptions.cs" />
     <Compile Include="Assertions\PropertyEquals.cs" />
     <Compile Include="Assertions\StartsWith.cs" />
     <Compile Include="Assertions\Or.cs" />
@@ -69,6 +73,8 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Interactions\AbstractInteraction.cs" />
     <Compile Include="Interactions\AbstractPatternInteraction.cs" />
+    <Compile Include="Interactions\AssertionDefinition.cs" />
+    <Compile Include="Interactions\AssertionInteraction.cs" />
     <Compile Include="Interactions\BaseInteractionDefinition.cs" />
     <Compile Include="Interactions\Core\Focus.cs" />
     <Compile Include="Interactions\Core\WaitUntilAvailable.cs" />

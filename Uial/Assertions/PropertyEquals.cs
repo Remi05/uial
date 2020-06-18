@@ -5,8 +5,9 @@ namespace Uial.Assertions
 {
     public class PropertyEquals : IAssertion
     {
-        public string Name => "PropertyEquals";
+        public const string Key = "PropertyEquals";
 
+        public string Name => Key;
         private IContext Context { get; set; }
         private AutomationProperty Property { get; set; }
         private object Value { get; set; }

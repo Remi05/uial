@@ -3,8 +3,9 @@ namespace Uial.Assertions
 {
     public class Not : IAssertion
     {
-        public string Name => "Not";
+        public const string Key = "Not";
 
+        public string Name => Key;
         private IAssertion Assertion { get; set; } 
 
         public Not(IAssertion assertion)
