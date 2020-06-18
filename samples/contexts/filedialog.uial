@@ -1,0 +1,8 @@
+
+context SaveFileDialog [ControlType="Window", Name="Save As"]:
+    context FileNameTextBox [ControlType="Edit", Name="File name:"]:
+    context SaveButton [ControlType="Button", Name="Save"]:
+
+    interaction SaveAs($filePath):
+        FileNameTextBox::SetTextValue($filePath)
+        SaveButton::Invoke()
