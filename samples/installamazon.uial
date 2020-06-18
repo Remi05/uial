@@ -6,6 +6,7 @@ scenario InstallAmazonAndSearch:
     Taskbar::LaunchApp("Microsoft Store")
     MicrosoftStore::InstallApp("Amazon")
     MicrosoftStore::LaunchInstalledApp("Amazon")
+    Amazon::ClosePopup()
     Amazon::SearchProduct("espresso machine")
     Amazon::Close()
     MicrosoftStore::Close()

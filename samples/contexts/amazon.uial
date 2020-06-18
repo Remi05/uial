@@ -2,8 +2,13 @@
 context Amazon [ControlType="Window", Name="Amazon"]:
     context SearchTextBox [ControlType="Edit", Name="Search"]:
     context SearchButton [ControlType="Button", Name="Go"]:
+    context GetStartedButton [ControlType="Button", Name="Get Started"]:
 
     interaction SearchProduct($productName):
         SearchTextBox::WaitUntilAvailable()
         SearchTextBox::SetTextValue($productName)
         SearchButton::Invoke()
+
+    interaction ClosePopup:
+        GetStartedButton::WaitUntilAvailable()
+        GetStartedButton::Invoke()
