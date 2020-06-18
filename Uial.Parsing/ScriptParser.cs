@@ -416,22 +416,24 @@ namespace Uial.Parsing
             string name = testGroupMatch.Groups[NamedGroups.Name].Value;
 
             List<ITestableDefinition> childrenfinitions = new List<ITestableDefinition>();
-            for (int curLine = 0; curLine < lines.Count; ++curLine)
+            for (int curLine = 1; curLine < lines.Count; ++curLine)
             {
                 if (string.IsNullOrWhiteSpace(lines[curLine]) || IsComment(lines[curLine]))
                 {
                     continue;
                 }
 
-                ITestableDefinition childDefinition;
                 int blocLength = FindBlocLength(lines, curLine);
-                if (IsTest(lines[curLine]))
+                List<string> childBloc = lines.GetRange(curLine, blocLength);
+
+                ITestableDefinition childDefinition;
+                if (IsTestGroup(lines[curLine]))
                 {
-                    childDefinition = ParseTestDefinition(lines.GetRange(curLine, blocLength));
+                    childDefinition = ParseTestGroupDefinition(childBloc);
                 }
-                else if (IsTestGroup(lines[curLine]))
+                else if (IsTest(lines[curLine]))
                 {
-                    childDefinition = ParseTestGroupDefinition(lines.GetRange(curLine, blocLength));
+                    childDefinition = ParseTestDefinition(childBloc);
                 }
                 else
                 {
@@ -483,15 +485,15 @@ namespace Uial.Parsing
                     IContextDefinition contextDefinition = ParseContextDefinition(script.RootScope, lines.GetRange(curLine, blocLength));
                     script.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
                 }
-                else if (IsTest(lines[curLine]))
-                {
-                    TestDefinition testDefinition = ParseTestDefinition(lines.GetRange(curLine, blocLength));
-                    script.TestDefinitions.Add(testDefinition.Name, testDefinition);
-                }
                 else if (IsTestGroup(lines[curLine]))
                 {
                     TestGroupDefinition testGroupDefinition = ParseTestGroupDefinition(lines.GetRange(curLine, blocLength));
                     script.TestDefinitions.Add(testGroupDefinition.Name, testGroupDefinition);
+                }
+                else if (IsTest(lines[curLine]))
+                {
+                    TestDefinition testDefinition = ParseTestDefinition(lines.GetRange(curLine, blocLength));
+                    script.TestDefinitions.Add(testDefinition.Name, testDefinition);
                 }
                 else
                 {
