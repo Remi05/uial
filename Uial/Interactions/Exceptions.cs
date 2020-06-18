@@ -28,4 +28,18 @@ namespace Uial.Interactions
             ReceivedParamsCount = receivedParamsCount;
         }
     }
+
+    public class ContextNotFoundInTimeException : Exception
+    {
+        private string ContextName { get; set; }
+        private TimeSpan Timeout { get; set; }
+
+        public override string Message => $"Could not find the context {ContextName} within the the given timeframe ({Timeout}).";
+
+        public ContextNotFoundInTimeException(string contextName, TimeSpan timeout)
+        {
+            ContextName = contextName;
+            Timeout = timeout;
+        }
+    }
 }
