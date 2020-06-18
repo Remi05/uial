@@ -10,6 +10,7 @@ using Uial.Interactions;
 using Uial.Parsing.Exceptions;
 using Uial.Scenarios;
 using Uial.Scopes;
+using Uial.Testing;
 
 namespace Uial.Parsing
 {
@@ -17,11 +18,14 @@ namespace Uial.Parsing
     {
         static class BlocIdentifiers
         {
+            public const string Assertion = "Assert";
             public const string Comment = "//";
             public const string Context = "context";
             public const string Import = "import";
             public const string Interaction = "interaction";
             public const string Scenario = "scenario";
+            public const string Test = "test";
+            public const string TestGroup = "testgroup";
         }
 
         static class NamedGroups
@@ -67,7 +71,15 @@ namespace Uial.Parsing
         const string ContextPattern = BlocIdentifiers.Context + "\\s+" + BlocNamePattern + "\\s*(?:" + ParamsDeclarationPattern + ")?(?:\\s+\\[\\s*(?<rootCondition>" + ConditionPattern + ")\\s*\\])?(?:\\s+\\{\\s*(?<uniqueCondition>" + ConditionPattern + ")\\s*\\})?\\s*:\\s*$";
         const string InteractionPattern = BlocIdentifiers.Interaction + "\\s+" + BlocNamePattern + "\\s*(?:" + ParamsDeclarationPattern + ")?\\s*:";
         const string ScenarioPattern = BlocIdentifiers.Scenario + "\\s+" + BlocNamePattern + "\\s*:";
+        const string TestPattern = BlocIdentifiers.Test + "\\s+" + BlocNamePattern + "\\s*:";
+        const string TestGroupPattern = BlocIdentifiers.TestGroup + "\\s+" + BlocNamePattern + "\\s*:";
         const string BaseInteractionPattern = "^\\s*(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern + "\\s*$";
+
+
+        private bool IsAssertion(string line)
+        {
+            return line.Trim().StartsWith(BlocIdentifiers.Assertion);
+        }
 
         private bool IsComment(string line)
         {
@@ -92,6 +104,16 @@ namespace Uial.Parsing
         private bool IsScenario(string line)
         {
             return line.Trim().StartsWith(BlocIdentifiers.Scenario);
+        }
+
+        private bool IsTest(string line)
+        {
+            return line.Trim().StartsWith(BlocIdentifiers.Test);
+        }
+
+        private bool IsTestGroup(string line)
+        {
+            return line.Trim().StartsWith(BlocIdentifiers.TestGroup);
         }
 
         private int CountIndentSpaces(string line)
@@ -327,18 +349,23 @@ namespace Uial.Parsing
             
             string interactionName = baseInteractionMatch.Groups[NamedGroups.Interaction].Value;
 
-            IBaseContextDefinition baseContextDefinition = null;
-            if (baseInteractionMatch.Groups[NamedGroups.Context].Success)
-            {
-                string baseContextStr = baseInteractionMatch.Groups[NamedGroups.Context].Value;
-                baseContextDefinition = ParseBaseContextDefinition(baseContextStr);
-            }
-
             IEnumerable<ValueDefinition> paramValues = new List<ValueDefinition>();
             if (baseInteractionMatch.Groups[NamedGroups.Params].Success)
             {
                 string paramsStr = baseInteractionMatch.Groups[NamedGroups.Params].Value;
                 paramValues = ParseParamValues(paramsStr);
+            }
+
+            if (IsAssertion(line))
+            {
+                return new AssertionDefinition(interactionName, paramValues);
+            }
+
+            IBaseContextDefinition baseContextDefinition = null;
+            if (baseInteractionMatch.Groups[NamedGroups.Context].Success)
+            {
+                string baseContextStr = baseInteractionMatch.Groups[NamedGroups.Context].Value;
+                baseContextDefinition = ParseBaseContextDefinition(baseContextStr);
             }
 
             return new BaseInteractionDefinition(interactionName, paramValues, baseContextDefinition);
@@ -356,6 +383,66 @@ namespace Uial.Parsing
                 .Select((line) => ParseBaseInteractionDefinition(line));
             
             return new ScenarioDefinition(name, baseInteractionDefinitions);
+        }
+
+        public TestDefinition ParseTestDefinition(List<string> lines)
+        {
+            string declarationLine = lines[0].Trim();
+            Regex testRegex = new Regex(TestPattern);
+            Match testMatch = testRegex.Match(declarationLine);
+            if (!testMatch.Success)
+            {
+                throw new InvalidTestDefinitionException(declarationLine);
+            }
+
+            string name = testMatch.Groups[NamedGroups.Name].Value;
+            IEnumerable<IBaseInteractionDefinition> baseInteractionDefinitions = lines.Skip(1)
+                .Where((line) => !string.IsNullOrWhiteSpace(line) && !IsComment(line))
+                .Select((line) => ParseBaseInteractionDefinition(line));
+
+            return new TestDefinition(name, baseInteractionDefinitions);
+        }
+
+        public TestGroupDefinition ParseTestGroupDefinition(List<string> lines)
+        {
+            string declarationLine = lines[0].Trim();
+            Regex testGroupRegex = new Regex(TestGroupPattern);
+            Match testGroupMatch = testGroupRegex.Match(declarationLine);
+            if (!testGroupMatch.Success)
+            {
+                throw new InvalidTestGroupDeclarationException(declarationLine);
+            }
+
+            string name = testGroupMatch.Groups[NamedGroups.Name].Value;
+
+            List<ITestableDefinition> childrenfinitions = new List<ITestableDefinition>();
+            for (int curLine = 0; curLine < lines.Count; ++curLine)
+            {
+                if (string.IsNullOrWhiteSpace(lines[curLine]) || IsComment(lines[curLine]))
+                {
+                    continue;
+                }
+
+                ITestableDefinition childDefinition;
+                int blocLength = FindBlocLength(lines, curLine);
+                if (IsTest(lines[curLine]))
+                {
+                    childDefinition = ParseTestDefinition(lines.GetRange(curLine, blocLength));
+                }
+                else if (IsTestGroup(lines[curLine]))
+                {
+                    childDefinition = ParseTestGroupDefinition(lines.GetRange(curLine, blocLength));
+                }
+                else
+                {
+                    throw new InvalidTestGroupDefinitionException(string.Join("\n", lines));
+                }
+                childrenfinitions.Add(childDefinition);
+
+                curLine += blocLength - 1;
+            }
+
+            return new TestGroupDefinition(name, childrenfinitions);
         }
 
         public Script ParseImport(string importStr, string executionDirPath)
@@ -395,10 +482,6 @@ namespace Uial.Parsing
                 {
                     IContextDefinition contextDefinition = ParseContextDefinition(script.RootScope, lines.GetRange(curLine, blocLength));
                     script.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
-                }
-                else
-                {
-                    throw new UnrecognizedPatternExeception(lines[curLine]);
                 }
 
                 curLine += blocLength - 1;

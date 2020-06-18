@@ -73,4 +73,40 @@ namespace Uial.Parsing.Exceptions
             ValueDefinition = valueDefinition;
         }
     }
+
+    public class InvalidTestDefinitionException : Exception
+    {
+        private string TestDefinition { get; set; }
+
+        public override string Message => $"The given test definition is invalid: {TestDefinition}";
+
+        public InvalidTestDefinitionException(string testDefinition)
+        {
+            TestDefinition = testDefinition;
+        }
+    }
+
+    public class InvalidTestGroupDeclarationException : Exception
+    {
+        private string TestGroupDeclaration { get; set; }
+
+        public override string Message => $"The given test group declaration is invalid: {TestGroupDeclaration}";
+
+        public InvalidTestGroupDeclarationException(string testGroupDeclaration)
+        {
+            TestGroupDeclaration = testGroupDeclaration;
+        }
+    }
+
+    public class InvalidTestGroupDefinitionException : Exception
+    {
+        private string TestGroupDefinition { get; set; }
+
+        public override string Message => $"The given test group definition is invalid: {TestGroupDefinition}";
+
+        public InvalidTestGroupDefinitionException(string testGroupDefinition)
+        {
+            TestGroupDefinition = testGroupDefinition;
+        }
+    }
 }
