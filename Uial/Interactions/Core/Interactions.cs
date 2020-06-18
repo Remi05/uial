@@ -47,7 +47,7 @@ namespace Uial.Interactions.Core
                 case Wait.Key:
                     return Wait.FromRuntimeValues(paramValues);
                 case WaitUntilAvailable.Key:
-                    return new WaitUntilAvailable(context);
+                    return WaitUntilAvailable.FromRuntimeValues(context, paramValues);
                 default:
                     throw new InteractionUnavailableException(interactionName);
             }
