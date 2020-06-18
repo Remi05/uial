@@ -22,6 +22,8 @@ namespace Uial.Interactions.Core
                     return GetPropertyValue.FromRuntimeValues(context, scope, paramValues);
                 case Invoke.Key:
                     return new Invoke(context);
+                case IsAvailable.Key:
+                    return IsAvailable.FromRuntimeValues(context, scope, paramValues);
                 case Maximize.Key:
                     return new Maximize(context);
                 case Minimize.Key:
@@ -44,6 +46,8 @@ namespace Uial.Interactions.Core
                     return new Toggle(context);
                 case Wait.Key:
                     return Wait.FromRuntimeValues(paramValues);
+                case WaitUntilAvailable.Key:
+                    return new WaitUntilAvailable(context);
                 default:
                     throw new InteractionUnavailableException(interactionName);
             }
