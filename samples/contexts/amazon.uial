@@ -4,6 +4,6 @@ context Amazon [ControlType="Window", Name="Amazon"]:
     context SearchButton [ControlType="Button", Name="Go"]:
 
     interaction SearchProduct($productName):
+        SearchTextBox::WaitUntilAvailable()
         SearchTextBox::SetTextValue($productName)
         SearchButton::Invoke()
-        ::Wait("2000")

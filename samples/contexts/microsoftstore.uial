@@ -9,17 +9,18 @@ context MicrosoftStore [ControlType="Window", Name="Microsoft Store"]:
         context LaunchButton [ControlType="Button", AutomationId="PlayBar_AppIdentityOpenButton"]:
 
     interaction Search($searchText):
+        SearchButton::WaitUntilAvailable()
         SearchButton::Invoke()
         SearchTextBox::SetTextValue($searchText)
         ConfirmSearchButton::Invoke()
 
     interaction InstallApp($appName):
         ::Search($appName)
+        ListItem[Name=$appName]::WaitUntilAvailable()
         ListItem[Name=$appName]::Invoke()
-        ::Wait("1500")
+        ProductPage($appName)::InstallButton::WaitUntilAvailable()
         ProductPage($appName)::InstallButton::Invoke()
-        ::Wait("25000")
-
+        
     interaction LaunchInstalledApp($appName):
+        ProductPage($appName)::LaunchButton::WaitUntilAvailable()
         ProductPage($appName)::LaunchButton::Invoke()
-        ::Wait("2000")
