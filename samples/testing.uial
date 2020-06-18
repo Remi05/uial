@@ -1,0 +1,29 @@
+import 'contexts/notepad.uial'
+import 'contexts/taskbar.uial'
+
+scenario ClosePopup:
+    Window[Name="Amazon"]::WaitUntilAvailable()
+    Window[Name="Amazon"]::Button[Name="Get Started"]::Invoke()
+
+test NotepadTest:
+    Taskbar::LaunchApp("Notepad")
+    Notepad::WaitUntilAvailable()
+    Notepad::GetPropertyValue("Name", "$windowName")
+    Notepad::Close()
+    Assert::AreEqual($windowName, "Untitled - Notepad")
+
+testgroup MyTestGroup:
+    testgroup MySubGroup:
+        test FirstTest:
+            Assert::Contains("ilomilo", "lel")
+
+        test SecondTest:
+            Assert::Contains("ilomilo", "milo")
+
+        test ThirdTest:
+            Assert::StartsWith("ilomilo", "ilo")
+
+        test FourthTest:
+            Assert::StartsWith("ilomilo", "milo")
+
+        
