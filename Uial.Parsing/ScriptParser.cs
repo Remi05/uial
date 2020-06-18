@@ -168,7 +168,7 @@ namespace Uial.Parsing
             List<IConditionDefinition> conditionDefinitions = new List<IConditionDefinition>(matches.Count);
             foreach (Match match in matches)
             {
-                AutomationProperty property = Controls.GetPropertyByName(match.Groups[NamedGroups.Property].Value);
+                AutomationProperty property = Properties.GetPropertyByName(match.Groups[NamedGroups.Property].Value);
                 ValueDefinition value = ParseValueDefinition(match.Groups[NamedGroups.Value].Value);
                 conditionDefinitions.Add(new PropertyConditionDefinition(property, value));
             }
