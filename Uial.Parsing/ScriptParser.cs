@@ -28,6 +28,7 @@ namespace Uial.Parsing
         {
             public const string Context = "context";
             public const string ContextName = "contextName";
+            public const string ContextParams = "contextParams";
             public const string CustomContext = "customContext";
             public const string ControlCondition = "controlCondition";
             public const string ControlType = "controlType";
@@ -54,9 +55,10 @@ namespace Uial.Parsing
         const string SingleConditionPattern = "[a-zA-Z]+\\s*=\\s*" + ValuePattern;
         const string ConditionPattern = SingleConditionPattern + "(?:\\s*,\\s*" + SingleConditionPattern + ")*";
         const string ParamsDeclarationPattern = "\\(\\s*(?<paramsDecl>" + ReferencePattern + "(?:\\s*,\\s*" + ReferencePattern + ")*)?\\s*\\)"; 
+        const string ContextParamsPattern = "(?:\\(\\s*(?<contextParams>" + ValuePattern + "(?:\\s*,\\s*" + ValuePattern + ")*)?\\s*\\))";
         const string ParamsPattern = "(?:\\(\\s*(?<params>" + ValuePattern + "(?:\\s*,\\s*" + ValuePattern + ")*)?\\s*\\))";
         const string ControlPattern = "((?<controlType>[a-zA-Z]+)\\[(?<controlCondition>" + ConditionPattern + ")\\])";
-        const string CustomContextPattern = "(?<customContext>(?<contextName>[a-zA-Z]+)" + ParamsPattern + "?)";
+        const string CustomContextPattern = "(?<customContext>(?<contextName>[a-zA-Z]+)" + ContextParamsPattern + "?)";
         const string BaseContextPattern = "(?:" + CustomContextPattern + "|" + ControlPattern + ")";
         const string ImportNamePattern = "(?<importName>(?:[a-zA-Z0-9\\.]+/)*[a-zA-Z0-9]+\\.uial)";
         const string BlocNamePattern = "(?<name>[a-zA-Z]+)";
@@ -300,9 +302,9 @@ namespace Uial.Parsing
             string contextName = customContextMatch.Groups[NamedGroups.ContextName].Value;
 
             IEnumerable<ValueDefinition> paramValues = new List<ValueDefinition>();
-            if (customContextMatch.Groups[NamedGroups.Params].Success)
+            if (customContextMatch.Groups[NamedGroups.ContextParams].Success)
             {
-                string paramsStr = customContextMatch.Groups[NamedGroups.Params].Value;
+                string paramsStr = customContextMatch.Groups[NamedGroups.ContextParams].Value;
                 paramValues = ParseParamValues(paramsStr);
             }
             return new BaseContextDefinition(contextName, paramValues, ParseBaseContextDefinition(contextStrings.Skip(1)));
