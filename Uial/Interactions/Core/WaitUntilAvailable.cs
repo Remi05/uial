@@ -6,21 +6,22 @@ using Uial.Contexts;
 
 namespace Uial.Interactions.Core
 {
-    public class WaitUntilAvailable : AbstractInteraction, IInteraction
+    public class WaitUntilAvailable : IInteraction
     {
         public const string Key = "WaitUntilAvailable";
 
-        public override string Name => Key;
+        public string Name => Key;
+        protected IContext Context { get; set; }
         protected TimeSpan? Timeout { get; set; }
 
-        public WaitUntilAvailable(IContext context, TimeSpan? timeout = null) : base(context) 
+        public WaitUntilAvailable(IContext context, TimeSpan? timeout = null)
         {
+            Context = context;
             Timeout = timeout;
         }
 
-        public override void Do()
+        public void Do()
         {
-            base.Do();
             DateTime start = DateTime.Now;
             while (!Context.IsAvailable())
             {
