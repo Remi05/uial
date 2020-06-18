@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -52,6 +52,7 @@
     <Compile Include="Assertions\IAssertion.cs" />
     <Compile Include="Assertions\IsAvailable.cs" />
     <Compile Include="Assertions\Not.cs" />
+    <Compile Include="Conditions\Conditions.cs" />
     <Compile Include="Conditions\IConditionDefinition.cs" />
     <Compile Include="Contexts\AbstractContext.cs" />
     <Compile Include="Conditions\CompositeConditionDefinition.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Interactions\AbstractPatternInteraction.cs" />
     <Compile Include="Interactions\BaseInteractionDefinition.cs" />
     <Compile Include="Interactions\Core\Focus.cs" />
+    <Compile Include="Interactions\Core\GetPropertyValue.cs" />
     <Compile Include="Interactions\Core\Maximize.cs" />
     <Compile Include="Interactions\Core\Minimize.cs" />
     <Compile Include="Interactions\Core\Move.cs" />
@@ -78,9 +80,8 @@
     <Compile Include="Interactions\Core\SetRangeValue.cs" />
     <Compile Include="Interactions\Core\Wait.cs" />
     <Compile Include="Interactions\Exceptions.cs" />
-    <Compile Include="Interactions\Getters\GetRangeValue.cs" />
-    <Compile Include="Interactions\Getters\GetTextValue.cs" />
-    <Compile Include="Interactions\Getters\GetPropertyValue.cs" />
+    <Compile Include="Interactions\Core\GetRangeValue.cs" />
+    <Compile Include="Interactions\Core\GetTextValue.cs" />
     <Compile Include="Interactions\IBaseInteractionDefinition.cs" />
     <Compile Include="Interactions\IInteractionDefinition.cs" />
     <Compile Include="Interactions\InteractionDefinition.cs" />

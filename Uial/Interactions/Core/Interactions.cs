@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Uial.Contexts;
+using Uial.Scopes;
 
 namespace Uial.Interactions.Core
 {
-    public class Interactions
+    public static class Interactions
     {
-        public static IInteraction GetCoreInteractionByName(IContext context, string interactionName, IEnumerable<string> paramValues)
+        public static IInteraction GetCoreInteractionByName(IContext context, RuntimeScope scope, string interactionName, IEnumerable<string> paramValues)
         {
             switch (interactionName)
             {
@@ -13,6 +14,12 @@ namespace Uial.Interactions.Core
                     return new Close(context);
                 case Focus.Key:
                     return new Focus(context);
+                case GetPropertyValue.Key:
+                    return GetPropertyValue.FromRuntimeValues(context, scope, paramValues);
+                case GetRangeValue.Key:
+                    return GetRangeValue.FromRuntimeValues(context, scope, paramValues);
+                case GetTextValue.Key:
+                    return GetPropertyValue.FromRuntimeValues(context, scope, paramValues);
                 case Invoke.Key:
                     return new Invoke(context);
                 case Maximize.Key:

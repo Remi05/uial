@@ -28,7 +28,7 @@ namespace Uial.Interactions
                 return context.Scope.InteractionDefinitions[InteractionName].Resolve(context, paramValues);
             }
 
-            return Core.Interactions.GetCoreInteractionByName(context, InteractionName, paramValues);
+            return Core.Interactions.GetCoreInteractionByName(context, currentScope, InteractionName, paramValues);
         }
     }
 }
