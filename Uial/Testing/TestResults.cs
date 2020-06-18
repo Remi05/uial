@@ -17,5 +17,11 @@ namespace Uial.Testing
             TestName = testName;
             Passed = passed;
         }
+
+        public override string ToString()
+        {
+            string resultStr = Passed ? "Passed" : "Failed";
+            return $"[{resultStr}] {TestName}";
+        }
     }
 }

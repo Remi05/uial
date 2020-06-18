@@ -20,5 +20,14 @@ namespace Uial.Testing
             TestName = testName;
             ChildrenResults = childrenResults;
         }
+
+        public override string ToString()
+        {
+            int passedCount = ChildrenResults.Count((childResult) => childResult.Passed);
+            string resultStr = Passed ? "Passed" : "Failed";
+            string header = $"[{resultStr}] {TestName} ({passedCount} of {ChildrenResults.Count()} passed)\n  ";
+            string body = string.Join("\n", ChildrenResults).Replace("\n", "\n  ");
+            return header + body;
+        }
     }
 }
