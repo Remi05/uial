@@ -6,20 +6,6 @@ namespace Uial.Contexts
 {
     public static class Controls
     {
-        private static readonly Dictionary<string, AutomationProperty> AutomationPropertyMap = new Dictionary<string, AutomationProperty>()
-        {
-            //{ "AcceleratorKey", AutomationElement.AcceleratorKeyProperty },
-            //{ "AccessKey", AutomationElement.AccessKeyProperty },
-            { "AutomationId", AutomationElement.AutomationIdProperty },
-            //{ "BoundingRectangle", AutomationElement.BoundingRectangleProperty },
-            { "ClassName", AutomationElement.ClassNameProperty },
-            //{ "ClickablePoint", AutomationElement.ClickablePointProperty },
-            { "ControlType", AutomationElement.ControlTypeProperty },
-            //{ "Culture", AutomationElement.CultureProperty },
-            //{ "FrameworkId", AutomationElement.FrameworkIdProperty },
-            { "Name", AutomationElement.NameProperty },
-        };
-
         private static readonly Dictionary<string, ControlType> ControlTypeMap = new Dictionary<string, ControlType>()
         {
             { "Button",      ControlType.Button },
@@ -62,11 +48,6 @@ namespace Uial.Contexts
             { "TreeItem",    ControlType.TreeItem },
             { "Window",      ControlType.Window },
         };
-
-        public static AutomationProperty GetPropertyByName(string propertyName)
-        {
-            return AutomationPropertyMap[propertyName];
-        }
 
         public static object GetPropertyValue(AutomationProperty property, string valueStr)
         {
