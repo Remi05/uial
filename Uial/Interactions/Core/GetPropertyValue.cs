@@ -10,7 +10,7 @@ namespace Uial.Interactions.Core
 {
     public class GetPropertyValue : AbstractInteraction, IInteraction
     {
-        public const string Key = "GetProperty";
+        public const string Key = "GetPropertyValue";
 
         public override string Name => Key;
 
