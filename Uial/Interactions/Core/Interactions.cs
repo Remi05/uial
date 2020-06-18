@@ -12,6 +12,10 @@ namespace Uial.Interactions.Core
             {
                 case Close.Key:
                     return new Close(context);
+                case Collapse.Key:
+                    return new Collapse(context);
+                case Expand.Key:
+                    return new Expand(context);
                 case Focus.Key:
                     return new Focus(context);
                 case GetPropertyValue.Key:

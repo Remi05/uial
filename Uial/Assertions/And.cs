@@ -3,8 +3,9 @@ namespace Uial.Assertions
 {
     public class And : IAssertion
     {
-        public string Name => "And";
+        public const string Key = "And";
 
+        public string Name => Key;
         private IAssertion First { get; set; }
         private IAssertion Second { get; set; }
 

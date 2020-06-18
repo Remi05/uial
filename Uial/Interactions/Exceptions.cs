@@ -1,4 +1,5 @@
 ﻿using System;
+using Uial.Assertions;
 
 namespace Uial.Interactions
 {
@@ -40,6 +41,18 @@ namespace Uial.Interactions
         {
             ContextName = contextName;
             Timeout = timeout;
+        }
+    }
+
+    public class AssertionFailedException : Exception
+    {
+        private IAssertion Assertion { get; set; }
+
+        public override string Message => $"Assertion failed: {Assertion}";
+
+        public AssertionFailedException(IAssertion assertion)
+        {
+            Assertion = assertion;
         }
     }
 }

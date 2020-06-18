@@ -1,0 +1,29 @@
+import 'filedialog.uial'
+
+context Notepad [ControlType="Window", ClassName="Notepad"]:
+    context TextEditor [ControlType="Document", Name="Text Editor"]:
+    context FileMenuItem [ControlType="MenuItem", Name="File"]:
+
+    context FileMenu [ControlType="Menu", Name="File"]:
+        context OpenButton   [ControlType="MenuItem", Name="Open..."]:
+        context PrintButton  [ControlType="MenuItem", Name="Print..."]:
+        context SaveButton   [ControlType="MenuItem", Name="Save"]:
+        context SaveAsButton [ControlType="MenuItem", Name="Save As..."]:
+
+    interaction WriteText($text):
+        TextEditor::WaitUntilAvailable()
+        TextEditor::SetTextValue($text)
+
+    interaction ReadText($outText):
+        TextEditor::WaitUntilAvailable()
+        TextEditor::GetTextValue($outText)
+
+    interaction OpenSaveFileDialog():
+        FileMenuItem::Expand()
+        FileMenu::WaitUntilAvailable()
+        FileMenu::SaveAsButton::Invoke()
+        SaveFileDialog::WaitUntilAvailable()
+
+    interaction SaveAs($filePath):
+        ::OpenSaveFileDialog()       
+        SaveFileDialog::SaveAs($filePath)

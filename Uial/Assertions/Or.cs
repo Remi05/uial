@@ -3,8 +3,9 @@ namespace Uial.Assertions
 {
     public class Or : IAssertion
     {
-        public string Name => "Or";
+        public const string Key = "Or";
 
+        public string Name => Key;
         private IAssertion First { get; set; }
         private IAssertion Second { get; set; }
 

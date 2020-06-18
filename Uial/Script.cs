@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Uial.Scenarios;
 using Uial.Scopes;
+using Uial.Testing;
 
 namespace Uial
 {
@@ -10,6 +11,7 @@ namespace Uial
     {
         public DefinitionScope RootScope { get; private set; } = new DefinitionScope();
         public Dictionary<string, IScenarioDefinition> ScenarioDefinitions { get; private set; } = new Dictionary<string, IScenarioDefinition>();
+        public Dictionary<string, ITestableDefinition> TestDefinitions { get; private set; } = new Dictionary<string, ITestableDefinition>();
         
         public void AddScript(Script script)
         {

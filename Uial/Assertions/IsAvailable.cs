@@ -4,8 +4,9 @@ namespace Uial.Assertions
 {
     public class IsAvailable : IAssertion
     {
-        public string Name => "IsAvailable";
+        public const string Key = "IsAvailable";
 
+        public string Name => Key;
         private IContext Context { get; set; }
 
         public IsAvailable(IContext context)

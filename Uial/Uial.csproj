@@ -43,7 +43,11 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assertions\Assertions.cs" />
+    <Compile Include="Assertions\IsFalse.cs" />
+    <Compile Include="Assertions\IsTrue.cs" />
     <Compile Include="Assertions\Contains.cs" />
+    <Compile Include="Assertions\Exceptions.cs" />
     <Compile Include="Assertions\PropertyEquals.cs" />
     <Compile Include="Assertions\StartsWith.cs" />
     <Compile Include="Assertions\Or.cs" />
@@ -69,8 +73,12 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Interactions\AbstractInteraction.cs" />
     <Compile Include="Interactions\AbstractPatternInteraction.cs" />
+    <Compile Include="Interactions\AssertionDefinition.cs" />
+    <Compile Include="Interactions\AssertionInteraction.cs" />
     <Compile Include="Interactions\BaseInteractionDefinition.cs" />
     <Compile Include="Interactions\Core\Focus.cs" />
+    <Compile Include="Interactions\Core\Expand.cs" />
+    <Compile Include="Interactions\Core\Collapse.cs" />
     <Compile Include="Interactions\Core\WaitUntilAvailable.cs" />
     <Compile Include="Interactions\Core\IsAvailable.cs" />
     <Compile Include="Interactions\Core\GetPropertyValue.cs" />
@@ -105,6 +113,15 @@
     <Compile Include="Scopes\RuntimeScope.cs" />
     <Compile Include="Scopes\DefinitionScope.cs" />
     <Compile Include="Script.cs" />
+    <Compile Include="Testing\ITestable.cs" />
+    <Compile Include="Testing\ITestableDefinition.cs" />
+    <Compile Include="Testing\ITestResults.cs" />
+    <Compile Include="Testing\Test.cs" />
+    <Compile Include="Testing\TestDefinition.cs" />
+    <Compile Include="Testing\TestGroup.cs" />
+    <Compile Include="Testing\TestGroupDefinition.cs" />
+    <Compile Include="Testing\TestGroupResults.cs" />
+    <Compile Include="Testing\TestResults.cs" />
     <Compile Include="ValueDefinition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

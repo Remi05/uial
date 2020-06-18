@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Uial.Contexts;
 using Uial.Scenarios;
 using Uial.Scopes;
+using Uial.Testing;
 using Uial.Parsing;
 
 namespace Uial.Cli
@@ -12,7 +13,8 @@ namespace Uial.Cli
         static void Main(string[] args)
         {
             string scriptFilePath;
-            string scenarioName;
+            string scenarioName = null;
+            string testName = null;
 
             if (args.Length == 0)
             {
@@ -28,16 +30,36 @@ namespace Uial.Cli
             {
                 Console.WriteLine("Scenario name: ");
                 scenarioName = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(scenarioName))
+                {
+                    Console.WriteLine("Test name: ");
+                    testName = Console.ReadLine();
+                }
             }
             else
             {
-                scenarioName = args[1];
+                string flag = args[1].Split(':')[0];
+                string value = args[1].Split(':')[1];
+                if (flag == "/scenario")
+                {
+                    scenarioName = value;
+                }
+                else if (flag == "/test")
+                {
+                    testName = value;
+                }
+                else
+                {
+                    Console.WriteLine($"Invalid flag: {flag}");
+                    return;
+                }
+                
             }
 
-            RunScenario(scriptFilePath, scenarioName);
+            RunScenario(scriptFilePath, scenarioName, testName);
         }
 
-        private static void RunScenario(string scriptFilePath, string scenarioName)
+        private static void RunScenario(string scriptFilePath, string scenarioName, string testName)
         {
             var parser = new ScriptParser();
             Script script;
@@ -51,20 +73,33 @@ namespace Uial.Cli
                 Console.WriteLine($"An error occurred while parsing the given script:\n{e.Message}");
                 return;
             }
-            
-              
-            if (!script.ScenarioDefinitions.ContainsKey(scenarioName))
-            {
-                Console.WriteLine($"Scenario \"{scenarioName}\" could not be found in the given script.");
-                return;
-            }
-
+       
             try
             {
                 var scope = new RuntimeScope(script.RootScope, new Dictionary<string, string>());
                 var rootContext = new RootContext(scope);
-                Scenario scenario = script.ScenarioDefinitions[scenarioName].Resolve(rootContext);
-                scenario.Do();
+
+                if (scenarioName != null)
+                {
+                    if (!script.ScenarioDefinitions.ContainsKey(scenarioName))
+                    {
+                        Console.WriteLine($"Scenario \"{scenarioName}\" could not be found in the given script.");
+                        return;
+                    }
+                    Scenario scenario = script.ScenarioDefinitions[scenarioName].Resolve(rootContext);
+                    scenario.Do();
+                }
+                else if (testName != null)
+                {
+                    if (!script.TestDefinitions.ContainsKey(testName))
+                    {
+                        Console.WriteLine($"Test \"{testName}\" could not be found in the given script.");
+                        return;
+                    }
+                    ITestable test = script.TestDefinitions[testName].Resolve(rootContext);
+                    ITestResults results = test.RunTest();
+                    Console.WriteLine(results);
+                }
             }
             catch (Exception e)
             {
