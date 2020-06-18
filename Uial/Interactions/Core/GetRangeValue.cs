@@ -37,7 +37,7 @@ namespace Uial.Interactions.Core
         {
             if (paramValues.Count() != 1)
             {
-                throw new InvalidParameterCountException(2, paramValues.Count());
+                throw new InvalidParameterCountException(1, paramValues.Count());
             }
             string referenceName = paramValues.ElementAt(0);
             return new GetRangeValue(context, referenceName, scope);
