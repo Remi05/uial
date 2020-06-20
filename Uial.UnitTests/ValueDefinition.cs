@@ -9,9 +9,9 @@ namespace Uial.UnitTests.Scenarios
     public class ValueDefinitionTests
     {
         [TestMethod]
-        public void FromLitteralThrowsWhenLitteralIsNull()
+        public void FromLiteralThrowsWhenLiteralIsNull()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => ValueDefinition.FromLitteral(null), "FromLitteral() should throw if the given litteral is null.");
+            Assert.ThrowsException<ArgumentNullException>(() => ValueDefinition.FromLiteral(null), "FromLiteral() should throw if the given literal is null.");
         }
 
         [TestMethod]
@@ -21,15 +21,15 @@ namespace Uial.UnitTests.Scenarios
         }
 
         [TestMethod]
-        public void LitteralsAreResolvedAsTheirValue()
+        public void LiteralsAreResolvedAsTheirValue()
         {
-            string expectedValue = "TestLitteralValue";
+            string expectedValue = "TestLiteralValue";
             var runtimeScope = new RuntimeScope(new DefinitionScope(), new Dictionary<string, string>());
 
-            var valueDefinition = ValueDefinition.FromLitteral(expectedValue);
+            var valueDefinition = ValueDefinition.FromLiteral(expectedValue);
             string actualValue = valueDefinition.Resolve(runtimeScope);
 
-            Assert.AreEqual(expectedValue, actualValue, "Litteral - Resolve(scope) should return the given litteral value.");
+            Assert.AreEqual(expectedValue, actualValue, "Literal - Resolve(scope) should return the given literal value.");
         }
 
         [TestMethod]
@@ -47,14 +47,14 @@ namespace Uial.UnitTests.Scenarios
         }
 
         [TestMethod]
-        public void LitteralsCanBeResolvedWithNullScope()
+        public void LiteralsCanBeResolvedWithNullScope()
         {
-            string expectedValue = "TestLitteralValue";
+            string expectedValue = "TestLiteralValue";
 
-            ValueDefinition valueDefinition = ValueDefinition.FromLitteral(expectedValue);
+            ValueDefinition valueDefinition = ValueDefinition.FromLiteral(expectedValue);
             string actualValue = valueDefinition.Resolve(null);
 
-            Assert.AreEqual(expectedValue, actualValue, "Litteral - Resolve(null) should not throw and return the given litteral value.");
+            Assert.AreEqual(expectedValue, actualValue, "Literal - Resolve(null) should not throw and return the given literal value.");
         }
 
         [TestMethod]

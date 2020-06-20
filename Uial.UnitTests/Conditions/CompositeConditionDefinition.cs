@@ -48,7 +48,7 @@ namespace Uial.UnitTests.Conditions
             };
 
             IEnumerable<PropertyConditionDefinition> conditionDefinitions = expectedConditions.Select(
-                (condition) => new PropertyConditionDefinition(condition.Property, ValueDefinition.FromLitteral(condition.Value as string))
+                (condition) => new PropertyConditionDefinition(condition.Property, ValueDefinition.FromLiteral(condition.Value as string))
             );
 
             var compositeConditionDefinition = new CompositeConditionDefinition(conditionDefinitions);
@@ -65,7 +65,7 @@ namespace Uial.UnitTests.Conditions
         public void VerifySingleConditionIsResolved()
         {
             var expectedCondition = new PropertyCondition(AutomationElement.NameProperty, "TestControlName");
-            var conditionDefinition = new PropertyConditionDefinition(expectedCondition.Property, ValueDefinition.FromLitteral(expectedCondition.Value as string));
+            var conditionDefinition = new PropertyConditionDefinition(expectedCondition.Property, ValueDefinition.FromLiteral(expectedCondition.Value as string));
             var conditionDefinitions = new List<IConditionDefinition>() { conditionDefinition };
 
             var compositeConditionDefinition = new CompositeConditionDefinition(conditionDefinitions);

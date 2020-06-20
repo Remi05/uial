@@ -38,7 +38,7 @@ namespace Uial.Parsing
             public const string ControlType = "controlType";
             public const string ImportName = "importName"; 
             public const string Interaction = "interaction";
-            public const string Litteral = "litteral";
+            public const string Literal = "literal";
             public const string Name = "name";
             public const string Params = "params";
             public const string ParamsDeclaration = "paramsDecl";
@@ -49,12 +49,12 @@ namespace Uial.Parsing
             public const string Value = "value";
         }
 
-        const string IsolatedLitteralPattern = "^\"(?<litteral>[^\"]*)\"$";
+        const string IsolatedLiteralPattern = "^\"(?<literal>[^\"]*)\"$";
         const string IsolatedReferencePattern = "^(?<ref>\\$[a-zA-Z]+(?:[0-9]+)?)$";
-        const string IsolatedValuePattern = "(?<value>(?:" + IsolatedLitteralPattern + ")|(?:" + IsolatedReferencePattern + "))";
-        const string LitteralPattern = "\"(?<litteral>[^\"]*)\"";
+        const string IsolatedValuePattern = "(?<value>(?:" + IsolatedLiteralPattern + ")|(?:" + IsolatedReferencePattern + "))";
+        const string LiteralPattern = "\"(?<literal>[^\"]*)\"";
         const string ReferencePattern = "(?<ref>\\$[a-zA-Z]+(?:[0-9]+)?)";
-        const string ValuePattern = "(?<value>(?:" + LitteralPattern + ")|(?:" + ReferencePattern + "))";
+        const string ValuePattern = "(?<value>(?:" + LiteralPattern + ")|(?:" + ReferencePattern + "))";
         const string PropertyConditionPattern = "(?<property>[a-zA-Z]+)\\s*=\\s*" + ValuePattern;
         const string SingleConditionPattern = "[a-zA-Z]+\\s*=\\s*" + ValuePattern;
         const string ConditionPattern = SingleConditionPattern + "(?:\\s*,\\s*" + SingleConditionPattern + ")*";
@@ -148,9 +148,9 @@ namespace Uial.Parsing
                 throw new InvalidValueDefinitionException(valueStr);
             }
 
-            if (valueMatch.Groups[NamedGroups.Litteral].Success)
+            if (valueMatch.Groups[NamedGroups.Literal].Success)
             {
-                return ValueDefinition.FromLitteral(valueMatch.Groups[NamedGroups.Litteral].Value);
+                return ValueDefinition.FromLiteral(valueMatch.Groups[NamedGroups.Literal].Value);
             }
             string referenceName = valueMatch.Groups[NamedGroups.Reference].Value;
             return ValueDefinition.FromReference(referenceName); 

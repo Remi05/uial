@@ -60,7 +60,7 @@ namespace Uial.Contexts
 
         public static IConditionDefinition GetControlConditionDefinition(string controlTypeName, IConditionDefinition identifyingCondition)
         {
-            ValueDefinition controlTypeRuntimeValue = ValueDefinition.FromLitteral(controlTypeName);
+            ValueDefinition controlTypeRuntimeValue = ValueDefinition.FromLiteral(controlTypeName);
             IConditionDefinition controlTypeCondition = new PropertyConditionDefinition(AutomationElement.ControlTypeProperty, controlTypeRuntimeValue);
             return new CompositeConditionDefinition(new List<IConditionDefinition>() { controlTypeCondition, identifyingCondition });
         }

@@ -9,8 +9,8 @@ namespace Uial.Parsing.UnitTests
     {
         private class ValidConditions
         {
-            public const string SingleLitteralCondition     = "Name=\"TestButton\"";
-            public const string CompositeLitteralCondition  = "Name=\"TestButton\", ControlType=\"Button\"";
+            public const string SingleLiteralCondition     = "Name=\"TestButton\"";
+            public const string CompositeLiteralCondition  = "Name=\"TestButton\", ControlType=\"Button\"";
             public const string SingleReferenceCondition    = "Name=$testName";
             public const string CompositeReferenceCondition = "Name=$testName, AutomationId=$testId";
             public const string CompositeMixedCondition     = "Name=$testName, ControlType=\"Button\"";
@@ -22,8 +22,8 @@ namespace Uial.Parsing.UnitTests
         }
 
 
-        [DataRow(ValidConditions.SingleLitteralCondition,     DisplayName = "ValidConditions_SingleLitteralCondition")]
-        [DataRow(ValidConditions.CompositeLitteralCondition , DisplayName = "ValidConditions_CompositeLitteralCondition")]
+        [DataRow(ValidConditions.SingleLiteralCondition,     DisplayName = "ValidConditions_SingleLiteralCondition")]
+        [DataRow(ValidConditions.CompositeLiteralCondition , DisplayName = "ValidConditions_CompositeLiteralCondition")]
         [DataRow(ValidConditions.SingleReferenceCondition,    DisplayName = "ValidConditions_SingleReferenceCondition")]
         [DataRow(ValidConditions.CompositeReferenceCondition, DisplayName = "ValidConditions_CompositeReferenceCondition")]
         [DataRow(ValidConditions.CompositeMixedCondition,     DisplayName = "ValidConditions_CompositeMixedCondition")]

@@ -6,16 +6,16 @@ namespace Uial
 {
     public class ValueDefinition
     {
-        private string LitteralValue { get; set; }
+        private string LiteralValue { get; set; }
         private string ReferenceName { get; set; }
 
         private ValueDefinition() { }
 
         public string Resolve(RuntimeScope scope)
         {
-            if (LitteralValue != null)
+            if (LiteralValue != null)
             {
-                return LitteralValue;
+                return LiteralValue;
             }
             if (scope == null || !scope.ReferenceValues.ContainsKey(ReferenceName))
             {
@@ -35,14 +35,14 @@ namespace Uial
             return valueDefinition;
         }
 
-        public static ValueDefinition FromLitteral(string litteralValue)
+        public static ValueDefinition FromLiteral(string literalValue)
         {
-            if (litteralValue == null)
+            if (literalValue == null)
             {
-                throw new ArgumentNullException("litteralValue");
+                throw new ArgumentNullException("literalValue");
             }
             ValueDefinition valueDefinition = new ValueDefinition();
-            valueDefinition.LitteralValue = litteralValue;
+            valueDefinition.LiteralValue = literalValue;
             return valueDefinition;
         }
     }

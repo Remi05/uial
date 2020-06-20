@@ -12,7 +12,7 @@ namespace Uial.UnitTests.Conditions
         {
             AutomationProperty expectedProperty = AutomationElement.ControlTypeProperty;
             ControlType expectedControlType = ControlType.Button;
-            var valueDefinition = ValueDefinition.FromLitteral("Button");
+            var valueDefinition = ValueDefinition.FromLiteral("Button");
 
             var propertyConditionDefinition = new PropertyConditionDefinition(expectedProperty, valueDefinition);
             var actualCondition = propertyConditionDefinition.Resolve(null) as PropertyCondition;
@@ -27,7 +27,7 @@ namespace Uial.UnitTests.Conditions
         {
             AutomationProperty expectedProperty = AutomationElement.NameProperty;
             string expectedName = "TestControlName";
-            var valueDefinition = ValueDefinition.FromLitteral(expectedName);
+            var valueDefinition = ValueDefinition.FromLiteral(expectedName);
 
             var propertyConditionDefinition = new PropertyConditionDefinition(expectedProperty, valueDefinition);
             var actualCondition = propertyConditionDefinition.Resolve(null) as PropertyCondition;
