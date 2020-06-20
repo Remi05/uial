@@ -13,7 +13,7 @@ Here are some of its goals:
 
 ## License
 
-UIAL is licensed using an [MIT License](LICENSE.md).
+UIAL is licensed under an [MIT License](LICENSE.md).
 
 ## Core Concepts
 
