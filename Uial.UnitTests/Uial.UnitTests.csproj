@@ -51,9 +51,11 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assertions\MockAssertion.cs" />
     <Compile Include="Conditions\CompositeConditionDefinition.cs" />
     <Compile Include="Conditions\PropertyConditionDefinition.cs" />
     <Compile Include="Contexts\MockContext.cs" />
+    <Compile Include="Interactions\AssertionInteraction.cs" />
     <Compile Include="Interactions\CompositeInteraction.cs" />
     <Compile Include="Interactions\MockBaseInteractionDefinition.cs" />
     <Compile Include="Interactions\MockInteraction.cs" />
@@ -72,7 +74,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assertions\" />
     <Folder Include="Scopes\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
