@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Automation;
 using Uial.Conditions;
@@ -36,14 +37,15 @@ namespace Uial.Parsing
             public const string CustomContext = "customContext";
             public const string ControlCondition = "controlCondition";
             public const string ControlType = "controlType";
-            public const string ImportName = "importName"; 
             public const string Interaction = "interaction";
             public const string Literal = "literal";
             public const string Name = "name";
             public const string Params = "params";
             public const string ParamsDeclaration = "paramsDecl";
+            public const string Path = "path";
             public const string Property = "property";
             public const string Reference = "ref";
+            public const string RepoName = "repoName";
             public const string RootElementCondition = "rootCondition";
             public const string UniqueCondition = "uniqueCondition";
             public const string Value = "value";
@@ -64,10 +66,12 @@ namespace Uial.Parsing
         const string ControlPattern = "((?<controlType>[a-zA-Z]+)\\[(?<controlCondition>" + ConditionPattern + ")\\])";
         const string CustomContextPattern = "(?<customContext>(?<contextName>[a-zA-Z]+)" + ContextParamsPattern + "?)";
         const string BaseContextPattern = "(?:" + CustomContextPattern + "|" + ControlPattern + ")";
-        const string ImportNamePattern = "(?<importName>(?:[a-zA-Z0-9\\.]+/)*[a-zA-Z0-9]+\\.uial)";
+        const string PathPattern = "(?<path>(?:[a-zA-Z0-9\\._-]+/)*[a-zA-Z0-9\\._-]+\\.uial)";
+        const string RepoPathPattern = "github:(?<repoName>[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+)/" + PathPattern;
         const string BlocNamePattern = "(?<name>[a-zA-Z]+)";
 
-        const string ImportPattern = BlocIdentifiers.Import + "\\s+'" + ImportNamePattern + "'";
+        const string RepoImportPattern = BlocIdentifiers.Import + "\\s+'" + RepoPathPattern + "'"; 
+        const string LocalImportPattern = BlocIdentifiers.Import + "\\s+'" + PathPattern + "'";
         const string ContextPattern = BlocIdentifiers.Context + "\\s+" + BlocNamePattern + "\\s*(?:" + ParamsDeclarationPattern + ")?(?:\\s+\\[\\s*(?<rootCondition>" + ConditionPattern + ")\\s*\\])?(?:\\s+\\{\\s*(?<uniqueCondition>" + ConditionPattern + ")\\s*\\})?\\s*:\\s*$";
         const string InteractionPattern = BlocIdentifiers.Interaction + "\\s+" + BlocNamePattern + "\\s*(?:" + ParamsDeclarationPattern + ")?\\s*:";
         const string ScenarioPattern = BlocIdentifiers.Scenario + "\\s+" + BlocNamePattern + "\\s*:";
@@ -447,17 +451,41 @@ namespace Uial.Parsing
             return new TestGroupDefinition(name, childrenfinitions);
         }
 
-        public Script ParseImport(string importStr, string executionDirPath)
+        public Script ParseLocalImport(string importStr, string executionDirPath)
         {
-            Regex importRegex = new Regex(ImportPattern);
-            Match importMatch = importRegex.Match(importStr);
-            string importName = importMatch.Groups[NamedGroups.ImportName].Value;
-            string importFilePath = Path.Combine(executionDirPath, importName);
-            return ParseScript(importFilePath);
+            Regex localImportRegex = new Regex(LocalImportPattern);
+            Match localImportMatch = localImportRegex.Match(importStr);
+            string path = localImportMatch.Groups[NamedGroups.Path].Value;
+            if (executionDirPath != null)
+            {
+                path = Path.Combine(executionDirPath, path);
+            }
+            return ParseScript(path);
         }
 
-        public Script ParseScript(List<string> lines, string executionDirPath)
+        public Script ParseRepoImport(string importStr)
         {
+            Regex repoImportRegex = new Regex(RepoImportPattern);
+            Match repoImportMatch = repoImportRegex.Match(importStr);
+            string repoName = repoImportMatch.Groups[NamedGroups.RepoName].Value;
+            string repoFilePath = repoImportMatch.Groups[NamedGroups.Path].Value;
+            return ParseRepoScript(repoName, repoFilePath);
+        }
+
+        public Script ParseImport(string importStr, string executionDirPath)
+        {
+            if (new Regex(LocalImportPattern).IsMatch(importStr))
+            {
+                return ParseLocalImport(importStr, executionDirPath);
+            }
+            return ParseRepoImport(importStr);
+        }
+
+        public Script ParseScript(string scriptContent, string executionDirPath)
+        {
+            List<string> lines = scriptContent.Split('\n').ToList();
+            lines = lines.Select((line) => line.Replace("\t", new string(' ', 4))).ToList();
+
             Script script = new Script();
 
             for (int curLine = 0; curLine < lines.Count; ++curLine)
@@ -506,21 +534,28 @@ namespace Uial.Parsing
             return script;
         }
 
-        public Script ParseScript(StreamReader streamReader, string executionDirPath)
+        public Script ParseScript(string localFilePath)
         {
-            List<string> lines = streamReader.ReadToEnd().Split('\n').ToList();
-            lines = lines.Select((string line) => line.Replace("\t", new string(' ', 4))).ToList();
-            return ParseScript(lines, executionDirPath);
-        }
-
-        public Script ParseScript(string filePath)
-        {
-            string executionDirPath = Path.GetDirectoryName(filePath);
+            string executionDirPath = Path.GetDirectoryName(localFilePath);
 
             Script script;
-            using (StreamReader fileReader = new StreamReader(filePath))
+            using (StreamReader fileReader = new StreamReader(localFilePath))
             {
-                script = ParseScript(fileReader, executionDirPath);
+                string scriptContent = fileReader.ReadToEnd();
+                script = ParseScript(scriptContent, executionDirPath);
+            }
+            return script;
+        }
+
+        public Script ParseRepoScript(string repoName, string repoFilePath)
+        {
+            string githubUrl = $"https://raw.githubusercontent.com/{repoName}/master/{repoFilePath}";
+
+            Script script;
+            using (var webClient = new WebClient())
+            {
+                string scriptContent = webClient.DownloadString(githubUrl);
+                script = ParseScript(scriptContent, null);
             }
             return script;
         }
