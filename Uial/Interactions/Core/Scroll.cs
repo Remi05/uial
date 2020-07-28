@@ -16,7 +16,7 @@ namespace Uial.Interactions.Core
         private ScrollAmount HorizontalScroll { get; set; }
         private ScrollAmount VerticalScroll { get; set; }
 
-        public Scroll(IContext context, ScrollAmount horizontalScroll, ScrollAmount verticalScroll)
+        public Scroll(IWindowsVisualContext context, ScrollAmount horizontalScroll, ScrollAmount verticalScroll)
             : base(context)
         {
             HorizontalScroll = horizontalScroll;
@@ -29,7 +29,7 @@ namespace Uial.Interactions.Core
             Pattern.Scroll(HorizontalScroll, VerticalScroll);
         }
 
-        public static Scroll FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
+        public static Scroll FromRuntimeValues(IWindowsVisualContext context, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 2)
             {

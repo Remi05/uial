@@ -10,7 +10,7 @@ namespace Uial.Interactions.Core
         public override string Name => Key;
         protected override AutomationPattern AutomationPattern => SelectionItemPattern.Pattern;
 
-        public Select(IContext context) : base(context) { }
+        public Select(IWindowsVisualContext context) : base(context) { }
 
         public override void Do()
         {

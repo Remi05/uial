@@ -9,8 +9,6 @@ namespace Uial.Contexts
 
         string Name { get; }
 
-        AutomationElement RootElement { get; }
-
         bool IsAvailable();
     }
 }

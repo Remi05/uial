@@ -20,7 +20,7 @@ namespace Uial.Contexts
         public IContext Resolve(IContext parentContext, RuntimeScope currentScope)
         {
             Condition condition = ConditionDefinition.Resolve(currentScope);
-            IContext context = new Context(parentContext, currentScope, ControlTypeName, condition);
+            IContext context = new WindowsVisualContext(parentContext as IWindowsVisualContext, currentScope, ControlTypeName, condition);
             return Child?.Resolve(context, currentScope) ?? context;
         }
     }

@@ -4,9 +4,9 @@ using Uial.Scopes;
 
 namespace Uial.Contexts
 {
-    public class Context : AbstractContext, IContext
+    public class WindowsVisualContext : AbstractContext, IContext
     {
-        protected IContext Parent { get; set; }
+        protected IWindowsVisualContext Parent { get; set; }
         protected Condition RootElementCondition { get; set; }
 
         public override AutomationElement RootElement
@@ -19,7 +19,7 @@ namespace Uial.Contexts
             }
         }
 
-        public Context(IContext parent, RuntimeScope scope, string name, Condition rootElementCondition = null, Condition uniqueCondition = null)
+        public WindowsVisualContext(IWindowsVisualContext parent, RuntimeScope scope, string name, Condition rootElementCondition = null, Condition uniqueCondition = null)
         {
             if (parent == null)
             {

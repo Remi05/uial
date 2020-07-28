@@ -15,7 +15,7 @@ namespace Uial.Interactions.Core
         private double X { get; set; }
         private double Y { get; set; }
 
-        public Move(IContext context, double x, double y) 
+        public Move(IWindowsVisualContext context, double x, double y) 
             : base(context) 
         {
             X = x;
@@ -29,7 +29,7 @@ namespace Uial.Interactions.Core
             Pattern.Move(X, Y);
         }
 
-        public static Move FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
+        public static Move FromRuntimeValues(IWindowsVisualContext context, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 2)
             {

@@ -18,7 +18,7 @@ namespace Uial.Interactions.Core
         protected string ReferenceName { get; set; }
         protected RuntimeScope Scope { get; set; }
 
-        public GetPropertyValue(IContext context, AutomationProperty property, string referenceName, RuntimeScope scope) : base(context)
+        public GetPropertyValue(IWindowsVisualContext context, AutomationProperty property, string referenceName, RuntimeScope scope) : base(context)
         {
             if (property == null || referenceName == null || scope == null)
             {
@@ -32,11 +32,11 @@ namespace Uial.Interactions.Core
         public override void Do()
         {
             base.Do();
-            object propertyValue = Context.RootElement.GetCurrentPropertyValue(Property);
+            object propertyValue = (Context as IWindowsVisualContext).RootElement.GetCurrentPropertyValue(Property);
             Scope.ReferenceValues[ReferenceName] = propertyValue?.ToString();
         }
 
-        public static GetPropertyValue FromRuntimeValues(IContext context, RuntimeScope scope, IEnumerable<string> paramValues)
+        public static GetPropertyValue FromRuntimeValues(IWindowsVisualContext context, RuntimeScope scope, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 2)
             {

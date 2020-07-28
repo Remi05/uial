@@ -14,7 +14,7 @@ namespace Uial.Interactions.Core
 
         private string Value { get; set; }
 
-        public SetTextValue(IContext context, string value)
+        public SetTextValue(IWindowsVisualContext context, string value)
             : base(context)
         {
             Value = value;
@@ -26,7 +26,7 @@ namespace Uial.Interactions.Core
             Pattern.SetValue(Value);
         }
 
-        public static SetTextValue FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
+        public static SetTextValue FromRuntimeValues(IWindowsVisualContext context, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 1)
             {

@@ -10,7 +10,7 @@ namespace Uial.Interactions.Core
         public override string Name => Key;
         protected override AutomationPattern AutomationPattern => TogglePattern.Pattern;
 
-        public Toggle(IContext context) : base(context) { }
+        public Toggle(IWindowsVisualContext context) : base(context) { }
 
         public override void Do()
         {

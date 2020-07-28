@@ -17,7 +17,7 @@ namespace Uial.Interactions.Core
         protected string ReferenceName { get; set; }
         protected RuntimeScope Scope { get; set; }
 
-        public GetRangeValue(IContext context, string referenceName, RuntimeScope scope) : base(context)
+        public GetRangeValue(IWindowsVisualContext context, string referenceName, RuntimeScope scope) : base(context)
         {
             if (referenceName == null || scope == null)
             {
@@ -33,7 +33,7 @@ namespace Uial.Interactions.Core
             Scope.ReferenceValues[ReferenceName] = Pattern.Current.Value.ToString();
         }
 
-        public static GetRangeValue FromRuntimeValues(IContext context, RuntimeScope scope, IEnumerable<string> paramValues)
+        public static GetRangeValue FromRuntimeValues(IWindowsVisualContext context, RuntimeScope scope, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 1)
             {

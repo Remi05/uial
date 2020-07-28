@@ -15,7 +15,7 @@ namespace Uial.Interactions.Core
         private double Width { get; set; }
         private double Height { get; set; }
 
-        public Resize(IContext context, double width, double height) 
+        public Resize(IWindowsVisualContext context, double width, double height) 
             : base(context) 
         {
             Width = width;
@@ -29,7 +29,7 @@ namespace Uial.Interactions.Core
             Pattern.Resize(Width, Height);
         }
 
-        public static Resize FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
+        public static Resize FromRuntimeValues(IWindowsVisualContext context, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 2)
             {

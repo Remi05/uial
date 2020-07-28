@@ -67,6 +67,8 @@
     <Compile Include="Contexts\Exceptions.cs" />
     <Compile Include="Conditions\PropertyConditionDefinition.cs" />
     <Compile Include="Contexts\IBaseContextDefinition.cs" />
+    <Compile Include="Contexts\IWindowsVisualContext.cs" />
+    <Compile Include="Contexts\IContext.cs" />
     <Compile Include="Contexts\IContextDefinition.cs" />
     <Compile Include="Contexts\BaseContextDefinition.cs" />
     <Compile Include="Contexts\RootContext.cs" />
@@ -107,8 +109,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenarios\IScenarioDefinition.cs" />
     <Compile Include="Scenarios\Scenario.cs" />
-    <Compile Include="Contexts\IContext.cs" />
-    <Compile Include="Contexts\Context.cs" />
+    <Compile Include="Contexts\WindowsVisualContext.cs" />
     <Compile Include="Scenarios\ScenarioDefinition.cs" />
     <Compile Include="Scopes\RuntimeScope.cs" />
     <Compile Include="Scopes\DefinitionScope.cs" />

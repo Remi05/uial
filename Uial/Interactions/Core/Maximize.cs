@@ -10,7 +10,7 @@ namespace Uial.Interactions.Core
         public override string Name => Key;
         protected override AutomationPattern AutomationPattern => WindowPattern.Pattern;
 
-        public Maximize(IContext context) : base(context) { }
+        public Maximize(IWindowsVisualContext context) : base(context) { }
 
         public override void Do()
         {

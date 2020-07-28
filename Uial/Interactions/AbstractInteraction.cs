@@ -14,7 +14,7 @@ namespace Uial.Interactions
 
         public virtual void Do()
         {
-            if (!Context.IsAvailable())
+            if (Context == null || !Context.IsAvailable())
             {
                 throw new ContextUnavailableException(Context.Name);
             }

@@ -10,7 +10,7 @@ namespace Uial.Interactions.Core
         public override string Name => Key;
         protected override AutomationPattern AutomationPattern => ExpandCollapsePattern.Pattern;
 
-        public Collapse(IContext context) : base(context) { }
+        public Collapse(IWindowsVisualContext context) : base(context) { }
 
         public override void Do()
         {

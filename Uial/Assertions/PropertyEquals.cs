@@ -8,11 +8,11 @@ namespace Uial.Assertions
         public const string Key = "PropertyEquals";
 
         public string Name => Key;
-        private IContext Context { get; set; }
+        private IWindowsVisualContext Context { get; set; }
         private AutomationProperty Property { get; set; }
         private object Value { get; set; }
 
-        public PropertyEquals(IContext context, AutomationProperty property, object value)
+        public PropertyEquals(IWindowsVisualContext context, AutomationProperty property, object value)
         {
             Context = context;
             Property = property;

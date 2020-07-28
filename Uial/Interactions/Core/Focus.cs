@@ -8,12 +8,12 @@ namespace Uial.Interactions.Core
 
         public override string Name => Key;
 
-        public Focus(IContext context) : base(context) { }
+        public Focus(IWindowsVisualContext context) : base(context) { }
 
         public override void Do()
         {
             base.Do();
-            Context.RootElement.SetFocus();
+            (Context as IWindowsVisualContext).RootElement.SetFocus();
         }
     }
 }

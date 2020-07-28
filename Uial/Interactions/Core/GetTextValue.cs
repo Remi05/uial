@@ -17,7 +17,7 @@ namespace Uial.Interactions.Core
         protected string ReferenceName { get; set; }
         protected RuntimeScope Scope { get; set; }
 
-        public GetTextValue(IContext context, string referenceName, RuntimeScope scope) : base(context)
+        public GetTextValue(IWindowsVisualContext context, string referenceName, RuntimeScope scope) : base(context)
         {
             if (referenceName == null || scope == null)
             {
@@ -33,7 +33,7 @@ namespace Uial.Interactions.Core
             Scope.ReferenceValues[ReferenceName] = Pattern.Current.Value;
         }
 
-        public static GetTextValue FromRuntimeValues(IContext context, RuntimeScope scope, IEnumerable<string> paramValues)
+        public static GetTextValue FromRuntimeValues(IWindowsVisualContext context, RuntimeScope scope, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 1)
             {

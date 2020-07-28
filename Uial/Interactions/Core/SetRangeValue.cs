@@ -14,7 +14,7 @@ namespace Uial.Interactions.Core
 
         private double Value { get; set; }
 
-        public SetRangeValue(IContext context, double value)
+        public SetRangeValue(IWindowsVisualContext context, double value)
             : base(context)
         {
             Value = value;
@@ -27,7 +27,7 @@ namespace Uial.Interactions.Core
             Pattern.SetValue(Value);
         }
 
-        public static SetRangeValue FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
+        public static SetRangeValue FromRuntimeValues(IWindowsVisualContext context, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 1)
             {

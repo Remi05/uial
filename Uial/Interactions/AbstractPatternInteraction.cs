@@ -7,9 +7,9 @@ namespace Uial.Interactions
     public abstract class AbstractPatternInteraction<T> : AbstractInteraction, IInteraction where T : BasePattern
     {
         protected abstract AutomationPattern AutomationPattern { get; }
-        protected T Pattern => GetPattern(Context, AutomationPattern);
+        protected T Pattern => GetPattern(Context as IWindowsVisualContext, AutomationPattern);
 
-        public AbstractPatternInteraction(IContext context) : base(context) { }
+        public AbstractPatternInteraction(IWindowsVisualContext context) : base(context) { }
 
         public override void Do()
         {
@@ -24,7 +24,7 @@ namespace Uial.Interactions
             }
         }
 
-        private static T GetPattern(IContext context, AutomationPattern automationPattern) 
+        private static T GetPattern(IWindowsVisualContext context, AutomationPattern automationPattern) 
         {
             T pattern;
             try

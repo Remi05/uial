@@ -10,7 +10,7 @@ namespace Uial.Interactions.Core
         public override string Name => Key;
         protected override AutomationPattern AutomationPattern => InvokePattern.Pattern;
 
-        public Invoke(IContext context) : base(context) { }
+        public Invoke(IWindowsVisualContext context) : base(context) { }
 
         public override void Do()
         {
