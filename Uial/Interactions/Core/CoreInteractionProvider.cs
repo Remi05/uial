@@ -4,7 +4,7 @@ using Uial.Scopes;
 
 namespace Uial.Interactions.Core
 {
-    public class CoreInteractionsProvider : IInteractionsProvider
+    public class CoreInteractionProvider : IInteractionProvider
     {
         protected ISet<string> KnownInteractions = new HashSet<string>()
         {

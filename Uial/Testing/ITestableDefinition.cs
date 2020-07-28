@@ -7,6 +7,6 @@ namespace Uial.Testing
     {
         string Name { get; }
 
-        ITestable Resolve(IContext context, IInteractionsProvider interactionsProvider);
+        ITestable Resolve(IContext context, IInteractionProvider interactionProvider);
     }
 }

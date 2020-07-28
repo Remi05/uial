@@ -7,27 +7,27 @@ using Uial.Scopes;
 
 namespace Uial.Interactions
 {
-    public class GlobalInteractionsProvider : IInteractionsProvider
+    public class GlobalinteractionProvider : IInteractionProvider
     {
-        protected IList<IInteractionsProvider> InteractionsProviders { get; set; }
+        protected IList<IInteractionProvider> InteractionProviders { get; set; }
 
-        public GlobalInteractionsProvider(IList<IInteractionsProvider> interactionsProviders)
+        public GlobalinteractionProvider(IList<IInteractionProvider> interactionProviders)
         {
-            if (interactionsProviders == null)
+            if (interactionProviders == null)
             {
-                throw new ArgumentNullException("interactionsProviders");
+                throw new ArgumentNullException("interactionProviders");
             }
-            InteractionsProviders = interactionsProviders;
+            InteractionProviders = interactionProviders;
         }
 
         public bool IsKnownInteraction(string interactionName)
         {
-            return InteractionsProviders.Any(interactionProvider => interactionProvider.IsKnownInteraction(interactionName));
+            return InteractionProviders.Any(interactionProvider => interactionProvider.IsKnownInteraction(interactionName));
         }
 
         public IInteraction GetInteractionByName(IContext context, RuntimeScope scope, string interactionName, IEnumerable<string> paramValues)
         {
-            IInteractionsProvider interactionProvider = InteractionsProviders.First(provider => provider.IsKnownInteraction(interactionName));
+            IInteractionProvider interactionProvider = InteractionProviders.First(provider => provider.IsKnownInteraction(interactionName));
             return interactionProvider?.GetInteractionByName(context, scope, interactionName, paramValues);
         }
     }

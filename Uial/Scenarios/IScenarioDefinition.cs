@@ -6,6 +6,6 @@ namespace Uial.Scenarios
     public interface IScenarioDefinition
     {
         string Name { get; }
-        Scenario Resolve(IContext context, IInteractionsProvider interactionsProvider);
+        Scenario Resolve(IContext context, IInteractionProvider interactionProvider);
     }
 }

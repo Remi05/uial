@@ -4,7 +4,7 @@ using Uial.Scopes;
 
 namespace Uial.Interactions.Windows
 {
-    public class VisualInteractionsProvider : IInteractionsProvider
+    public class VisualInteractionProvider : IInteractionProvider
     {
         protected ISet<string> KnownInteractions = new HashSet<string>()
         {

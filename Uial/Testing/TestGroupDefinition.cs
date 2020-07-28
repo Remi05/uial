@@ -21,10 +21,10 @@ namespace Uial.Testing
             ChildrenDefinitions = childrenDefinitions;
         }
 
-        public ITestable Resolve(IContext context, IInteractionsProvider interactionsProvider)
+        public ITestable Resolve(IContext context, IInteractionProvider interactionProvider)
         {
             IEnumerable<ITestable> children = ChildrenDefinitions.Select(
-                (childDefinition) => childDefinition.Resolve(context, interactionsProvider)
+                (childDefinition) => childDefinition.Resolve(context, interactionProvider)
             );
             return new TestGroup(Name, children);
         }

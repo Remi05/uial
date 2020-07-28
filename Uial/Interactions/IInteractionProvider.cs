@@ -4,7 +4,7 @@ using Uial.Scopes;
 
 namespace Uial.Interactions
 {
-    public interface IInteractionsProvider
+    public interface IInteractionProvider
     {
         bool IsKnownInteraction(string interactionName);
 
