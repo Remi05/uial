@@ -79,12 +79,12 @@ namespace Uial.Cli
             {
                 var scope = new RuntimeScope(script.RootScope, new Dictionary<string, string>());
                 var rootContext = new RootVisualContext(scope);
-                var interactionsProviders = new List<IInteractionsProvider>()
+                var interactionProviders = new List<IInteractionProvider>()
                     {
-                        new Interactions.Core.CoreInteractionsProvider(),
-                        new Interactions.Windows.VisualInteractionsProvider(),
+                        new Interactions.Core.CoreInteractionProvider(),
+                        new Interactions.Windows.VisualInteractionProvider(),
                     };
-                var interactionsProvider = new GlobalInteractionsProvider(interactionsProviders);
+                var interactionProvider = new GlobalinteractionProvider(interactionProviders);
 
                 if (scenarioName != null)
                 {
@@ -93,7 +93,7 @@ namespace Uial.Cli
                         Console.WriteLine($"Scenario \"{scenarioName}\" could not be found in the given script.");
                         return;
                     }
-                    Scenario scenario = script.ScenarioDefinitions[scenarioName].Resolve(rootContext, interactionsProvider);
+                    Scenario scenario = script.ScenarioDefinitions[scenarioName].Resolve(rootContext, interactionProvider);
                     scenario.Do();
                 }
                 else if (testName != null)
@@ -103,7 +103,7 @@ namespace Uial.Cli
                         Console.WriteLine($"Test \"{testName}\" could not be found in the given script.");
                         return;
                     }
-                    ITestable test = script.TestDefinitions[testName].Resolve(rootContext, interactionsProvider);
+                    ITestable test = script.TestDefinitions[testName].Resolve(rootContext, interactionProvider);
                     ITestResults results = test.RunTest();
                     Console.WriteLine(results);
                 }
