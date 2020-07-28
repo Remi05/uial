@@ -1,13 +1,13 @@
 ﻿using Uial.Contexts;
 
-namespace Uial.Interactions
+namespace Uial.Interactions.Windows
 {
     public abstract class AbstractInteraction : IInteraction
     {
         public abstract string Name { get; }
-        protected IContext Context { get; set; }
+        protected IWindowsVisualContext Context { get; set; }
 
-        public AbstractInteraction(IContext context)
+        public AbstractInteraction(IWindowsVisualContext context)
         {
             Context = context;
         }

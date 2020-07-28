@@ -26,9 +26,9 @@ namespace Uial.Scenarios
             BaseInteractionDefinitions = baseInteractionDefinitions;
         }
 
-        public Scenario Resolve(IContext context)
+        public Scenario Resolve(IContext context, IInteractionsProvider interactionsProvider)
         {
-            IEnumerable<IInteraction> interactions = BaseInteractionDefinitions.Select((interactionDefinition) => interactionDefinition.Resolve(context, context?.Scope));
+            IEnumerable<IInteraction> interactions = BaseInteractionDefinitions.Select((interactionDefinition) => interactionDefinition.Resolve(context, interactionsProvider, context?.Scope));
             return new Scenario(Name, interactions);
         }
     }

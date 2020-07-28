@@ -13,7 +13,7 @@ namespace Uial.UnitTests.Interactions
             Interaction = interaction;
         }
 
-        public IInteraction Resolve(IContext context, RuntimeScope scope)
+        public IInteraction Resolve(IContext context, IInteractionsProvider interactionsProvider, RuntimeScope scope)
         {
             return Interaction;
         }

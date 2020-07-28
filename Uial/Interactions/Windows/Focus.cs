@@ -1,6 +1,6 @@
 ﻿using Uial.Contexts;
 
-namespace Uial.Interactions.Core
+namespace Uial.Interactions.Windows
 {
     public class Focus : AbstractInteraction, IInteraction
     {
@@ -13,7 +13,7 @@ namespace Uial.Interactions.Core
         public override void Do()
         {
             base.Do();
-            (Context as IWindowsVisualContext).RootElement.SetFocus();
+            Context.RootElement.SetFocus();
         }
     }
 }

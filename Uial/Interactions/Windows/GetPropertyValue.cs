@@ -6,7 +6,7 @@ using Uial.Conditions;
 using Uial.Contexts;
 using Uial.Scopes;
 
-namespace Uial.Interactions.Core
+namespace Uial.Interactions.Windows
 {
     public class GetPropertyValue : AbstractInteraction, IInteraction
     {
@@ -32,7 +32,7 @@ namespace Uial.Interactions.Core
         public override void Do()
         {
             base.Do();
-            object propertyValue = (Context as IWindowsVisualContext).RootElement.GetCurrentPropertyValue(Property);
+            object propertyValue = Context.RootElement.GetCurrentPropertyValue(Property);
             Scope.ReferenceValues[ReferenceName] = propertyValue?.ToString();
         }
 

@@ -1,4 +1,5 @@
 ﻿using Uial.Contexts;
+using Uial.Interactions;
 
 namespace Uial.Testing
 {
@@ -6,6 +7,6 @@ namespace Uial.Testing
     {
         string Name { get; }
 
-        ITestable Resolve(IContext context);
+        ITestable Resolve(IContext context, IInteractionsProvider interactionsProvider);
     }
 }

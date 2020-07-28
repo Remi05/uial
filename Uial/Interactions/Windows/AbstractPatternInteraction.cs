@@ -2,12 +2,12 @@
 using System.Windows.Automation;
 using Uial.Contexts;
 
-namespace Uial.Interactions
+namespace Uial.Interactions.Windows
 {
     public abstract class AbstractPatternInteraction<T> : AbstractInteraction, IInteraction where T : BasePattern
     {
         protected abstract AutomationPattern AutomationPattern { get; }
-        protected T Pattern => GetPattern(Context as IWindowsVisualContext, AutomationPattern);
+        protected T Pattern => GetPattern(Context, AutomationPattern);
 
         public AbstractPatternInteraction(IWindowsVisualContext context) : base(context) { }
 

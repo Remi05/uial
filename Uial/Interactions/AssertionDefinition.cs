@@ -18,7 +18,7 @@ namespace Uial.Interactions
             ParamsValueDefinitions = paramsValueDefinitions;
         }
 
-        public IInteraction Resolve(IContext parentContext, RuntimeScope currentScope)
+        public IInteraction Resolve(IContext parentContext, IInteractionsProvider interactionsProvider, RuntimeScope currentScope)
         {
             IEnumerable<string> paramValues = ParamsValueDefinitions.Select((valueDefinition) => valueDefinition.Resolve(currentScope));
             IAssertion assertion = Assertions.Assertions.GetAssertionByName(InteractionName, paramValues);

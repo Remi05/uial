@@ -3,13 +3,13 @@ using Uial.Scopes;
 
 namespace Uial.Contexts
 {
-    public class RootContext : IContext
+    public class RootVisualContext : IContext
     {
         public RuntimeScope Scope { get; private set; }
         public string Name => "Root";
         public AutomationElement RootElement => AutomationElement.RootElement; 
 
-        public RootContext(RuntimeScope scope)
+        public RootVisualContext(RuntimeScope scope)
         {
             Scope = scope;
         }

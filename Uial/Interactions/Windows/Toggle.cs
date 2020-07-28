@@ -1,7 +1,7 @@
 ﻿using System.Windows.Automation;
 using Uial.Contexts;
 
-namespace Uial.Interactions.Core
+namespace Uial.Interactions.Windows
 {
     public class Toggle : AbstractPatternInteraction<TogglePattern>, IInteraction
     {

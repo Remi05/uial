@@ -5,19 +5,19 @@ using System.Windows.Automation;
 using Uial.Contexts;
 using Uial.Scopes;
 
-namespace Uial.Interactions.Core
+namespace Uial.Interactions.Windows
 {
-    public class GetRangeValue : AbstractPatternInteraction<RangeValuePattern>, IInteraction
+    public class GetTextValue : AbstractPatternInteraction<ValuePattern>, IInteraction
     {
-        public const string Key = "GetRangeValue";
+        public const string Key = "GetTextValue";
 
         public override string Name => Key;
-        protected override AutomationPattern AutomationPattern => RangeValuePattern.Pattern;
-        
+        protected override AutomationPattern AutomationPattern => ValuePattern.Pattern;
+
         protected string ReferenceName { get; set; }
         protected RuntimeScope Scope { get; set; }
 
-        public GetRangeValue(IWindowsVisualContext context, string referenceName, RuntimeScope scope) : base(context)
+        public GetTextValue(IWindowsVisualContext context, string referenceName, RuntimeScope scope) : base(context)
         {
             if (referenceName == null || scope == null)
             {
@@ -30,17 +30,17 @@ namespace Uial.Interactions.Core
         public override void Do()
         {
             base.Do();
-            Scope.ReferenceValues[ReferenceName] = Pattern.Current.Value.ToString();
+            Scope.ReferenceValues[ReferenceName] = Pattern.Current.Value;
         }
 
-        public static GetRangeValue FromRuntimeValues(IWindowsVisualContext context, RuntimeScope scope, IEnumerable<string> paramValues)
+        public static GetTextValue FromRuntimeValues(IWindowsVisualContext context, RuntimeScope scope, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != 1)
             {
                 throw new InvalidParameterCountException(1, paramValues.Count());
             }
             string referenceName = paramValues.ElementAt(0);
-            return new GetRangeValue(context, referenceName, scope);
+            return new GetTextValue(context, referenceName, scope);
         }
     }
 }
