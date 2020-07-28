@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Uial.Contexts;
 using Uial.Interactions;
-using Uial.Scopes;
 
 namespace Uial.Scenarios
 {
