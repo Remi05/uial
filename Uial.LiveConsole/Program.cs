@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Uial.LiveConsole
 {
@@ -10,6 +6,8 @@ namespace Uial.LiveConsole
     {
         static void Main(string[] args)
         {
+            var interpreter = new LiveInterpreter(Console.In, Console.Out);
+            interpreter.Run();
         }
     }
 }
