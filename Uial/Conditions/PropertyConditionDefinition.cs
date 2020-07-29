@@ -29,5 +29,10 @@ namespace Uial.Conditions
             object propertyValue = Controls.GetPropertyValue(Property, Value.Resolve(scope));
             return new PropertyCondition(Property, propertyValue);
         }
+
+        public override string ToString()
+        {
+            return $"{Property.ToUialString()}={Value}";
+        }
     }
 }

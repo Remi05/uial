@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows.Automation;
 using Uial.Conditions;
 
@@ -48,6 +49,25 @@ namespace Uial.Contexts
             { "TreeItem",    ControlType.TreeItem },
             { "Window",      ControlType.Window },
         };
+
+        public static string ToUialString(this ControlType controlType)
+        {
+            // ex: ToolTip's LocalizedControlType is "tool tip", this method returns "ToolTip".
+            IEnumerable<string> words = controlType.LocalizedControlType.Split(' ');
+            string classNameStr = "";
+            foreach (string word in words)
+            {
+                classNameStr += word.Substring(0, 1).ToUpper() + word.Substring(1);
+            }
+            return classNameStr;
+        }
+
+        public static string ToUialString(this AutomationProperty property)
+        {
+            // ex: AutomationElement.NameProperty's ProgrammaticName is "AutomationElementIdentifiers.NameProperty", this method returns "Name".
+            var programmaticNameRegex = new Regex("AutomationElementIdentifiers\\.(?<name>[a-zA-Z]+)Property");
+            return programmaticNameRegex.Match(property.ProgrammaticName).Groups["name"].Value;
+        }
 
         public static object GetPropertyValue(AutomationProperty property, string valueStr)
         {
