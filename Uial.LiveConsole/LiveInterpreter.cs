@@ -30,41 +30,55 @@ namespace Uial.LiveConsole
         public void Run()
         {
             var script = new Script();
-            var rootScope = new RuntimeScope(new DefinitionScope(), new Dictionary<string, string>());
+            var rootScope = new RuntimeScope(script.RootScope, new Dictionary<string, string>());
             var rootContext = new RootContext(rootScope);
 
             while (true)
             {
-                string line = InputStream.ReadLine();
-                if (Parser.IsImport(line))
+                try
                 {
-                    script.AddScript(Parser.ParseRepoImport(line));
+                    string line = InputStream.ReadLine();
+                    if (Parser.IsImport(line))
+                    {
+                        script.AddScript(Parser.ParseRepoImport(line));
+                    }
+                    else if (Parser.IsContext(line))
+                    {
+                        DefinitionScope currentScope = new DefinitionScope(script.RootScope);
+                        IContextDefinition contextDefinition = Parser.ParseContextDefinitionDeclaration(currentScope, line);
+                        script.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
+                    }
+                    else if (Parser.IsBaseInteraction(line))
+                    {
+                        IBaseInteractionDefinition baseInteractionDefinition = Parser.ParseBaseInteractionDefinition(line);
+                        IInteraction interaction = baseInteractionDefinition.Resolve(rootContext, rootScope);
+                        interaction.Do();
+                    }
+                    else if (Parser.IsCondition(line))
+                    {
+                        IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
+                        Condition condition = conditionDefinition.Resolve(rootScope);
+                        AutomationElement element = AutomationElement.RootElement.FindFirst(TreeScope.Subtree, condition);
+                        OutputElementInfo(element);
+                    }
+                    else if (Parser.IsBaseContext(line))
+                    {
+                        IBaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
+                        IContext context = baseContextDefinition.Resolve(rootContext, rootScope);
+                        OutputElementInfo(context.RootElement);
+                    }
                 }
-                else if (Parser.IsBaseInteraction(line))
+                catch (Exception e)
                 {
-                    IBaseInteractionDefinition baseInteractionDefinition = Parser.ParseBaseInteractionDefinition(line);
-                    IInteraction interaction = baseInteractionDefinition.Resolve(rootContext, rootScope);
-                    interaction.Do();
-                }
-                else if (Parser.IsCondition(line))
-                {
-                    IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
-                    Condition condition = conditionDefinition.Resolve(rootScope);
-                    AutomationElement element = AutomationElement.RootElement.FindFirst(TreeScope.Subtree, condition);
-                    OutputElementInfo(element);
-                }
-                else if (Parser.IsBaseContext(line))
-                {
-                    IBaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
-                    IContext context = baseContextDefinition.Resolve(rootContext, rootScope);
-                    OutputElementInfo(context.RootElement);
+                    OutputStream.WriteLine(e.Message + "\n");
                 }
             }
         }
 
         protected void OutputElementInfo(AutomationElement automationElement)
         {
-            OutputStream.WriteLine($"[{Helper.GetConditionFromElement(automationElement)}]\n");
+            string elementInfo = automationElement == null ? "Element not found.\n" : $"[{Helper.GetConditionFromElement(automationElement)}]\n";
+            OutputStream.WriteLine(elementInfo);
         }
     }
 }

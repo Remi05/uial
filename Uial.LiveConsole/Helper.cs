@@ -17,6 +17,11 @@ namespace Uial.LiveConsole
 
         public static IConditionDefinition GetConditionFromElement(AutomationElement element)
         {
+            if (element == null)
+            {
+                return null;
+            }
+
             List<IConditionDefinition> propertyConditions = new List<IConditionDefinition>();
             foreach (AutomationProperty property in IdentifyingProperties)
             {
