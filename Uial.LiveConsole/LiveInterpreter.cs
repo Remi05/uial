@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Automation;
 using Uial.Conditions;
 using Uial.Contexts;
@@ -13,11 +14,17 @@ namespace Uial.LiveConsole
 {
     public class LiveInterpreter
     {
+        protected delegate void Command(string line);
+
         protected TextReader InputStream { get; set; }
         protected TextWriter OutputStream { get; set; }
         protected ScriptParser Parser { get; set; } = new ScriptParser();
+        protected VisualTreeSerializer VisualTreeSerializer = new VisualTreeSerializer();
+        protected ExecutionContext ExecutionContext { get; set; } = new ExecutionContext();
+        protected IDictionary<string, Command> Commands { get; set; } = new Dictionary<string, Command>();
+        protected Action ClearOutput { get; set; }
 
-        public LiveInterpreter(TextReader inputStream, TextWriter outputStream)
+        public LiveInterpreter(TextReader inputStream, TextWriter outputStream, Action clearOutput)
         {
             if (inputStream == null)
             {
@@ -25,47 +32,74 @@ namespace Uial.LiveConsole
             }
             InputStream = inputStream;
             OutputStream = outputStream;
+            ClearOutput = clearOutput;
+            InitializeCommands();
+        }
+
+        protected void InitializeCommands()
+        {
+            Commands.Add("cls",   (_) => ClearOutput());
+            Commands.Add("clear", (_) => ClearOutput());
+            Commands.Add("reset", (_) => ExecutionContext = new ExecutionContext());
+            Commands.Add("root",  (_) => ShowElement(AutomationElement.RootElement, TreeScope.Element));
+            Commands.Add("ancestors",   (line) => ShowElement(line, TreeScope.Ancestors));
+            Commands.Add("children",    (line) => ShowElement(line, TreeScope.Children));
+            Commands.Add("descendants", (line) => ShowElement(line, TreeScope.Descendants));
+            Commands.Add("element",     (line) => ShowElement(line, TreeScope.Element));
+            Commands.Add("parent",      (line) => ShowElement(line, TreeScope.Parent));
+            Commands.Add("subtree",     (line) => ShowElement(line, TreeScope.Subtree));
+            Commands.Add("import", ImportScript);
         }
 
         public void Run()
-        {
-            var script = new Script();
-            var rootScope = new RuntimeScope(script.RootScope, new Dictionary<string, string>());
-            var rootContext = new RootContext(rootScope);
-
+        {  
             while (true)
             {
                 try
                 {
                     string line = InputStream.ReadLine();
+                    string[] splits = line.Split(' ');
+                    string commandStr = splits[0];              
+                    
+                    if (Commands.ContainsKey(commandStr))
+                    {
+                        if (splits.Length > 1)
+                        {
+                            line = splits[1];
+                        }
+
+                        Commands[commandStr](line);
+                        continue;
+                    }
+   
                     if (Parser.IsImport(line))
                     {
-                        script.AddScript(Parser.ParseRepoImport(line));
+                        ExecutionContext.Script.AddScript(Parser.ParseRepoImport(line));
                     }
                     else if (Parser.IsContext(line))
                     {
-                        DefinitionScope currentScope = new DefinitionScope(script.RootScope);
+                        DefinitionScope currentScope = new DefinitionScope(ExecutionContext.Script.RootScope);
                         IContextDefinition contextDefinition = Parser.ParseContextDefinitionDeclaration(currentScope, line);
-                        script.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
+                        ExecutionContext.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
                     }
                     else if (Parser.IsBaseInteraction(line))
                     {
                         IBaseInteractionDefinition baseInteractionDefinition = Parser.ParseBaseInteractionDefinition(line);
-                        IInteraction interaction = baseInteractionDefinition.Resolve(rootContext, rootScope);
+                        IInteraction interaction = baseInteractionDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope);
                         interaction.Do();
                     }
                     else if (Parser.IsCondition(line))
                     {
                         IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
-                        Condition condition = conditionDefinition.Resolve(rootScope);
+                        Condition condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
                         AutomationElement element = AutomationElement.RootElement.FindFirst(TreeScope.Subtree, condition);
-                        OutputElementInfo(element);
+                        ShowElement(element, TreeScope.Element);
                     }
                     else if (Parser.IsBaseContext(line))
                     {
                         IBaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
-                        IContext context = baseContextDefinition.Resolve(rootContext, rootScope);
-                        OutputElementInfo(context.RootElement);
+                        IContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope);
+                        ShowElement(context.RootElement, TreeScope.Element);
                     }
                 }
                 catch (Exception e)
@@ -75,9 +109,42 @@ namespace Uial.LiveConsole
             }
         }
 
-        protected void OutputElementInfo(AutomationElement automationElement)
+        protected void ImportScript(string line)
         {
-            string elementInfo = automationElement == null ? "Element not found.\n" : $"[{Helper.GetConditionFromElement(automationElement)}]\n";
+            string repoStr = $"import 'github:Remi05/uial/samples/contexts/{line}.uial'";
+            ExecutionContext.Script.AddScript(Parser.ParseRepoImport(repoStr));
+        }
+
+        protected void ShowElement(string line, TreeScope treeScope)
+        {
+            if (Parser.IsCondition(line))
+            {
+                IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
+                Condition condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
+                AutomationElement element = AutomationElement.RootElement.FindFirst(TreeScope.Subtree, condition);
+                ShowElement(element, treeScope);
+            }
+            else if (Parser.IsBaseContext(line))
+            {
+                IBaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
+                IContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope);
+                ShowElement(context.RootElement, treeScope);
+            }
+        }
+
+        protected void ShowElement(AutomationElement element, TreeScope treeScope)
+        {
+            if (element == null)
+            {
+                OutputStream.WriteLine("Element not found.\n");
+                return;
+            }
+
+            string elementInfo = $"[{Helper.GetConditionFromElement(element)}]\n";
+            if (treeScope != TreeScope.Element)
+            {
+                elementInfo += VisualTreeSerializer.GetVisualTreeRepresentation(element, treeScope);
+            }           
             OutputStream.WriteLine(elementInfo);
         }
     }

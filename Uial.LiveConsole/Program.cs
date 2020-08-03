@@ -6,7 +6,7 @@ namespace Uial.LiveConsole
     {
         static void Main(string[] args)
         {
-            var interpreter = new LiveInterpreter(Console.In, Console.Out);
+            var interpreter = new LiveInterpreter(Console.In, Console.Out, Console.Clear);
             interpreter.Run();
         }
     }
