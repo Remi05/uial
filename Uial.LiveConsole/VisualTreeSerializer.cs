@@ -37,7 +37,7 @@ namespace Uial.LiveConsole
             }
             var parent = TreeWalker.RawViewWalker.GetParent(element);
             // TODO: Fix indent.
-            return GetAncestorsRepresentation(parent) + "\n  |----" + elementRepresentation;
+            return GetAncestorsRepresentation(parent) + "  |----" + elementRepresentation;
         }
 
         public string GetChildrenRepresentation(AutomationElement element)
@@ -47,7 +47,7 @@ namespace Uial.LiveConsole
             StringBuilder childrenStrBuilder = new StringBuilder();
             foreach (AutomationElement child in children)
             {
-                childrenStrBuilder.Append($"  |----[{Helper.GetConditionFromElement(child)}]\n");
+                childrenStrBuilder.Append($"  |----" + GetElementRepresentation(child));
             }
             return childrenStrBuilder.ToString();
         }
@@ -58,7 +58,7 @@ namespace Uial.LiveConsole
             StringBuilder descendantsStrBuilder = new StringBuilder();
             foreach (AutomationElement child in children)
             {
-                descendantsStrBuilder.Append("  |----" + GetElementRepresentation(child) + "\n");
+                descendantsStrBuilder.Append("  |----" + GetElementRepresentation(child));
                 string descendantsStr = GetDescendantsRepresentation(child);
                 descendantsStrBuilder.Append(descendantsStr.Replace("\n", "\n  "));
             }
@@ -67,18 +67,23 @@ namespace Uial.LiveConsole
 
         public string GetElementRepresentation(AutomationElement element)
         {
-            return $"[{Helper.GetConditionFromElement(element)}]";
+            string elementRepresentation = $"[{Helper.GetConditionFromElement(element)}]";
+            if (element == AutomationElement.RootElement)
+            {
+                elementRepresentation += " (Root)";
+            }
+            return elementRepresentation + "\n";
         }
 
         public string GetParentRepresentation(AutomationElement element)
         {
             var parent = TreeWalker.RawViewWalker.GetParent(element);
-            return $"[{Helper.GetConditionFromElement(parent)}]";
+            return GetElementRepresentation(parent);
         }
 
         public string GetSubtreeRepresentation(AutomationElement element)
         {
-            return GetElementRepresentation(element) + GetSubtreeRepresentation(element);
+            return GetElementRepresentation(element) + GetDescendantsRepresentation(element);
         }
     }
 }
