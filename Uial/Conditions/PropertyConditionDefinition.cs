@@ -26,7 +26,7 @@ namespace Uial.Conditions
 
         public Condition Resolve(RuntimeScope scope)
         {
-            object propertyValue = Controls.GetPropertyValue(Property, Value.Resolve(scope));
+            object propertyValue = Properties.GetPropertyValue(Property, Value.Resolve(scope));
             return new PropertyCondition(Property, propertyValue);
         }
 

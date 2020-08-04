@@ -68,7 +68,7 @@ namespace Uial.LiveConsole
 
         public string GetElementRepresentation(AutomationElement element)
         {
-            string elementRepresentation = $"[{Properties.GetConditionFromElement(element)}]";
+            string elementRepresentation = $"[{Conditions.Conditions.GetConditionFromElement(element)}]";
             if (element == AutomationElement.RootElement)
             {
                 elementRepresentation += " (Root)";

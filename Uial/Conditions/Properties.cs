@@ -20,14 +20,6 @@ namespace Uial.Conditions
             { "Name",              AutomationElement.NameProperty },
         };
 
-        private static readonly IList<AutomationProperty> IdentifyingProperties = new List<AutomationProperty>()
-        {
-            AutomationElement.AutomationIdProperty,
-            AutomationElement.ClassNameProperty,
-            AutomationElement.ControlTypeProperty,
-            AutomationElement.NameProperty,
-        };
-
         private static readonly Dictionary<string, ControlType> ControlTypeMap = new Dictionary<string, ControlType>()
         {
             { "Button",      ControlType.Button },
@@ -71,15 +63,6 @@ namespace Uial.Conditions
             { "Window",      ControlType.Window },
         };
 
-        public static object GetPropertyValue(AutomationProperty property, string valueStr)
-        {
-            if (property == AutomationElement.ControlTypeProperty)
-            {
-                return ControlTypeMap[valueStr];
-            }
-            return valueStr;
-        }
-
         public static AutomationProperty GetPropertyByName(string propertyName)
         {
             if (!AutomationPropertiesMap.ContainsKey(propertyName))
@@ -89,35 +72,13 @@ namespace Uial.Conditions
             return AutomationPropertiesMap[propertyName];
         }
 
-        public static IConditionDefinition GetConditionFromElement(AutomationElement element)
+        public static object GetPropertyValue(AutomationProperty property, string valueStr)
         {
-            if (element == null)
+            if (property == AutomationElement.ControlTypeProperty)
             {
-                return null;
+                return ControlTypeMap[valueStr];
             }
-
-            List<IConditionDefinition> propertyConditions = new List<IConditionDefinition>();
-            foreach (AutomationProperty property in IdentifyingProperties)
-            {
-                object propertyValue = element.GetCurrentPropertyValue(property);
-                string propertyValueStr = PropertyValueToString(propertyValue);
-                if (!string.IsNullOrWhiteSpace(propertyValueStr))
-                {
-                    ValueDefinition valueDefinition = ValueDefinition.FromLiteral(propertyValueStr);
-                    PropertyConditionDefinition propertyCondition = new PropertyConditionDefinition(property, valueDefinition);
-                    propertyConditions.Add(propertyCondition);
-                }
-            }
-            return new CompositeConditionDefinition(propertyConditions);
-        }
-
-        private static string PropertyValueToString(object propertyValue)
-        {
-            if (propertyValue is ControlType)
-            {
-                return (propertyValue as ControlType)?.ToUialString();
-            }
-            return propertyValue?.ToString();
+            return valueStr;
         }
 
         public static string ToUialString(this AutomationProperty property)
