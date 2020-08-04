@@ -1,31 +1,48 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows.Automation;
 
 namespace Uial.Conditions
 {
-    public static class Properties
+    public static class Conditions
     {
-        private static readonly Dictionary<string, AutomationProperty> AutomationPropertyMap = new Dictionary<string, AutomationProperty>()
+        private static readonly IList<AutomationProperty> IdentifyingProperties = new List<AutomationProperty>()
         {
-            { "AcceleratorKey",    AutomationElement.AcceleratorKeyProperty },
-            { "AccessKey",         AutomationElement.AccessKeyProperty },
-            { "AutomationId",      AutomationElement.AutomationIdProperty },
-            { "BoundingRectangle", AutomationElement.BoundingRectangleProperty },
-            { "ClassName",         AutomationElement.ClassNameProperty },
-            { "ClickablePoint",    AutomationElement.ClickablePointProperty },
-            { "ControlType",       AutomationElement.ControlTypeProperty },
-            { "Culture",           AutomationElement.CultureProperty },
-            { "FrameworkId",       AutomationElement.FrameworkIdProperty },
-            { "Name",              AutomationElement.NameProperty },
+            AutomationElement.AutomationIdProperty,
+            AutomationElement.ClassNameProperty,
+            AutomationElement.ControlTypeProperty,
+            AutomationElement.NameProperty,
         };
 
-        public static AutomationProperty GetPropertyByName(string propertyName)
+        public static IConditionDefinition GetConditionFromElement(AutomationElement element)
         {
-            if (!AutomationPropertyMap.ContainsKey(propertyName))
+            if (element == null)
             {
-                throw new UnknownPropertyException(propertyName);
+                return null;
             }
-            return AutomationPropertyMap[propertyName];
+
+            var propertyConditions = new List<IConditionDefinition>();
+            foreach (AutomationProperty property in IdentifyingProperties)
+            {
+                object propertyValue = element.GetCurrentPropertyValue(property);
+                string propertyValueStr = PropertyValueToString(propertyValue);
+                if (!string.IsNullOrWhiteSpace(propertyValueStr))
+                {
+                    var valueDefinition = ValueDefinition.FromLiteral(propertyValueStr);
+                    var propertyCondition = new PropertyConditionDefinition(property, valueDefinition);
+                    propertyConditions.Add(propertyCondition);
+                }
+            }
+            return new CompositeConditionDefinition(propertyConditions);
+        }
+
+        private static string PropertyValueToString(object propertyValue)
+        {
+            if (propertyValue is ControlType)
+            {
+                return (propertyValue as ControlType)?.ToUialString();
+            }
+            return propertyValue?.ToString();
         }
     }
 }

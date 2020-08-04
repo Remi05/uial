@@ -80,42 +80,60 @@ namespace Uial.Parsing
         const string BaseInteractionPattern = "^\\s*(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern + "\\s*$";
 
 
-        private bool IsAssertion(string line)
+        public bool IsAssertion(string line)
         {
             return line.Trim().StartsWith(BlocIdentifiers.Assertion);
         }
 
-        private bool IsComment(string line)
+        public bool IsBaseContext(string line)
+        {
+            var baseContextRegex = new Regex(BaseContextPattern);
+            return baseContextRegex.IsMatch(line);
+        }
+
+        public bool IsBaseInteraction(string line)
+        {
+            var baseInteractionRegex = new Regex(BaseInteractionPattern);
+            return baseInteractionRegex.IsMatch(line);
+        }
+
+        public bool IsComment(string line)
         {
             return line.Trim().StartsWith(BlocIdentifiers.Comment);
         }
 
-        private bool IsImport(string line)
+        public bool IsImport(string line)
         {
             return line.Trim().StartsWith(BlocIdentifiers.Import);
         }
 
-        private bool IsContext(string line)
+        public bool IsCondition(string line)
+        {
+            var conditionRegex = new Regex(ConditionPattern);
+            return conditionRegex.IsMatch(line);
+        }
+
+        public bool IsContext(string line)
         {
             return line.Trim().StartsWith(BlocIdentifiers.Context);
         }
 
-        private bool IsInteraction(string line)
+        public bool IsInteraction(string line)
         {
             return line.Trim().StartsWith(BlocIdentifiers.Interaction);
         }
 
-        private bool IsScenario(string line)
+        public bool IsScenario(string line)
         {
             return line.Trim().StartsWith(BlocIdentifiers.Scenario);
         }
 
-        private bool IsTest(string line)
+        public bool IsTest(string line)
         {
             return line.Trim().StartsWith(BlocIdentifiers.Test);
         }
 
-        private bool IsTestGroup(string line)
+        public bool IsTestGroup(string line)
         {
             return line.Trim().StartsWith(BlocIdentifiers.TestGroup);
         }

@@ -33,5 +33,10 @@ namespace Uial.Conditions
             }
             return condition;
         }
+
+        public override string ToString()
+        {
+            return $"{string.Join(", ", ConditionDefinitions)}";
+        }
     }
 }
