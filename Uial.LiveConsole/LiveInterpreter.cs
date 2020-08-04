@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -66,7 +66,7 @@ namespace Uial.LiveConsole
                     {
                         if (splits.Length > 1)
                         {
-                            line = splits[1];
+                            line = string.Concat(splits.Skip(1));
                         }
 
                         Commands[commandStr](line);
