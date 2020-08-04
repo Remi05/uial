@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -123,12 +123,19 @@ namespace Uial.LiveConsole
                 IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
                 Condition condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
                 var elements = AutomationElement.RootElement.FindAll(TreeScope.Subtree, condition);
-                foreach (AutomationElement element in elements)
+                if (elements.Count > 0)
                 {
-                    string elementRepresentation = VisualTreeSerializer.GetElementRepresentation(element);
-                    OutputStream.Write(elementRepresentation);
+                    foreach (AutomationElement element in elements)
+                    {
+                        string elementRepresentation = VisualTreeSerializer.GetElementRepresentation(element);
+                        OutputStream.Write(elementRepresentation);
+                    }
+                    Console.WriteLine();
                 }
-                Console.WriteLine();
+                else
+                {
+                    OutputStream.WriteLine($"No elements found matching condition {line}.");
+                }
             }
             else
             {
