@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExecutionContext.cs" />
-    <Compile Include="Helper.cs" />
     <Compile Include="LiveInterpreter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

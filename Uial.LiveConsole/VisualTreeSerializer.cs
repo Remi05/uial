@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading;
 using System.Windows.Automation;
+using Uial.Conditions;
 
 namespace Uial.LiveConsole
 {
@@ -67,7 +68,7 @@ namespace Uial.LiveConsole
 
         public string GetElementRepresentation(AutomationElement element)
         {
-            string elementRepresentation = $"[{Helper.GetConditionFromElement(element)}]";
+            string elementRepresentation = $"[{Properties.GetConditionFromElement(element)}]";
             if (element == AutomationElement.RootElement)
             {
                 elementRepresentation += " (Root)";
