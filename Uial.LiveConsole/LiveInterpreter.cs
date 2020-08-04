@@ -23,6 +23,7 @@ namespace Uial.LiveConsole
         protected ExecutionContext ExecutionContext { get; set; } = new ExecutionContext();
         protected IDictionary<string, Command> Commands { get; set; } = new Dictionary<string, Command>();
         protected Action ClearOutput { get; set; }
+        protected bool ShouldExit { get; set; } = false;
 
         public LiveInterpreter(TextReader inputStream, TextWriter outputStream, Action clearOutput)
         {
@@ -40,6 +41,7 @@ namespace Uial.LiveConsole
         {
             Commands.Add("cls",   (_) => ClearOutput());
             Commands.Add("clear", (_) => ClearOutput());
+            Commands.Add("exit",  (_) => ShouldExit = true);
             Commands.Add("reset", (_) => ExecutionContext = new ExecutionContext());
             Commands.Add("root",  (_) => ShowElement(AutomationElement.RootElement, TreeScope.Element));
             Commands.Add("ancestors",   (line) => ShowElement(line, TreeScope.Ancestors));
@@ -54,7 +56,7 @@ namespace Uial.LiveConsole
 
         public void Run()
         {  
-            while (true)
+            while (!ShouldExit)
             {
                 try
                 {
