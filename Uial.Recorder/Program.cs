@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,13 +12,13 @@ namespace Uial.Recorder
     {
         static void Main(string[] args)
         {
-            ScriptRecorder recorder = new ScriptRecorder();
+            var recorder = new ScriptRecorder();
             var foundElements = new List<AutomationElement>();
 
             AutomationElement prevElement = null;
             while (true)
             {
-                AutomationElement curElement = recorder.GetCurrentElment();
+                AutomationElement curElement = recorder.GetCurrentElement();
                 if (prevElement == null || !Automation.Compare(curElement, prevElement))
                 {
                     prevElement = curElement;

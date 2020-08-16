@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Automation;
@@ -41,21 +41,21 @@ namespace Uial.Recorder
             Automation.RemoveAutomationFocusChangedEventHandler(OnFocusChanged);
         }
 
-        public AutomationElement GetCurrentElment()
+        public AutomationElement GetCurrentElement()
         {
-            Point point = new Point(Cursor.Position.X, Cursor.Position.Y);
+            var point = new Point(Cursor.Position.X, Cursor.Position.Y);
             return AutomationElement.FromPoint(point);
         }
 
         public IConditionDefinition GetCurrentCondition()
         {
-            AutomationElement currentElement = GetCurrentElment();
+            AutomationElement currentElement = GetCurrentElement();
             return Conditions.Conditions.GetConditionFromElement(currentElement);
         }
 
         public IBaseContextDefinition GetCurrentBaseContext()
         {
-            AutomationElement element = GetCurrentElment();
+            AutomationElement element = GetCurrentElement();
             ControlType controlType = element.GetCurrentPropertyValue(AutomationElement.ControlTypeProperty) as ControlType;
 
             List<IConditionDefinition> propertyConditions = new List<IConditionDefinition>();
