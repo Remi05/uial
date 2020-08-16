@@ -11,7 +11,7 @@ using Uial.Scenarios;
 
 namespace Uial.Recorder
 {
-    public class ScriptRecorder
+    public class ScriptRecorder : IScriptRecorder
     {
         private static readonly IList<AutomationProperty> IdentifyingProperties = new List<AutomationProperty>()
         {
@@ -77,6 +77,26 @@ namespace Uial.Recorder
 
             IConditionDefinition identifyingCondition = new CompositeConditionDefinition(propertyConditions);
             return new BaseControlDefinition(controlType.ToUialString(), identifyingCondition);
+        }
+
+        public IContextDefinition GetCurrentContext()
+        {
+            return null;
+        }
+
+        public IBaseInteractionDefinition RecordBaseInteraction()
+        {
+            return null;
+        }
+
+        public IInteractionDefinition RecordInteraction()
+        {
+            return null;
+        }
+
+        public IScenarioDefinition RecordScenario()
+        {
+            return null;
         }
 
         public void RegisterEventHandlers(AutomationElement element)
