@@ -7,8 +7,8 @@ namespace Uial.Interactions
 {
     public class InteractionDefinition : IInteractionDefinition
     {
-        protected DefinitionScope Scope { get; set; }
         public string Name { get; protected set; }
+        protected DefinitionScope Scope { get; set; }
         protected IEnumerable<string> ParamNames { get; set; }
         protected IEnumerable<IBaseInteractionDefinition> BaseInteractionDefinitions { get; set; }
 
