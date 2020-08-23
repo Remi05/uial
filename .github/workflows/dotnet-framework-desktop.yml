@@ -47,8 +47,3 @@ jobs:
     # Execute all unit tests in the solution
     #- name: Execute unit tests
     #  run: dotnet test
-    
-    - name: Codecov
-      run: curl -s https://codecov.io/bash | bash
-      shell: bash
-
