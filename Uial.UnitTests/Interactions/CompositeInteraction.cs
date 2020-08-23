@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Uial.Interactions;
-using Uial.UnitTests.Interactions;
 
-namespace Uial.UnitTests.Conditions
+namespace Uial.UnitTests.Interactions
 {
     [TestClass]
     public class CompositeInteractionTests
