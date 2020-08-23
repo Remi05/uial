@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Uial.Interactions;
@@ -12,8 +12,8 @@ namespace Uial.UnitTests.Interactions
         public void VerifyNameIsSet()
         {
             string expectedName = "TestCompositeInteraction";
-            var scenario = new CompositeInteraction(expectedName, new List<IInteraction>());
-            Assert.AreEqual(expectedName, scenario.Name);
+            var compositeInteraction = new CompositeInteraction(expectedName, new List<IInteraction>());
+            Assert.AreEqual(expectedName, compositeInteraction.Name);
         }
 
         [TestMethod]
@@ -26,8 +26,8 @@ namespace Uial.UnitTests.Interactions
                 (interactionName) => new MockInteraction(interactionName, () => interactionsCalled.Add(interactionName))
             ).ToList();
 
-            var scenario = new CompositeInteraction("TestCompositeInteraction", mockInteractions);
-            scenario.Do();
+            var compositeInteraction = new CompositeInteraction("TestCompositeInteraction", mockInteractions);
+            compositeInteraction.Do();
 
             Assert.IsTrue(mockInteractions.All((interaction) => interaction.WasRun), "All the interactions should be run.");
             Assert.IsTrue(mockInteractions.All((interaction) => interaction.WasRunOnce), "All the interactions should be run exactly once.");
