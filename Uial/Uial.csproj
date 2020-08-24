@@ -57,6 +57,7 @@
     <Compile Include="Assertions\IsAvailable.cs" />
     <Compile Include="Assertions\Not.cs" />
     <Compile Include="Conditions\Conditions.cs" />
+    <Compile Include="Conditions\Properties.cs" />
     <Compile Include="Conditions\Exceptions.cs" />
     <Compile Include="Conditions\IConditionDefinition.cs" />
     <Compile Include="Contexts\AbstractContext.cs" />

@@ -24,6 +24,11 @@ namespace Uial
             return scope.ReferenceValues[ReferenceName];
         }
 
+        public override string ToString()
+        {
+            return ReferenceName?.ToString() ?? $"\"{LiteralValue}\"";
+        }
+
         public static ValueDefinition FromReference(string referenceName)
         {
             if (referenceName == null)

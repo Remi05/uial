@@ -13,8 +13,8 @@ namespace Uial.Scopes
         public RuntimeScope(DefinitionScope definitionScope, Dictionary<string, string> referenceValues)
         {
             ReferenceValues = referenceValues;
-            ContextDefinitions = new Dictionary<string, IContextDefinition>(definitionScope.ContextDefinitions);
-            InteractionDefinitions = new Dictionary<string, IInteractionDefinition>(definitionScope.InteractionDefinitions);
+            ContextDefinitions = definitionScope.ContextDefinitions;
+            InteractionDefinitions = definitionScope.InteractionDefinitions;
         }
     }
 }
