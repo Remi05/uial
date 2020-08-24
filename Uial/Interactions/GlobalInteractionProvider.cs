@@ -7,11 +7,11 @@ using Uial.Scopes;
 
 namespace Uial.Interactions
 {
-    public class GlobalinteractionProvider : IInteractionProvider
+    public class GlobalInteractionProvider : IInteractionProvider
     {
         protected IList<IInteractionProvider> InteractionProviders { get; set; }
 
-        public GlobalinteractionProvider(IList<IInteractionProvider> interactionProviders)
+        public GlobalInteractionProvider(IList<IInteractionProvider> interactionProviders)
         {
             if (interactionProviders == null)
             {

@@ -84,7 +84,7 @@ namespace Uial.Cli
                         new Interactions.Core.CoreInteractionProvider(),
                         new Interactions.Windows.VisualInteractionProvider(),
                     };
-                var interactionProvider = new GlobalinteractionProvider(interactionProviders);
+                var interactionProvider = new GlobalInteractionProvider(interactionProviders);
 
                 if (scenarioName != null)
                 {
