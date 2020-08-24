@@ -4,12 +4,15 @@ using Uial.Scopes;
 
 namespace Uial.Contexts
 {
-    public class WindowsVisualContext : AbstractContext, IContext
-    {
+    public class WindowsVisualContext : IWindowsVisualContext
+    { 
         protected IWindowsVisualContext Parent { get; set; }
         protected Condition RootElementCondition { get; set; }
+        protected Condition UniqueCondition { get; set; }
 
-        public override AutomationElement RootElement
+        public string Name { get; protected set; }
+        public RuntimeScope Scope { get; protected set; }
+        public AutomationElement RootElement
         {
             get
             {
@@ -30,6 +33,13 @@ namespace Uial.Contexts
             Name = name;
             RootElementCondition = rootElementCondition;
             UniqueCondition = uniqueCondition;
+        }
+
+        public bool IsAvailable()
+        {
+            return RootElement != null
+                && (UniqueCondition == null
+                || RootElement.FindFirst(TreeScope.Subtree, UniqueCondition) != null);
         }
     }
 }

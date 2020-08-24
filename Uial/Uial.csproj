@@ -60,7 +60,6 @@
     <Compile Include="Conditions\Properties.cs" />
     <Compile Include="Conditions\Exceptions.cs" />
     <Compile Include="Conditions\IConditionDefinition.cs" />
-    <Compile Include="Contexts\AbstractContext.cs" />
     <Compile Include="Conditions\CompositeConditionDefinition.cs" />
     <Compile Include="Contexts\Windows\BaseControlDefinition.cs" />
     <Compile Include="Contexts\ContextDefinition.cs" />
