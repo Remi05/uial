@@ -3,7 +3,7 @@ using Uial.Scopes;
 
 namespace Uial.Contexts
 {
-    public class RootVisualContext : IContext
+    public class RootVisualContext : IWindowsVisualContext
     {
         public RuntimeScope Scope { get; private set; }
         public string Name => "Root";
