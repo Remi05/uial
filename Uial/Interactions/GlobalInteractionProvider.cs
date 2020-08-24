@@ -27,6 +27,10 @@ namespace Uial.Interactions
 
         public IInteraction GetInteractionByName(IContext context, RuntimeScope scope, string interactionName, IEnumerable<string> paramValues)
         {
+            if (!IsKnownInteraction(interactionName))
+            {
+                throw new InteractionUnavailableException(interactionName);
+            }
             IInteractionProvider interactionProvider = InteractionProviders.First(provider => provider.IsKnownInteraction(interactionName));
             return interactionProvider?.GetInteractionByName(context, scope, interactionName, paramValues);
         }
