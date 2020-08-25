@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Automation;
+using Uial.Contexts.Windows;
 using Uial.Contexts;
 
 namespace Uial.Interactions.Windows

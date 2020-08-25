@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Automation;
 using Uial.Conditions;
-using Uial.Contexts;
+using Uial.Contexts.Windows;
 using Uial.Scopes;
 
 namespace Uial.Interactions.Windows

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Uial.Contexts;
+using Uial.Contexts.Windows;
 using Uial.Interactions;
 using Uial.Scopes;
 

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Automation;
 using Uial.Conditions;
 using Uial.Contexts;
+using Uial.Contexts.Windows;
 using Uial.Interactions;
 using Uial.Parsing;
 using Uial.Scopes;

@@ -2,7 +2,7 @@
 using System.Windows.Automation;
 using Uial.Scopes;
 
-namespace Uial.Contexts
+namespace Uial.Contexts.Windows
 {
     public class WindowsVisualContext : IWindowsVisualContext
     { 

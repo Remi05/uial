@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Automation;
 using Uial.Conditions;
 
-namespace Uial.Contexts
+namespace Uial.Contexts.Windows
 {
     public static class Controls
     {

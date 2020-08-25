@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Uial.Contexts;
+using Uial.Contexts.Windows;
 using Uial.Scopes;
 
 namespace Uial.Interactions.Windows

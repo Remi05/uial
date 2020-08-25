@@ -2,7 +2,7 @@
 using Uial.Conditions;
 using Uial.Scopes;
 
-namespace Uial.Contexts
+namespace Uial.Contexts.Windows
 {
     public class BaseControlDefinition : IBaseContextDefinition
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Automation;
-using Uial.Contexts;
+using Uial.Contexts.Windows;
 
 namespace Uial.Interactions.Windows
 {
