@@ -6,31 +6,27 @@ namespace Uial.Interactions.Core
 {
     public class CoreInteractionProvider : IInteractionProvider
     {
-        protected ISet<string> KnownInteractions = new HashSet<string>()
+        protected delegate IInteraction InteractionFactory(IContext context, RuntimeScope scope, IEnumerable<string> paramValues);
+
+        protected IDictionary<string, InteractionFactory> KnownInteractions = new Dictionary<string, InteractionFactory>()
         {
-            IsAvailable.Key,
-            Wait.Key,
-            WaitUntilAvailable.Key,
+            { IsAvailable.Key,         (context, scope, paramValues) => IsAvailable.FromRuntimeValues(context, scope, paramValues) },
+            { Wait.Key,                (context, _, paramValues) => WaitUntilAvailable.FromRuntimeValues(context, paramValues) },
+            { WaitUntilAvailable.Key,  (context, _, paramValues) => WaitUntilAvailable.FromRuntimeValues(context, paramValues) },
         };
 
         public bool IsKnownInteraction(string interactionName)
         {
-            return KnownInteractions.Contains(interactionName);
+            return KnownInteractions.ContainsKey(interactionName);
         }
 
         public IInteraction GetInteractionByName(IContext context, RuntimeScope scope, string interactionName, IEnumerable<string> paramValues)
         {
-            switch (interactionName)
+            if (!IsKnownInteraction(interactionName))
             {
-                case IsAvailable.Key:
-                    return IsAvailable.FromRuntimeValues(context, scope, paramValues);
-                case Wait.Key:
-                    return Wait.FromRuntimeValues(paramValues);
-                case WaitUntilAvailable.Key:
-                    return WaitUntilAvailable.FromRuntimeValues(context, paramValues);
-                default:
-                    throw new InteractionUnavailableException(interactionName);
+                throw new InteractionUnavailableException(interactionName);
             }
+            return KnownInteractions[interactionName](context, scope, paramValues);
         }
     }
 }

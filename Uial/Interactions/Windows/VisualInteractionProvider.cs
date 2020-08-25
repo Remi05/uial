@@ -7,31 +7,33 @@ namespace Uial.Interactions.Windows
 {
     public class VisualInteractionProvider : IInteractionProvider
     {
-        protected ISet<string> KnownInteractions = new HashSet<string>()
+        protected delegate IInteraction VisualInteractionFactory(IWindowsVisualContext windowsVisualContext, RuntimeScope scope, IEnumerable<string> paramValues);
+
+        protected IDictionary<string, VisualInteractionFactory> KnownInteractions = new Dictionary<string, VisualInteractionFactory>()
         {
-            Close.Key,
-            Collapse.Key,
-            Expand.Key,
-            Focus.Key,
-            GetPropertyValue.Key,
-            GetRangeValue.Key,
-            GetTextValue.Key,
-            Invoke.Key,
-            Maximize.Key,
-            Minimize.Key,
-            Move.Key,
-            Resize.Key,
-            Restore.Key,
-            Scroll.Key,
-            Select.Key,
-            SetRangeValue.Key,
-            SetTextValue.Key,
-            Toggle.Key,
+            { Close.Key,            (windowsVisualContext, _, __) => new Close(windowsVisualContext) },
+            { Collapse.Key,         (windowsVisualContext, _, __) => new Collapse(windowsVisualContext) },
+            { Expand.Key,           (windowsVisualContext, _, __) => new Expand(windowsVisualContext) },
+            { Focus.Key,            (windowsVisualContext, _, __) => new Focus(windowsVisualContext) },
+            { GetPropertyValue.Key, (windowsVisualContext, scope, paramValues) => GetPropertyValue.FromRuntimeValues(windowsVisualContext, scope, paramValues) },
+            { GetRangeValue.Key,    (windowsVisualContext, scope, paramValues) => GetRangeValue.FromRuntimeValues(windowsVisualContext, scope, paramValues) },
+            { GetTextValue.Key,     (windowsVisualContext, scope, paramValues) => GetPropertyValue.FromRuntimeValues(windowsVisualContext, scope, paramValues) },
+            { Invoke.Key,           (windowsVisualContext, _, __) => new Invoke(windowsVisualContext) },
+            { Maximize.Key,         (windowsVisualContext, _, __) => new Maximize(windowsVisualContext) },
+            { Minimize.Key,         (windowsVisualContext, _, __) => new Minimize(windowsVisualContext) },
+            { Move.Key,             (windowsVisualContext, _, paramValues) => Move.FromRuntimeValues(windowsVisualContext, paramValues) },
+            { Resize.Key,           (windowsVisualContext, _, paramValues) => Resize.FromRuntimeValues(windowsVisualContext, paramValues) },
+            { Restore.Key,          (windowsVisualContext, _, __) => new Restore(windowsVisualContext) },
+            { Scroll.Key,           (windowsVisualContext, _, paramValues) =>  Scroll.FromRuntimeValues(windowsVisualContext, paramValues) },
+            { Select.Key,           (windowsVisualContext, _, __) => new Select(windowsVisualContext) },
+            { SetRangeValue.Key,    (windowsVisualContext, _, paramValues) => SetRangeValue.FromRuntimeValues(windowsVisualContext, paramValues) },
+            { SetTextValue.Key,     (windowsVisualContext, _, paramValues) => SetTextValue.FromRuntimeValues(windowsVisualContext, paramValues) },
+            { Toggle.Key,           (windowsVisualContext, _, __) => new Toggle(windowsVisualContext) },
         };
 
         public bool IsKnownInteraction(string interactionName)
         {
-            return KnownInteractions.Contains(interactionName);
+            return KnownInteractions.ContainsKey(interactionName);
         }
 
         public IInteraction GetInteractionByName(IContext context, RuntimeScope scope, string interactionName, IEnumerable<string> paramValues)
@@ -41,48 +43,11 @@ namespace Uial.Interactions.Windows
             {
                 throw new InvalidWindowsVisualContextException(context);
             }    
-            
-            switch (interactionName)
+            else if (!IsKnownInteraction(interactionName))
             {
-                case Close.Key:
-                    return new Close(windowsVisualContext);
-                case Collapse.Key:
-                    return new Collapse(windowsVisualContext);
-                case Expand.Key:
-                    return new Expand(windowsVisualContext);
-                case Focus.Key:
-                    return new Focus(windowsVisualContext);
-                case GetPropertyValue.Key:
-                    return GetPropertyValue.FromRuntimeValues(windowsVisualContext, scope, paramValues);
-                case GetRangeValue.Key:
-                    return GetRangeValue.FromRuntimeValues(windowsVisualContext, scope, paramValues);
-                case GetTextValue.Key:
-                    return GetPropertyValue.FromRuntimeValues(windowsVisualContext, scope, paramValues);
-                case Invoke.Key:
-                    return new Invoke(windowsVisualContext);
-                case Maximize.Key:
-                    return new Maximize(windowsVisualContext);
-                case Minimize.Key:
-                    return new Minimize(windowsVisualContext);
-                case Move.Key:
-                    return Move.FromRuntimeValues(windowsVisualContext, paramValues);
-                case Resize.Key:
-                    return Resize.FromRuntimeValues(windowsVisualContext, paramValues);
-                case Restore.Key:
-                    return new Restore(windowsVisualContext);
-                case Scroll.Key:
-                    return Scroll.FromRuntimeValues(windowsVisualContext, paramValues);
-                case Select.Key:
-                    return new Select(windowsVisualContext);
-                case SetRangeValue.Key:
-                    return SetRangeValue.FromRuntimeValues(windowsVisualContext, paramValues);
-                case SetTextValue.Key:
-                    return SetTextValue.FromRuntimeValues(windowsVisualContext, paramValues);
-                case Toggle.Key:
-                    return new Toggle(windowsVisualContext);
-                default:
-                    throw new InteractionUnavailableException(interactionName);
+                throw new InteractionUnavailableException(interactionName);
             }
+            return KnownInteractions[interactionName](windowsVisualContext, scope, paramValues);
         }
     }
 }
