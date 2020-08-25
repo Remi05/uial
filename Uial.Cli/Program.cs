@@ -80,10 +80,10 @@ namespace Uial.Cli
                 var scope = new RuntimeScope(script.RootScope, new Dictionary<string, string>());
                 var rootContext = new RootVisualContext(scope);
                 var interactionProviders = new List<IInteractionProvider>()
-                    {
-                        new Interactions.Core.CoreInteractionProvider(),
-                        new Interactions.Windows.VisualInteractionProvider(),
-                    };
+                {
+                    new Interactions.Core.CoreInteractionProvider(),
+                    new Interactions.Windows.VisualInteractionProvider(),
+                };
                 var interactionProvider = new GlobalInteractionProvider(interactionProviders);
 
                 if (scenarioName != null)
