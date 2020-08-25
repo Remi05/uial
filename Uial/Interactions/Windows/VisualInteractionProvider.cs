@@ -38,7 +38,7 @@ namespace Uial.Interactions.Windows
             IWindowsVisualContext windowsVisualContext = context as IWindowsVisualContext;
             if (windowsVisualContext == null)
             {
-                // throw
+                throw new InvalidWindowsVisualContextException(context);
             }    
             
             switch (interactionName)

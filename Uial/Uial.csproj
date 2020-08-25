@@ -67,6 +67,7 @@
     <Compile Include="Contexts\Exceptions.cs" />
     <Compile Include="Conditions\PropertyConditionDefinition.cs" />
     <Compile Include="Contexts\IBaseContextDefinition.cs" />
+    <Compile Include="Contexts\Windows\Exceptions.cs" />
     <Compile Include="Contexts\Windows\IWindowsVisualContext.cs" />
     <Compile Include="Contexts\IContext.cs" />
     <Compile Include="Contexts\IContextDefinition.cs" />
