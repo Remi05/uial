@@ -1,23 +1,18 @@
-﻿using System.Windows.Automation;
-using Uial.Contexts;
+﻿using Uial.Contexts;
 using Uial.Scopes;
 
 namespace Uial.UnitTests.Contexts
 {
     class MockContext : IContext
     {
-        public RuntimeScope Scope { get; protected set; }
         public string Name { get; protected set; }
-
-        public AutomationElement RootElement { get; protected set; }
-
+        public RuntimeScope Scope { get; protected set; }
         protected bool Available { get; set;}
 
-        public MockContext(RuntimeScope scope, string name, AutomationElement rootElement, bool isAvailable)
+        public MockContext(string name = null, RuntimeScope scope = null, bool isAvailable = true)
         {
-            Scope = scope;
             Name = name;
-            RootElement = rootElement;
+            Scope = scope;
             Available = isAvailable;
         }
 
