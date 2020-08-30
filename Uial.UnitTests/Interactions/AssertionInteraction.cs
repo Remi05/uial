@@ -2,7 +2,7 @@
 using Uial.Interactions;
 using Uial.UnitTests.Assertions;
 
-namespace Uial.UnitTests.Conditions
+namespace Uial.UnitTests.Interactions
 {
     [TestClass]
     public class AssertionInteractionTests

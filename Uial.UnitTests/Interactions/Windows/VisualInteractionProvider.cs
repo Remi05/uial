@@ -41,7 +41,7 @@ namespace Uial.UnitTests.Interactions.Windows
             Assert.IsTrue(actualIsKnownInteraction);
         }
 
-        [DataRow("TestInteractionName")]
+        [DataRow("TestUnknownInteraction")]
         [DataTestMethod]
         public void VerifyInteractionIsNotKnown(string interactionName)
         {
@@ -55,7 +55,7 @@ namespace Uial.UnitTests.Interactions.Windows
             Assert.IsFalse(actualIsKnownInteraction);
         }
 
-        [DataRow("TestInteractionName")]
+        [DataRow("TestUnknownInteraction")]
         [DataTestMethod]
         public void VerifyGettingUnknownInteractionThrows(string interactionName)
         {

@@ -5,7 +5,7 @@ using Uial.Interactions;
 using Uial.Scenarios;
 using Uial.UnitTests.Interactions;
 
-namespace Uial.UnitTests
+namespace Uial.UnitTests.Scenarios
 {
     [TestClass]
     public class ScenarioDefinitionTests
