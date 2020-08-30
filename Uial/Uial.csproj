@@ -74,13 +74,14 @@
     <Compile Include="Contexts\BaseContextDefinition.cs" />
     <Compile Include="Contexts\Windows\RootVisualContext.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="Interactions\Assertions\AssertionInteractionProvider.cs" />
     <Compile Include="Interactions\Core\CoreInteractionProvider.cs" />
     <Compile Include="Interactions\GlobalInteractionProvider.cs" />
     <Compile Include="Interactions\IInteractionProvider.cs" />
     <Compile Include="Interactions\Windows\AbstractInteraction.cs" />
     <Compile Include="Interactions\Windows\AbstractPatternInteraction.cs" />
     <Compile Include="Interactions\AssertionDefinition.cs" />
-    <Compile Include="Interactions\AssertionInteraction.cs" />
+    <Compile Include="Interactions\Assertions\AssertionInteraction.cs" />
     <Compile Include="Interactions\BaseInteractionDefinition.cs" />
     <Compile Include="Interactions\Windows\Focus.cs" />
     <Compile Include="Interactions\Windows\Expand.cs" />
