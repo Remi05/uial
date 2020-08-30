@@ -29,7 +29,7 @@ namespace Uial.Testing
                 {
                     interaction.Do();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     passed = false;
                     break;

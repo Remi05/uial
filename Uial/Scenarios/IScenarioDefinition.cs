@@ -1,11 +1,11 @@
 ﻿using Uial.Contexts;
-using Uial.Scopes;
+using Uial.Interactions;
 
 namespace Uial.Scenarios
 {
     public interface IScenarioDefinition
     {
         string Name { get; }
-        Scenario Resolve(IContext context);
+        Scenario Resolve(IContext context, IInteractionProvider interactionProvider);
     }
 }

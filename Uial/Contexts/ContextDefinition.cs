@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Automation;
 using Uial.Conditions;
+using Uial.Contexts.Windows;
 using Uial.Interactions;
 using Uial.Scopes;
 
@@ -46,7 +47,7 @@ namespace Uial.Contexts
             Condition rootElementCondition = RootElementConditionDefiniton?.Resolve(runtimeScope);
             Condition uniqueCondition = UniqueConditionDefinition?.Resolve(runtimeScope);
 
-            return new Context(parentContext, runtimeScope, Name, rootElementCondition, uniqueCondition);
+            return new WindowsVisualContext(parentContext as IWindowsVisualContext, runtimeScope, Name, rootElementCondition, uniqueCondition);
         }
     }
 }

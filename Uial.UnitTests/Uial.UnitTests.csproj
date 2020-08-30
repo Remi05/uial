@@ -56,10 +56,17 @@
     <Compile Include="Conditions\PropertyConditionDefinition.cs" />
     <Compile Include="Contexts\MockContext.cs" />
     <Compile Include="Interactions\AssertionInteraction.cs" />
+    <Compile Include="Interactions\BaseInteractionDefinition.cs" />
     <Compile Include="Interactions\InteractionDefinitionTests.cs" />
     <Compile Include="Interactions\CompositeInteraction.cs" />
+    <Compile Include="Interactions\GlobalInteractionProvider.cs" />
+    <Compile Include="Interactions\Core\CoreInteractionProvider.cs" />
     <Compile Include="Interactions\MockBaseInteractionDefinition.cs" />
     <Compile Include="Interactions\MockInteraction.cs" />
+    <Compile Include="Contexts\MockWindowsVisualContext.cs" />
+    <Compile Include="Interactions\MockInteractionDefinition.cs" />
+    <Compile Include="Interactions\MockInteractionProvider.cs" />
+    <Compile Include="Interactions\Windows\VisualInteractionProvider.cs" />
     <Compile Include="ValueDefinition.cs" />
     <Compile Include="Scenarios\Scenario.cs" />
     <Compile Include="Scenarios\ScenarioDefinition.cs" />

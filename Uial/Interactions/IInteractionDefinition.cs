@@ -7,6 +7,6 @@ namespace Uial.Interactions
     {
         string Name { get; }
 
-        IInteraction Resolve(IContext context, IEnumerable<string> paramValues);
+        IInteraction Resolve(IContext context, IInteractionProvider interactionProvider, IEnumerable<string> paramValues);
     }
 }

@@ -12,7 +12,7 @@ namespace Uial.UnitTests.Interactions
         public bool WasRun => RunCount > 0;
         public bool WasRunOnce => RunCount == 1;
 
-        public MockInteraction(string name, Action doAction = null)
+        public MockInteraction(string name = null, Action doAction = null)
         {
             Name = name;
             DoAction = doAction;
