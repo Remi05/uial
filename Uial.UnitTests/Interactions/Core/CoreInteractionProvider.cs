@@ -23,7 +23,7 @@ namespace Uial.UnitTests.Interactions.Core
             Assert.IsTrue(actualIsKnownInteraction);
         }
 
-        [DataRow("TestInteractionName")]
+        [DataRow("TestUnknownInteraction")]
         [DataTestMethod]
         public void VerifyInteractionIsNotKnown(string interactionName)
         {
@@ -37,7 +37,7 @@ namespace Uial.UnitTests.Interactions.Core
             Assert.IsFalse(actualIsKnownInteraction);
         }
 
-        [DataRow("TestInteractionName")]
+        [DataRow("TestUnknownInteraction")]
         [DataTestMethod]
         public void VerifyGettingUnknownInteractionThrows(string interactionName)
         {
