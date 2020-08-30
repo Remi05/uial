@@ -38,7 +38,7 @@ jobs:
       run: msbuild Uial.sln /p:Configuration=${{matrix.configuration}}
 
     - name: UIAL Unit Tests
-      run:  '& "$(vswhere -property installationPath)\Common7\IDE\MSTest.exe" /testcontainer: Uial.UnitTests/bin/${{matrix.configuration}}/Uial.UnitTests.dll'
+      run:  '& "$(vswhere -property installationPath)\Common7\IDE\MSTest.exe" /testcontainer: .\Uial.UnitTests\bin\${{matrix.configuration}}\Uial.UnitTests.dll'
       
     - name: UIAL Parsing Unit Tests
-      run:  '& "$(vswhere -property installationPath)\Common7\IDE\MSTest.exe" /testcontainer: Uial.Parsing.UnitTests/bin/${{matrix.configuration}}/Uial.Parsing.UnitTests.dll'
+      run:  '& "$(vswhere -property installationPath)\Common7\IDE\MSTest.exe" /testcontainer: .\Uial.Parsing.UnitTests\bin\${{matrix.configuration}}\Uial.Parsing.UnitTests.dll'
