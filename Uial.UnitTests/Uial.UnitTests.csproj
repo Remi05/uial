@@ -58,6 +58,7 @@
     <Compile Include="Interactions\AssertionInteraction.cs" />
     <Compile Include="Interactions\BaseInteractionDefinition.cs" />
     <Compile Include="Interactions\CompositeInteraction.cs" />
+    <Compile Include="Interactions\GlobalInteractionProvider.cs" />
     <Compile Include="Interactions\Core\CoreInteractionProvider.cs" />
     <Compile Include="Interactions\MockBaseInteractionDefinition.cs" />
     <Compile Include="Interactions\MockInteraction.cs" />
