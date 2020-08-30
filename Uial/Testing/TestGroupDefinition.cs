@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Uial.Contexts;
+using Uial.Interactions;
 
 namespace Uial.Testing
 {
@@ -20,10 +21,10 @@ namespace Uial.Testing
             ChildrenDefinitions = childrenDefinitions;
         }
 
-        public ITestable Resolve(IContext context)
+        public ITestable Resolve(IContext context, IInteractionProvider interactionProvider)
         {
             IEnumerable<ITestable> children = ChildrenDefinitions.Select(
-                (childDefinition) => childDefinition.Resolve(context)
+                (childDefinition) => childDefinition.Resolve(context, interactionProvider)
             );
             return new TestGroup(Name, children);
         }

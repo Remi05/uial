@@ -1,5 +1,4 @@
-﻿using System.Windows.Automation;
-using Uial.Scopes;
+﻿using Uial.Scopes;
 
 namespace Uial.Contexts
 {
@@ -8,8 +7,6 @@ namespace Uial.Contexts
         RuntimeScope Scope { get; }
 
         string Name { get; }
-
-        AutomationElement RootElement { get; }
 
         bool IsAvailable();
     }

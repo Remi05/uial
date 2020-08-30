@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Automation;
 using Uial.Conditions;
 using Uial.Contexts;
+using Uial.Contexts.Windows;
 using Uial.Interactions;
 using Uial.Parsing;
 using Uial.Scopes;
@@ -88,7 +88,7 @@ namespace Uial.LiveConsole
                     else if (Parser.IsBaseInteraction(line))
                     {
                         IBaseInteractionDefinition baseInteractionDefinition = Parser.ParseBaseInteractionDefinition(line);
-                        IInteraction interaction = baseInteractionDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope);
+                        IInteraction interaction = baseInteractionDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.InteractionProvider, ExecutionContext.RootScope);
                         interaction.Do();
                     }
                     else if (Parser.IsCondition(line))
@@ -101,7 +101,7 @@ namespace Uial.LiveConsole
                     else if (Parser.IsBaseContext(line))
                     {
                         IBaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
-                        IContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope);
+                        IWindowsVisualContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope) as IWindowsVisualContext;
                         ShowElement(context.RootElement, TreeScope.Element);
                     }
                 }
@@ -157,7 +157,7 @@ namespace Uial.LiveConsole
             else if (Parser.IsBaseContext(line))
             {
                 IBaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
-                IContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope);
+                IWindowsVisualContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope) as IWindowsVisualContext;
                 ShowElement(context.RootElement, treeScope);
             }
             else

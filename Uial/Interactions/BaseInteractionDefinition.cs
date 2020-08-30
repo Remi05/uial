@@ -18,17 +18,17 @@ namespace Uial.Interactions
             ContextDefinition = contextDefinition;
         }
 
-        public IInteraction Resolve(IContext parentContext, RuntimeScope currentScope)
+        public IInteraction Resolve(IContext parentContext, IInteractionProvider interactionProvider, RuntimeScope currentScope)
         {
             IContext context = ContextDefinition?.Resolve(parentContext, currentScope) ?? parentContext;
             IEnumerable<string> paramValues = ParamsValueDefinitions.Select((valueDefinition) => valueDefinition.Resolve(currentScope));
 
             if (context.Scope.InteractionDefinitions.ContainsKey(InteractionName))
             {
-                return context.Scope.InteractionDefinitions[InteractionName].Resolve(context, paramValues);
+                return context.Scope.InteractionDefinitions[InteractionName].Resolve(context, interactionProvider, paramValues);
             }
 
-            return Core.Interactions.GetCoreInteractionByName(context, currentScope, InteractionName, paramValues);
+            return interactionProvider.GetInteractionByName(context, currentScope, InteractionName, paramValues);
         }
     }
 }

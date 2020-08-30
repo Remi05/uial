@@ -21,7 +21,7 @@ namespace Uial.Interactions
             BaseInteractionDefinitions = baseInteractionDefinitions;
         }
 
-        public IInteraction Resolve(IContext parentContext, IEnumerable<string> paramValues)
+        public IInteraction Resolve(IContext parentContext, IInteractionProvider interactionProvider, IEnumerable<string> paramValues)
         {
             if (paramValues.Count() != ParamNames.Count())
             {
@@ -35,7 +35,7 @@ namespace Uial.Interactions
             }
 
             RuntimeScope currentScope = new RuntimeScope(Scope, referenceValues);
-            IEnumerable<IInteraction> interactions = BaseInteractionDefinitions.Select((interactionDefinition) => interactionDefinition.Resolve(parentContext, currentScope));
+            IEnumerable<IInteraction> interactions = BaseInteractionDefinitions.Select((interactionDefinition) => interactionDefinition.Resolve(parentContext, interactionProvider, currentScope));
             return new CompositeInteraction(Name, interactions);
         }
     }

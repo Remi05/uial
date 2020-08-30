@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Uial.Contexts;
+using Uial.Contexts.Windows;
 using Uial.Scenarios;
 using Uial.Scopes;
 using Uial.Testing;
 using Uial.Parsing;
+using Uial.Interactions;
 
 namespace Uial.Cli
 {
@@ -77,7 +78,13 @@ namespace Uial.Cli
             try
             {
                 var scope = new RuntimeScope(script.RootScope, new Dictionary<string, string>());
-                var rootContext = new RootContext(scope);
+                var rootContext = new RootVisualContext(scope);
+                var interactionProviders = new List<IInteractionProvider>()
+                {
+                    new Interactions.Core.CoreInteractionProvider(),
+                    new Interactions.Windows.VisualInteractionProvider(),
+                };
+                var interactionProvider = new GlobalInteractionProvider(interactionProviders);
 
                 if (scenarioName != null)
                 {
@@ -86,7 +93,7 @@ namespace Uial.Cli
                         Console.WriteLine($"Scenario \"{scenarioName}\" could not be found in the given script.");
                         return;
                     }
-                    Scenario scenario = script.ScenarioDefinitions[scenarioName].Resolve(rootContext);
+                    Scenario scenario = script.ScenarioDefinitions[scenarioName].Resolve(rootContext, interactionProvider);
                     scenario.Do();
                 }
                 else if (testName != null)
@@ -96,7 +103,7 @@ namespace Uial.Cli
                         Console.WriteLine($"Test \"{testName}\" could not be found in the given script.");
                         return;
                     }
-                    ITestable test = script.TestDefinitions[testName].Resolve(rootContext);
+                    ITestable test = script.TestDefinitions[testName].Resolve(rootContext, interactionProvider);
                     ITestResults results = test.RunTest();
                     Console.WriteLine(results);
                 }

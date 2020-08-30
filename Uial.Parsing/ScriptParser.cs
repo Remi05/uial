@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Automation;
 using Uial.Conditions;
 using Uial.Contexts;
+using Uial.Contexts.Windows;
 using Uial.Interactions;
 using Uial.Parsing.Exceptions;
 using Uial.Scenarios;

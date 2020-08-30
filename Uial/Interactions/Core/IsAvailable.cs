@@ -6,29 +6,30 @@ using Uial.Scopes;
 
 namespace Uial.Interactions.Core
 {
-    public class IsAvailable : AbstractInteraction, IInteraction
+    public class IsAvailable : IInteraction
     {
         public const string Key = "IsAvailable";
 
-        public override string Name => Key;
+        public string Name => Key;
 
+        protected IContext Context { get; set; }
         protected string ReferenceName { get; set; }
         protected RuntimeScope Scope { get; set; }
 
-        public IsAvailable(IContext context, string referenceName, RuntimeScope scope) : base(context)
+        public IsAvailable(IContext context, string referenceName, RuntimeScope scope)
         {
             if (referenceName == null || scope == null)
             {
                 throw new ArgumentNullException(referenceName == null ? "referenceName" : "scope");
             }
+            Context = context;
             ReferenceName = referenceName;
             Scope = scope;
         }
 
-        public override void Do()
+        public void Do()
         {
-            base.Do();
-            Scope.ReferenceValues[ReferenceName] = Context.IsAvailable().ToString();
+            Scope.ReferenceValues[ReferenceName] = (Context?.IsAvailable() ?? false).ToString();
         }
 
         public static IsAvailable FromRuntimeValues(IContext context, RuntimeScope scope, IEnumerable<string> paramValues)

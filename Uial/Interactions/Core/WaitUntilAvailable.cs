@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -16,6 +17,10 @@ namespace Uial.Interactions.Core
 
         public WaitUntilAvailable(IContext context, TimeSpan? timeout = null)
         {
+            if (Context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
             Context = context;
             Timeout = timeout;
         }
@@ -36,11 +41,15 @@ namespace Uial.Interactions.Core
         public static WaitUntilAvailable FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
         {
             TimeSpan? timeout = null;
+            if (paramValues == null)
+            {
+                throw new ArgumentNullException("paramValues");
+            }
             if (paramValues.Count() > 1)
             {
                 throw new InvalidParameterCountException(1, paramValues.Count());
             }
-            else if (paramValues.Count() == 1)
+            if (paramValues.Count() == 1)
             {
                 double milliseconds = double.Parse(paramValues.ElementAt(0));
                 timeout = TimeSpan.FromMilliseconds(milliseconds);

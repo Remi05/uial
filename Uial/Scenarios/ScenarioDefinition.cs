@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Uial.Contexts;
 using Uial.Interactions;
-using Uial.Scopes;
 
 namespace Uial.Scenarios
 {
@@ -26,9 +25,9 @@ namespace Uial.Scenarios
             BaseInteractionDefinitions = baseInteractionDefinitions;
         }
 
-        public Scenario Resolve(IContext context)
+        public Scenario Resolve(IContext context, IInteractionProvider interactionProvider)
         {
-            IEnumerable<IInteraction> interactions = BaseInteractionDefinitions.Select((interactionDefinition) => interactionDefinition.Resolve(context, context?.Scope));
+            IEnumerable<IInteraction> interactions = BaseInteractionDefinitions.Select((interactionDefinition) => interactionDefinition.Resolve(context, interactionProvider, context?.Scope));
             return new Scenario(Name, interactions);
         }
     }
