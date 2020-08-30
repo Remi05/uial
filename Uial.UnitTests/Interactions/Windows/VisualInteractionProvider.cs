@@ -3,6 +3,7 @@ using Uial.Contexts.Windows;
 using Uial.Interactions;
 using Uial.Interactions.Windows;
 using Uial.UnitTests.Contexts;
+using Uial.UnitTests.Contexts.Windows;
 
 namespace Uial.UnitTests.Interactions.Windows
 {

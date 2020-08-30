@@ -5,14 +5,14 @@ namespace Uial.UnitTests.Contexts
 {
     class MockContext : IContext
     {
-        public string Name { get; protected set; }
         public RuntimeScope Scope { get; protected set; }
+        public string Name { get; protected set; }
         protected bool Available { get; set;}
 
-        public MockContext(string name = null, RuntimeScope scope = null, bool isAvailable = true)
+        public MockContext(RuntimeScope scope = null, string name = null, bool isAvailable = true)
         {
-            Name = name;
             Scope = scope;
+            Name = name;
             Available = isAvailable;
         }
 
