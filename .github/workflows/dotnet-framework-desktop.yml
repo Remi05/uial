@@ -42,3 +42,15 @@ jobs:
       
     - name: UIAL Parsing Unit Tests
       run:  '& "$(vswhere -property installationPath)\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console" .\Uial.Parsing.UnitTests\bin\${{matrix.configuration}}\Uial.Parsing.UnitTests.dll'
+
+    - name: 'Publish UIAL LiveConsole'
+      uses: actions/upload-artifact@v2
+      with:	
+        name: 'UIAL LiveConsole'	
+        path: '.\Uial.LiveConsole\bin\${{matrix.configuration}}\'
+        
+    - name: 'Publish UIAL CLI'
+      uses: actions/upload-artifact@v2
+      with:	
+        name: 'UIAL CLI'	
+        path: '.\Uial.Cli\bin\${{matrix.configuration}}\'
