@@ -1,6 +1,6 @@
 # UIAL - UI Automation Language
 
-![.NET Framework Desktop](https://github.com/Remi05/scenarioscripting/workflows/.NET%20Framework%20Desktop/badge.svg)
+[![.NET Framework Desktop](https://github.com/Remi05/scenarioscripting/workflows/.NET%20Framework%20Desktop/badge.svg)](https://github.com/Remi05/uial/actions)
 
 ### UIAL is a high-level scripting language used to define user scenarios and functional tests.
 
