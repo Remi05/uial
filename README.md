@@ -18,3 +18,7 @@ UIAL is licensed under an [MIT License](LICENSE.md).
 ## Language Syntax
 
 For more information on the syntax of UIAL, refer to the [Syntax wiki page](https://github.com/Remi05/uial/wiki/Syntax).
+
+## Samples 
+
+Check out the [samples directory](https://github.com/Remi05/uial/tree/master/samples) to see UIAL in use.
