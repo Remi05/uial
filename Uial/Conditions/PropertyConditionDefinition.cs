@@ -12,13 +12,9 @@ namespace Uial.Conditions
 
         public PropertyConditionDefinition(AutomationProperty property, ValueDefinition value)
         {
-            if (property == null)
+            if (property == null || value == null)
             {
-                throw new ArgumentNullException("property");
-            }
-            if (value == null)
-            {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(property == null ? nameof(property) : nameof(value));
             }
             Property = property;
             Value = value;

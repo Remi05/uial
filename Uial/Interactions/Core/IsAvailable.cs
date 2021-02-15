@@ -20,7 +20,7 @@ namespace Uial.Interactions.Core
         {
             if (referenceName == null || scope == null)
             {
-                throw new ArgumentNullException(referenceName == null ? "referenceName" : "scope");
+                throw new ArgumentNullException(referenceName == null ? nameof(referenceName): nameof(scope));
             }
             Context = context;
             ReferenceName = referenceName;

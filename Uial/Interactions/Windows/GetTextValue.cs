@@ -21,7 +21,7 @@ namespace Uial.Interactions.Windows
         {
             if (referenceName == null || scope == null)
             {
-                throw new ArgumentNullException(referenceName == null ? "referenceName" : "scope");
+                throw new ArgumentNullException(referenceName == null ? nameof(referenceName) : nameof(scope));
             }
             ReferenceName = referenceName;
             Scope = scope;

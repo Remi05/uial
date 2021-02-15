@@ -12,7 +12,7 @@ namespace Uial.Testing
         {
             if (testName == null)
             {
-                throw new ArgumentNullException("testName");
+                throw new ArgumentNullException(nameof(testName));
             }
             TestName = testName;
             Passed = passed;

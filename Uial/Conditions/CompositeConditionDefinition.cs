@@ -14,11 +14,11 @@ namespace Uial.Conditions
         {
             if (conditionDefinitions == null)
             {
-                throw new ArgumentNullException("conditionDefinitions");
+                throw new ArgumentNullException(nameof(conditionDefinitions));
             }
             if (conditionDefinitions.Count() == 0)
             {
-                throw new ArgumentException("Parameter \"conditionDefinitions\" must contain at least one ConditionDefinition.");
+                throw new ArgumentException($"Parameter \"{nameof(conditionDefinitions)}\" must contain at least one ConditionDefinition.");
             }
             ConditionDefinitions = conditionDefinitions;
         }

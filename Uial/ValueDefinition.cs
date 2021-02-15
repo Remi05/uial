@@ -33,7 +33,7 @@ namespace Uial
         {
             if (referenceName == null)
             {
-                throw new ArgumentNullException("referenceName");
+                throw new ArgumentNullException(nameof(referenceName));
             }
             ValueDefinition valueDefinition = new ValueDefinition();
             valueDefinition.ReferenceName = referenceName;
@@ -44,7 +44,7 @@ namespace Uial
         {
             if (literalValue == null)
             {
-                throw new ArgumentNullException("literalValue");
+                throw new ArgumentNullException(nameof(literalValue));
             }
             ValueDefinition valueDefinition = new ValueDefinition();
             valueDefinition.LiteralValue = literalValue;

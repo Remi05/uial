@@ -13,7 +13,7 @@ namespace Uial.Interactions
         {
             if (name == null || interactions == null)
             {
-                throw new ArgumentNullException(name == null ? "name" : "interactions");
+                throw new ArgumentNullException(name == null ? nameof(name) : nameof(interactions));
             }
             Name = name;
             Interactions = interactions;

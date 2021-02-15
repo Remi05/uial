@@ -13,13 +13,9 @@ namespace Uial.Scenarios
 
         public ScenarioDefinition(string name, IEnumerable<IBaseInteractionDefinition> baseInteractionDefinitions)
         {
-            if (name == null)
+            if (name == null || baseInteractionDefinitions == null)
             {
-                throw new ArgumentNullException("name");
-            }
-            if (baseInteractionDefinitions == null)
-            {
-                throw new ArgumentNullException("baseInteractionDefinitions");
+                throw new ArgumentNullException(name == null ? nameof(name) : nameof(baseInteractionDefinitions));
             }
             Name = name;
             BaseInteractionDefinitions = baseInteractionDefinitions;

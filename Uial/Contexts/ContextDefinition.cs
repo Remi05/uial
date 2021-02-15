@@ -21,7 +21,7 @@ namespace Uial.Contexts
         {
             if (name == null)
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }    
             Scope = scope;
             Name = name;

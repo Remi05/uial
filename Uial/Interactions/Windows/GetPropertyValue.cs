@@ -22,7 +22,7 @@ namespace Uial.Interactions.Windows
         {
             if (property == null || referenceName == null || scope == null)
             {
-                throw new ArgumentNullException(property == null ? "property" : referenceName == null ? "referenceName" : "scope");
+                throw new ArgumentNullException(property == null ? nameof(property) : referenceName == null ? nameof(referenceName) : nameof(scope));
             }
             Property = property;
             ReferenceName = referenceName;
