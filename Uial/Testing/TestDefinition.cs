@@ -15,7 +15,7 @@ namespace Uial.Testing
         {
             if (name == null || baseInteractionDefinitions == null)
             {
-                throw new ArgumentNullException(name == null ? "name" : "baseInteractionDefinitions");
+                throw new ArgumentNullException(name == null ? nameof(name) : nameof(baseInteractionDefinitions));
             }
             Name = name;
             BaseInteractionDefinitions = baseInteractionDefinitions;

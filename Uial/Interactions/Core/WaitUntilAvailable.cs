@@ -19,7 +19,7 @@ namespace Uial.Interactions.Core
         {
             if (Context == null)
             {
-                throw new ArgumentNullException("context");
+                throw new ArgumentNullException(nameof(context));
             }
             Context = context;
             Timeout = timeout;
@@ -43,7 +43,7 @@ namespace Uial.Interactions.Core
             TimeSpan? timeout = null;
             if (paramValues == null)
             {
-                throw new ArgumentNullException("paramValues");
+                throw new ArgumentNullException(nameof(paramValues));
             }
             if (paramValues.Count() > 1)
             {

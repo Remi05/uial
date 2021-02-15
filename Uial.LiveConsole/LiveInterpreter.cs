@@ -29,7 +29,7 @@ namespace Uial.LiveConsole
         {
             if (inputStream == null)
             {
-                throw new ArgumentNullException("inputStream");
+                throw new ArgumentNullException(nameof(inputStream));
             }
             InputStream = inputStream;
             OutputStream = outputStream;

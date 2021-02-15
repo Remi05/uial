@@ -15,7 +15,7 @@ namespace Uial.Testing
         {
             if (name == null || childrenDefinitions == null)
             {
-                throw new ArgumentNullException(name == null ? "name" : "childrenDefinitions");
+                throw new ArgumentNullException(name == null ? nameof(name) : nameof(childrenDefinitions));
             }
             Name = name;
             ChildrenDefinitions = childrenDefinitions;

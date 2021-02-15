@@ -15,7 +15,7 @@ namespace Uial.Interactions
         {
             if (interactionProviders == null)
             {
-                throw new ArgumentNullException("interactionProviders");
+                throw new ArgumentNullException(nameof(interactionProviders));
             }
             InteractionProviders = interactionProviders;
         }
