@@ -77,6 +77,9 @@
     <Compile Include="Interactions\Core\CoreInteractionProvider.cs" />
     <Compile Include="Interactions\GlobalInteractionProvider.cs" />
     <Compile Include="Interactions\IInteractionProvider.cs" />
+    <Compile Include="Interactions\Mouse\IMouseService.cs" />
+    <Compile Include="Interactions\Mouse\MouseInteractionProvider.cs" />
+    <Compile Include="Interactions\SkeletonInteraction.cs" />
     <Compile Include="Interactions\Windows\AbstractInteraction.cs" />
     <Compile Include="Interactions\Windows\AbstractPatternInteraction.cs" />
     <Compile Include="Interactions\AssertionDefinition.cs" />
