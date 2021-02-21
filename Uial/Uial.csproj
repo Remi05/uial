@@ -110,6 +110,10 @@
     <Compile Include="Interactions\Windows\Select.cs" />
     <Compile Include="Interactions\Windows\Toggle.cs" />
     <Compile Include="Interactions\Windows\SetTextValue.cs" />
+    <Compile Include="Modules\Module.cs" />
+    <Compile Include="Modules\ModuleDefinition.cs" />
+    <Compile Include="Modules\IModuleProvider.cs" />
+    <Compile Include="Modules\ModuleProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenarios\IScenarioDefinition.cs" />
     <Compile Include="Scenarios\Scenario.cs" />
