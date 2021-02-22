@@ -6,6 +6,7 @@ using Uial.Scopes;
 using Uial.Testing;
 using Uial.Parsing;
 using Uial.Interactions;
+using Uial.Modules;
 
 namespace Uial.Cli
 {
@@ -54,7 +55,6 @@ namespace Uial.Cli
                     Console.WriteLine($"Invalid flag: {flag}");
                     return;
                 }
-                
             }
 
             RunScenario(scriptFilePath, scenarioName, testName);
@@ -79,11 +79,16 @@ namespace Uial.Cli
             {
                 var scope = new RuntimeScope(script.RootScope, new Dictionary<string, string>());
                 var rootContext = new RootVisualContext(scope);
+
                 var interactionProviders = new List<IInteractionProvider>()
                 {
                     new Interactions.Core.CoreInteractionProvider(),
                     new Interactions.Windows.VisualInteractionProvider(),
                 };
+
+                var importedInteractionProviders = GetImportedInteractionProviders(script);
+                interactionProviders.AddRange(importedInteractionProviders);
+
                 var interactionProvider = new GlobalInteractionProvider(interactionProviders);
 
                 if (scenarioName != null)
@@ -112,6 +117,20 @@ namespace Uial.Cli
             {
                 Console.WriteLine($"An error occured while running the specified scenario:\n{e.Message}");
             }
+        }
+
+        private static List<IInteractionProvider> GetImportedInteractionProviders(Script script)
+        {
+            var interactionProviders = new List<IInteractionProvider>();
+            var moduleProvider = new ModuleProvider();
+
+            foreach (ModuleDefinition moduleDefinition in script.ModuleDefinitions.Values)
+            {
+                Module module = moduleProvider.GetModule(moduleDefinition);
+                interactionProviders.AddRange(module.InteractionProviders);
+            }
+
+            return interactionProviders;
         }
     }
 }

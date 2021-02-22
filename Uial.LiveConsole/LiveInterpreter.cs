@@ -7,6 +7,7 @@ using Uial.Conditions;
 using Uial.Contexts;
 using Uial.Contexts.Windows;
 using Uial.Interactions;
+using Uial.Modules;
 using Uial.Parsing;
 using Uial.Scopes;
 
@@ -78,6 +79,11 @@ namespace Uial.LiveConsole
                     if (Parser.IsImport(line))
                     {
                         ExecutionContext.Script.AddScript(Parser.ParseRepoImport(line));
+                    }
+                    else if (Parser.IsModule(line))
+                    {
+                        ModuleDefinition moduleDefinition = Parser.ParseModuleDefinition(line);
+                        ExecutionContext.AddModule(moduleDefinition);
                     }
                     else if (Parser.IsContext(line))
                     {
