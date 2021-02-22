@@ -21,10 +21,10 @@ namespace Uial.Testing
             BaseInteractionDefinitions = baseInteractionDefinitions;
         }
 
-        public ITestable Resolve(IContext context, IInteractionProvider interactionProvider)
+        public ITestable Resolve(IContext context)
         {
             IEnumerable<IInteraction> interactions = BaseInteractionDefinitions.Select(
-                (interactionDefinition) => interactionDefinition.Resolve(context, interactionProvider, context?.Scope)
+                (interactionDefinition) => interactionDefinition.Resolve(context, context?.Scope)
             );
             return new Test(Name, interactions);
         }

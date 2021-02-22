@@ -1,12 +1,13 @@
-﻿using Uial.Scopes;
+﻿using Uial.Interactions;
+using Uial.Scopes;
 
 namespace Uial.Contexts
 {
     public interface IContext
     {
-        RuntimeScope Scope { get; }
-
         string Name { get; }
+        RuntimeScope Scope { get; }
+        IInteractionProvider InteractionProvider { get; }
 
         bool IsAvailable();
     }

@@ -98,7 +98,7 @@ namespace Uial.Cli
                         Console.WriteLine($"Scenario \"{scenarioName}\" could not be found in the given script.");
                         return;
                     }
-                    Scenario scenario = script.ScenarioDefinitions[scenarioName].Resolve(rootContext, interactionProvider);
+                    Scenario scenario = script.ScenarioDefinitions[scenarioName].Resolve(rootContext);
                     scenario.Do();
                 }
                 else if (testName != null)
@@ -108,7 +108,7 @@ namespace Uial.Cli
                         Console.WriteLine($"Test \"{testName}\" could not be found in the given script.");
                         return;
                     }
-                    ITestable test = script.TestDefinitions[testName].Resolve(rootContext, interactionProvider);
+                    ITestable test = script.TestDefinitions[testName].Resolve(rootContext);
                     ITestResults results = test.RunTest();
                     Console.WriteLine(results);
                 }

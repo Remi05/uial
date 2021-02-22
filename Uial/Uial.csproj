@@ -61,6 +61,8 @@
     <Compile Include="Conditions\Exceptions.cs" />
     <Compile Include="Conditions\IConditionDefinition.cs" />
     <Compile Include="Conditions\CompositeConditionDefinition.cs" />
+    <Compile Include="Contexts\ModuleContext.cs" />
+    <Compile Include="Contexts\ModuleContextDefinition.cs" />
     <Compile Include="Contexts\Windows\BaseControlDefinition.cs" />
     <Compile Include="Contexts\ContextDefinition.cs" />
     <Compile Include="Contexts\Windows\Controls.cs" />

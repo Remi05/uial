@@ -5,6 +5,6 @@ namespace Uial.Interactions
 {
     public interface IBaseInteractionDefinition
     {
-        IInteraction Resolve(IContext parentContext, IInteractionProvider interactionProvider, RuntimeScope currentScope);
+        IInteraction Resolve(IContext parentContext, RuntimeScope currentScope);
     }
 }
