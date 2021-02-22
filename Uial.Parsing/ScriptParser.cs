@@ -9,6 +9,7 @@ using Uial.Conditions;
 using Uial.Contexts;
 using Uial.Contexts.Windows;
 using Uial.Interactions;
+using Uial.Modules;
 using Uial.Parsing.Exceptions;
 using Uial.Scenarios;
 using Uial.Scopes;
@@ -25,6 +26,7 @@ namespace Uial.Parsing
             public const string Context = "context";
             public const string Import = "import";
             public const string Interaction = "interaction";
+            public const string Module = "module";
             public const string Scenario = "scenario";
             public const string Test = "test";
             public const string TestGroup = "testgroup";
@@ -40,6 +42,7 @@ namespace Uial.Parsing
             public const string ControlType = "controlType";
             public const string Interaction = "interaction";
             public const string Literal = "literal";
+            public const string ModuleName = "moduleName";
             public const string Name = "name";
             public const string Params = "params";
             public const string ParamsDeclaration = "paramsDecl";
@@ -67,7 +70,7 @@ namespace Uial.Parsing
         const string ControlPattern = "((?<controlType>[a-zA-Z]+)\\[(?<controlCondition>" + ConditionPattern + ")\\])";
         const string CustomContextPattern = "(?<customContext>(?<contextName>[a-zA-Z]+)" + ContextParamsPattern + "?)";
         const string BaseContextPattern = "(?:" + CustomContextPattern + "|" + ControlPattern + ")";
-        const string PathPattern = "(?<path>(?:[a-zA-Z0-9\\._-]+/)*[a-zA-Z0-9\\._-]+\\.uial)";
+        const string PathPattern = "(?<path>(?:[a-zA-Z]\\:[\\\\\\/])?(?:[a-zA-Z0-9\\._-]+[\\\\\\/])*[a-zA-Z0-9\\._-]+\\.[a-zA-Z0-9]+)";
         const string RepoPathPattern = "github:(?<repoName>[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+)/" + PathPattern;
         const string BlocNamePattern = "(?<name>[a-zA-Z]+)";
 
@@ -79,7 +82,7 @@ namespace Uial.Parsing
         const string TestPattern = BlocIdentifiers.Test + "\\s+" + BlocNamePattern + "\\s*:";
         const string TestGroupPattern = BlocIdentifiers.TestGroup + "\\s+" + BlocNamePattern + "\\s*:";
         const string BaseInteractionPattern = "^\\s*(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern + "\\s*$";
-
+        const string ModulePattern = BlocIdentifiers.Module + "\\s+" + BlocNamePattern + "\\s*\\(\\s*\"" + PathPattern + "\"\\s*\\)\\s*:";
 
         public bool IsAssertion(string line)
         {
@@ -122,6 +125,11 @@ namespace Uial.Parsing
         public bool IsInteraction(string line)
         {
             return line.Trim().StartsWith(BlocIdentifiers.Interaction);
+        }
+
+        public bool IsModule(string line)
+        {
+            return line.Trim().StartsWith(BlocIdentifiers.Module);
         }
 
         public bool IsScenario(string line)
@@ -470,6 +478,29 @@ namespace Uial.Parsing
             return new TestGroupDefinition(name, childrenfinitions);
         }
 
+        public ModuleDefinition ParseModuleDefinitionDeclaration(string line)
+        {
+            Regex moduleRegex = new Regex(ModulePattern);
+            Match moduleMatch = moduleRegex.Match(line);
+            if (!moduleMatch.Success)
+            {
+                throw new InvalidModuleDeclarationException(line);
+            }
+
+            string name = moduleMatch.Groups[NamedGroups.Name].Value;
+            string binaryPath = moduleMatch.Groups[NamedGroups.Path].Value;
+
+            return new ModuleDefinition(name, binaryPath, null);
+        }
+
+        public ModuleDefinition ParseModuleDefinition(List<string> lines)
+        {
+            string declarationLine = lines[0].Trim();
+            ModuleDefinition moduleDefinition = ParseModuleDefinitionDeclaration(declarationLine);
+
+            return moduleDefinition;
+        }
+
         public Script ParseLocalImport(string importStr, string executionDirPath)
         {
             Regex localImportRegex = new Regex(LocalImportPattern);
@@ -522,24 +553,31 @@ namespace Uial.Parsing
                 }
 
                 int blocLength = FindBlocLength(lines, curLine);
+                List<string> blocLines = lines.GetRange(curLine, blocLength);
+
                 if (IsScenario(lines[curLine]))
                 {
-                    IScenarioDefinition scenarioDefinition = ParseScenarioDefinition(lines.GetRange(curLine, blocLength));
+                    IScenarioDefinition scenarioDefinition = ParseScenarioDefinition(blocLines);
                     script.ScenarioDefinitions.Add(scenarioDefinition.Name, scenarioDefinition);
                 }
                 else if (IsContext(lines[curLine]))
                 {
-                    IContextDefinition contextDefinition = ParseContextDefinition(script.RootScope, lines.GetRange(curLine, blocLength));
+                    IContextDefinition contextDefinition = ParseContextDefinition(script.RootScope, blocLines);
                     script.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
+                }
+                else if (IsModule(lines[curLine]))
+                {
+                    ModuleDefinition moduleDefinition = ParseModuleDefinition(blocLines);
+                    script.ModuleDefinitions.Add(moduleDefinition.Name, moduleDefinition);
                 }
                 else if (IsTestGroup(lines[curLine]))
                 {
-                    TestGroupDefinition testGroupDefinition = ParseTestGroupDefinition(lines.GetRange(curLine, blocLength));
+                    TestGroupDefinition testGroupDefinition = ParseTestGroupDefinition(blocLines);
                     script.TestDefinitions.Add(testGroupDefinition.Name, testGroupDefinition);
                 }
                 else if (IsTest(lines[curLine]))
                 {
-                    TestDefinition testDefinition = ParseTestDefinition(lines.GetRange(curLine, blocLength));
+                    TestDefinition testDefinition = ParseTestDefinition(blocLines);
                     script.TestDefinitions.Add(testDefinition.Name, testDefinition);
                 }
                 else

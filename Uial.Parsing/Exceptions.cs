@@ -62,6 +62,18 @@ namespace Uial.Parsing.Exceptions
         }
     }
 
+    public class InvalidModuleDeclarationException : Exception
+    {
+        private string ModuleDefinition { get; set; }
+
+        public override string Message => $"The given module definition is invalid: {ModuleDefinition}";
+
+        public InvalidModuleDeclarationException(string moduleDefinition)
+        {
+            ModuleDefinition = moduleDefinition;
+        }
+    }
+
     public class InvalidValueDefinitionException : Exception
     {
         private string ValueDefinition { get; set; }

@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="BaseInteractions.cs" />
     <Compile Include="BaseContexts.cs" />
+    <Compile Include="ModuleDeclarations.cs" />
     <Compile Include="ValueDefinitions.cs" />
     <Compile Include="Conditions.cs" />
     <Compile Include="Interactions.cs" />
