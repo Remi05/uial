@@ -94,7 +94,7 @@ namespace Uial.LiveConsole
                     else if (Parser.IsBaseInteraction(line))
                     {
                         IBaseInteractionDefinition baseInteractionDefinition = Parser.ParseBaseInteractionDefinition(line);
-                        IInteraction interaction = baseInteractionDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.InteractionProvider, ExecutionContext.RootScope);
+                        IInteraction interaction = baseInteractionDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope);
                         interaction.Do();
                     }
                     else if (Parser.IsCondition(line))

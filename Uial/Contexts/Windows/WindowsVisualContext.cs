@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Windows.Automation;
+using Uial.Interactions;
 using Uial.Scopes;
 
 namespace Uial.Contexts.Windows
 {
     public class WindowsVisualContext : IWindowsVisualContext
-    { 
+    {
         protected IWindowsVisualContext Parent { get; set; }
         protected Condition RootElementCondition { get; set; }
         protected Condition UniqueCondition { get; set; }
 
         public string Name { get; protected set; }
         public RuntimeScope Scope { get; protected set; }
+        public IInteractionProvider InteractionProvider { get; protected set; }
         public AutomationElement RootElement
         {
             get
