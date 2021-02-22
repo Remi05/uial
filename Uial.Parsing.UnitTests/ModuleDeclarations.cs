@@ -16,17 +16,17 @@ namespace Uial.Parsing.UnitTests
 
         private class ValidModules
         {
-            public const string BinaryWithAbsolutePath   = ModuleIdentifier + " " + ModuleName + "(\"" + AbsolutePath + "\"):";
-            public const string BinaryInSameParentFolder = ModuleIdentifier + " " + ModuleName + "(\"" + RelativePath_SameParent + "\"):";
-            public const string BinaryInSameFolder       = ModuleIdentifier + " " + ModuleName + "(\"" + RelativePath_SameFolder + "\"):";
-            public const string BinaryPathForwardSlash   = ModuleIdentifier + " " + ModuleName + "(\"" + RelativePath_ForwardSlash + "\"):";
+            public const string BinaryWithAbsolutePath   = ModuleIdentifier + " " + ModuleName + "(\"" + AbsolutePath + "\")";
+            public const string BinaryInSameParentFolder = ModuleIdentifier + " " + ModuleName + "(\"" + RelativePath_SameParent + "\")";
+            public const string BinaryInSameFolder       = ModuleIdentifier + " " + ModuleName + "(\"" + RelativePath_SameFolder + "\")";
+            public const string BinaryPathForwardSlash   = ModuleIdentifier + " " + ModuleName + "(\"" + RelativePath_ForwardSlash + "\")";
         }
 
         private class InvalidModules
         {
-            public const string MissingName       = ModuleIdentifier + " (\"" + AbsolutePath + "\"):";
-            public const string MissingBinaryPath = ModuleIdentifier + " " + ModuleName + "():";
-            public const string EmptyBinaryPath   = ModuleIdentifier + " " + ModuleName + "(\"\"):";
+            public const string MissingName       = ModuleIdentifier + " (\"" + AbsolutePath + "\")";
+            public const string MissingBinaryPath = ModuleIdentifier + " " + ModuleName + "()";
+            public const string EmptyBinaryPath   = ModuleIdentifier + " " + ModuleName + "(\"\")";
         }
 
 
@@ -34,7 +34,7 @@ namespace Uial.Parsing.UnitTests
         public void ModuleNameIsParsed()
         {
             ScriptParser parser = new ScriptParser();
-            ModuleDefinition moduleDefinition = parser.ParseModuleDefinitionDeclaration(ValidModules.BinaryInSameFolder);
+            ModuleDefinition moduleDefinition = parser.ParseModuleDefinition(ValidModules.BinaryInSameFolder);
 
             Assert.IsNotNull(moduleDefinition, "The parsed ModuleDefinition should not be null.");
             Assert.AreEqual(ModuleName, moduleDefinition.Name, "The parsed ModuleDefinition's Name should be the given name.");
@@ -45,10 +45,10 @@ namespace Uial.Parsing.UnitTests
         [DataRow(ValidModules.BinaryInSameFolder,       RelativePath_SameFolder,   DisplayName = "ValidModule_BinaryInSameFolder")]
         [DataRow(ValidModules.BinaryPathForwardSlash,   RelativePath_ForwardSlash, DisplayName = "ValidModule_BinaryPathForwardSlash")]
         [DataTestMethod]
-        public void ModuleBinaryPathIsParsed(string moduleDeclaration, string expectedBinaryPath)
+        public void ModuleBinaryPathIsParsed(string moduleDefinitionStr, string expectedBinaryPath)
         {
             ScriptParser parser = new ScriptParser();
-            ModuleDefinition moduleDefinition = parser.ParseModuleDefinitionDeclaration(moduleDeclaration);
+            ModuleDefinition moduleDefinition = parser.ParseModuleDefinition(moduleDefinitionStr);
 
             Assert.IsNotNull(moduleDefinition, "The parsed ModuleDefinition should not be null.");
             Assert.AreEqual(expectedBinaryPath, moduleDefinition.BinaryPath, "The parsed ModuleDefinition's BinaryPath should be the given binary path.");
@@ -58,10 +58,10 @@ namespace Uial.Parsing.UnitTests
         [DataRow(InvalidModules.MissingBinaryPath, DisplayName = "InvalidModules_MissingBinaryPath")]
         [DataRow(InvalidModules.EmptyBinaryPath,   DisplayName = "InvalidModules_EmptyBinaryPath")]
         [DataTestMethod]
-        public void InvalidModulesThrowException(string moduleDeclaration)
+        public void InvalidModulesThrowException(string moduleDefinitionStr)
         {
             ScriptParser parser = new ScriptParser();
-            Assert.ThrowsException<InvalidModuleDeclarationException>(() => parser.ParseModuleDefinitionDeclaration(moduleDeclaration));
+            Assert.ThrowsException<InvalidModuleDeclarationException>(() => parser.ParseModuleDefinition(moduleDefinitionStr));
         }
     }
 }

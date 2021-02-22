@@ -82,7 +82,7 @@ namespace Uial.Parsing
         const string TestPattern = BlocIdentifiers.Test + "\\s+" + BlocNamePattern + "\\s*:";
         const string TestGroupPattern = BlocIdentifiers.TestGroup + "\\s+" + BlocNamePattern + "\\s*:";
         const string BaseInteractionPattern = "^\\s*(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern + "\\s*$";
-        const string ModulePattern = BlocIdentifiers.Module + "\\s+" + BlocNamePattern + "\\s*\\(\\s*\"" + PathPattern + "\"\\s*\\)\\s*:";
+        const string ModulePattern = BlocIdentifiers.Module + "\\s+" + BlocNamePattern + "\\s*\\(\\s*\"" + PathPattern + "\"\\s*\\)";
 
         public bool IsAssertion(string line)
         {
@@ -478,7 +478,7 @@ namespace Uial.Parsing
             return new TestGroupDefinition(name, childrenfinitions);
         }
 
-        public ModuleDefinition ParseModuleDefinitionDeclaration(string line)
+        public ModuleDefinition ParseModuleDefinition(string line)
         {
             Regex moduleRegex = new Regex(ModulePattern);
             Match moduleMatch = moduleRegex.Match(line);
@@ -490,15 +490,7 @@ namespace Uial.Parsing
             string name = moduleMatch.Groups[NamedGroups.Name].Value;
             string binaryPath = moduleMatch.Groups[NamedGroups.Path].Value;
 
-            return new ModuleDefinition(name, binaryPath, null);
-        }
-
-        public ModuleDefinition ParseModuleDefinition(List<string> lines)
-        {
-            string declarationLine = lines[0].Trim();
-            ModuleDefinition moduleDefinition = ParseModuleDefinitionDeclaration(declarationLine);
-
-            return moduleDefinition;
+            return new ModuleDefinition(name, binaryPath);
         }
 
         public Script ParseLocalImport(string importStr, string executionDirPath)
@@ -538,54 +530,57 @@ namespace Uial.Parsing
 
             Script script = new Script();
 
-            for (int curLine = 0; curLine < lines.Count; ++curLine)
+            for (int currentLineIndex = 0; currentLineIndex < lines.Count; ++currentLineIndex)
             {
-                if (string.IsNullOrWhiteSpace(lines[curLine]) || IsComment(lines[curLine]))
+                string currentLine = lines[currentLineIndex];
+
+                if (string.IsNullOrWhiteSpace(currentLine) || IsComment(currentLine))
                 {
                     continue;
                 }
 
-                if (IsImport(lines[curLine]))
+                if (IsImport(currentLine))
                 {
-                    Script importedScript = ParseImport(lines[curLine], executionDirPath);
+                    Script importedScript = ParseImport(currentLine, executionDirPath);
                     script.AddScript(importedScript);
                     continue;
                 }
+                else if (IsModule(currentLine))
+                {
+                    ModuleDefinition moduleDefinition = ParseModuleDefinition(currentLine);
+                    script.ModuleDefinitions.Add(moduleDefinition.Name, moduleDefinition);
+                    continue;
+                }
 
-                int blocLength = FindBlocLength(lines, curLine);
-                List<string> blocLines = lines.GetRange(curLine, blocLength);
+                int blocLength = FindBlocLength(lines, currentLineIndex);
+                List<string> blocLines = lines.GetRange(currentLineIndex, blocLength);
 
-                if (IsScenario(lines[curLine]))
+                if (IsScenario(currentLine))
                 {
                     IScenarioDefinition scenarioDefinition = ParseScenarioDefinition(blocLines);
                     script.ScenarioDefinitions.Add(scenarioDefinition.Name, scenarioDefinition);
                 }
-                else if (IsContext(lines[curLine]))
+                else if (IsContext(currentLine))
                 {
                     IContextDefinition contextDefinition = ParseContextDefinition(script.RootScope, blocLines);
                     script.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
                 }
-                else if (IsModule(lines[curLine]))
-                {
-                    ModuleDefinition moduleDefinition = ParseModuleDefinition(blocLines);
-                    script.ModuleDefinitions.Add(moduleDefinition.Name, moduleDefinition);
-                }
-                else if (IsTestGroup(lines[curLine]))
+                else if (IsTestGroup(currentLine))
                 {
                     TestGroupDefinition testGroupDefinition = ParseTestGroupDefinition(blocLines);
                     script.TestDefinitions.Add(testGroupDefinition.Name, testGroupDefinition);
                 }
-                else if (IsTest(lines[curLine]))
+                else if (IsTest(currentLine))
                 {
                     TestDefinition testDefinition = ParseTestDefinition(blocLines);
                     script.TestDefinitions.Add(testDefinition.Name, testDefinition);
                 }
                 else
                 {
-                    throw new UnrecognizedPatternExeception(lines[curLine]);
+                    throw new UnrecognizedPatternExeception(currentLine);
                 }
 
-                curLine += blocLength - 1;
+                currentLineIndex += blocLength - 1;
             }
 
             return script;

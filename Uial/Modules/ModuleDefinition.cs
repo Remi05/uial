@@ -7,13 +7,10 @@ namespace Uial.Modules
         public string Name { get; private set; }
         public string BinaryPath { get; private set; }
 
-        public IEnumerable<string> InteractionProviderNames { get; private set; }
-
-        public ModuleDefinition(string name, string binaryPath, IEnumerable<string> interactionProviderNames)
+        public ModuleDefinition(string name, string binaryPath)
         {
             Name = name;
             BinaryPath = binaryPath;
-            InteractionProviderNames = interactionProviderNames;
         }
     }
 }

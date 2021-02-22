@@ -10,21 +10,11 @@ namespace Uial.Modules
         public Module GetModule(ModuleDefinition moduleDefinition)
         {
             var assembly = Assembly.LoadFile(moduleDefinition.BinaryPath);
-            var interactionProviders = GetInteractionProviders(assembly, moduleDefinition);
+            var interactionProviders = GetInteractionProviders(assembly);
             return new Module(moduleDefinition.Name, interactionProviders);
         }
 
-        protected IEnumerable<IInteractionProvider> GetInteractionProviders(Assembly assembly, ModuleDefinition moduleDefinition)
-        {
-            if (moduleDefinition.InteractionProviderNames == null)
-            {
-                return GetAllInteractionProviders(assembly);
-            }
-
-            return GetSpecifiedInteractionProviders(assembly, moduleDefinition.InteractionProviderNames);
-        }
-
-        protected IEnumerable<IInteractionProvider> GetAllInteractionProviders(Assembly assembly)
+        protected IEnumerable<IInteractionProvider> GetInteractionProviders(Assembly assembly)
         {
             var interactionProviders = new List<IInteractionProvider>();
             var types = assembly.GetExportedTypes();
@@ -39,23 +29,6 @@ namespace Uial.Modules
                 }
             }
 
-            return interactionProviders;
-        }
-
-        protected IEnumerable<IInteractionProvider> GetSpecifiedInteractionProviders(Assembly assembly, IEnumerable<string> interactionProviderNames)
-        {
-            var interactionProviders = new List<IInteractionProvider>();
-            foreach (string interactionProviderName in interactionProviderNames)
-            {
-                Type interactionProviderType = assembly.GetType(interactionProviderName);
-                if (interactionProviderType == null)
-                {
-                    throw new Exception($"Could not find type {interactionProviderName} in {assembly.FullName}");
-                }
-
-                IInteractionProvider interactionProvider = GetInteractionProviderInstance(assembly, interactionProviderType);
-                interactionProviders.Add(interactionProvider);
-            }
             return interactionProviders;
         }
 
