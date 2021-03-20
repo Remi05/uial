@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uial.Parsing.UnitTests", "U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uial.LiveConsole", "Uial.LiveConsole\Uial.LiveConsole.csproj", "{CE4E5C27-42A9-405A-B1B3-FB152D7BE030}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uial.Definitions", "Uial.Definitions\Uial.Definitions.csproj", "{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +151,26 @@ Global
 		{CE4E5C27-42A9-405A-B1B3-FB152D7BE030}.Release|x64.Build.0 = Release|Any CPU
 		{CE4E5C27-42A9-405A-B1B3-FB152D7BE030}.Release|x86.ActiveCfg = Release|Any CPU
 		{CE4E5C27-42A9-405A-B1B3-FB152D7BE030}.Release|x86.Build.0 = Release|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Debug|ARM.Build.0 = Debug|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Debug|x64.Build.0 = Debug|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Debug|x86.Build.0 = Debug|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Release|ARM.Build.0 = Release|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Release|ARM64.Build.0 = Release|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Release|x64.ActiveCfg = Release|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Release|x64.Build.0 = Release|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Release|x86.ActiveCfg = Release|Any CPU
+		{D2D14BDB-008E-4103-8EF1-0FB3F7BDC178}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
