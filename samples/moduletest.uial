@@ -1,0 +1,5 @@
+
+module TestModule("C:\Users\remi_\source\repos\uial\TestUialModule\bin\Debug\TestUialModule.dll"):
+
+scenario ModuleScenario:
+    ::TestModuleInteraction()
