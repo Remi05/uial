@@ -32,10 +32,10 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.5
      
     - name: Restore NuGet Packages
-      run: nuget restore Uial.sln
+      run: nuget restore $env:Solution_Name
     
     - name: Build Solution
-      run: msbuild Uial.sln /p:Configuration=${{matrix.configuration}}
+      run: msbuild $env:Solution_Name /p:Configuration=${{matrix.configuration}}
 
     - name: UIAL Unit Tests
       run:  '& "$(vswhere -property installationPath)\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console" .\Uial.UnitTests\bin\${{matrix.configuration}}\Uial.UnitTests.dll'
