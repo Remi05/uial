@@ -5,13 +5,13 @@ using Uial.Scopes;
 
 namespace Uial.Contexts
 {
-    public class BaseContextDefinition : IBaseContextDefinition
+    public class BaseContextDefinition
     {
         public string ContextName { get; private set; }
         private IEnumerable<ValueDefinition> ParamsValueDefinitions { get; set; }
-        private IBaseContextDefinition Child { get; set; }
+        private BaseContextDefinition Child { get; set; }
 
-        public BaseContextDefinition(string contextName, IEnumerable<ValueDefinition> paramsValueDefinitions, IBaseContextDefinition child = null)
+        public BaseContextDefinition(string contextName, IEnumerable<ValueDefinition> paramsValueDefinitions, BaseContextDefinition child = null)
         {
             ContextName = contextName;
             ParamsValueDefinitions = paramsValueDefinitions;
@@ -22,8 +22,7 @@ namespace Uial.Contexts
         {
             if (!parentContext.Scope.ContextDefinitions.ContainsKey(ContextName))
             {
-                // TODO: Throw more specific exception.
-                throw new Exception($"Context \"{ContextName}\" doesn't exist in the current scope.");
+                throw new ContextNotFoundException(ContextName, parentContext);
             }
             IEnumerable<string> paramValues = ParamsValueDefinitions.Select((valueDefinition) => valueDefinition.Resolve(currentScope));
             IContext context = parentContext.Scope.ContextDefinitions[ContextName].Resolve(parentContext, paramValues);

@@ -63,6 +63,10 @@
     <Compile Include="Contexts\AbstractContext.cs" />
     <Compile Include="Conditions\CompositeConditionDefinition.cs" />
     <Compile Include="Contexts\BaseControlDefinition.cs" />
+    <Compile Include="Contexts\ContextResolver.cs" />
+    <Compile Include="Contexts\IContextResolver.cs" />
+    <Compile Include="Contexts\Windows\BaseControlDefinition.cs" />
+    <Compile Include="Contexts\Windows\BaseControlDefinition.cs" />
     <Compile Include="Contexts\ContextDefinition.cs" />
     <Compile Include="Contexts\Controls.cs" />
     <Compile Include="Contexts\Exceptions.cs" />

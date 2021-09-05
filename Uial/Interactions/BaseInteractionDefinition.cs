@@ -5,13 +5,13 @@ using Uial.Scopes;
 
 namespace Uial.Interactions
 {
-    public class BaseInteractionDefinition : IBaseInteractionDefinition
+    public class BaseInteractionDefinition 
     {
         private string InteractionName { get; set; }
         private IEnumerable<ValueDefinition> ParamsValueDefinitions { get; set; }
-        private IBaseContextDefinition ContextDefinition { get; set; }
+        private BaseContextDefinition ContextDefinition { get; set; }
 
-        public BaseInteractionDefinition(string interactionName, IEnumerable<ValueDefinition> paramsValueDefinitions, IBaseContextDefinition contextDefinition = null)
+        public BaseInteractionDefinition(string interactionName, IEnumerable<ValueDefinition> paramsValueDefinitions, BaseContextDefinition contextDefinition = null)
         {
             InteractionName = interactionName;
             ParamsValueDefinitions = paramsValueDefinitions;
