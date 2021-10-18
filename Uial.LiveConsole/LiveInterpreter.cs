@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Automation;
 using Uial.Conditions;
 using Uial.Contexts;
@@ -51,6 +52,7 @@ namespace Uial.LiveConsole
             Commands.Add("element",     (line) => ShowElement(line, TreeScope.Element));
             Commands.Add("parent",      (line) => ShowElement(line, TreeScope.Parent));
             Commands.Add("subtree",     (line) => ShowElement(line, TreeScope.Subtree));
+            Commands.Add("frompoint",   (line) => FromPoint(line));
             Commands.Add("import", ImportScript);
             Commands.Add("all", ShowAllElements);
         }
@@ -181,6 +183,14 @@ namespace Uial.LiveConsole
             }
             string elementInfo = VisualTreeSerializer.GetVisualTreeRepresentation(element, treeScope);    
             OutputStream.WriteLine(elementInfo);
+        }
+
+        protected void FromPoint(string line)
+        {
+            string[] splits = line.Split(',');
+            var point = new Point(double.Parse(splits[0]), double.Parse(splits[1]));
+            var element = AutomationElement.FromPoint(point);
+            ShowElement(element, TreeScope.Element);
         }
     }
 }
