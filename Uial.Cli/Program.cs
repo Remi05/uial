@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Uial.Contexts.Windows;
 using Uial.Scenarios;
@@ -74,7 +74,7 @@ namespace Uial.Cli
                 Console.WriteLine($"An error occurred while parsing the given script:\n{e.Message}");
                 return;
             }
-       
+
             try
             {
                 var scope = new RuntimeScope(script.RootScope, new Dictionary<string, string>());
