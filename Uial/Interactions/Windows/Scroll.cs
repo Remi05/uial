@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Contexts.Windows;
+
+using AutomationPatternIdentifier = System.Int32;
 
 namespace Uial.Interactions.Windows
 {
-    public class Scroll : AbstractPatternInteraction<ScrollPattern>, IInteraction
+    public class Scroll : AbstractPatternInteraction<IUIAutomationScrollPattern>, IInteraction
     {
         public const string Key = "Scroll";
 
         public override string Name => Key;
-        protected override AutomationPattern AutomationPattern => ScrollPattern.Pattern;
+        protected override AutomationPatternIdentifier AutomationPattern => UIA_PatternIds.UIA_ScrollPatternId;
 
         private ScrollAmount HorizontalScroll { get; set; }
         private ScrollAmount VerticalScroll { get; set; }
@@ -44,11 +46,11 @@ namespace Uial.Interactions.Windows
         {
             Dictionary<string, ScrollAmount> scrollAmountMap = new Dictionary<string, ScrollAmount>()
             {
-                {  "NoAmount",       ScrollAmount.NoAmount },
-                {  "LargeDecrement", ScrollAmount.LargeDecrement },
-                {  "LargeIncrement", ScrollAmount.LargeIncrement },
-                {  "SmallDecrement", ScrollAmount.SmallDecrement },
-                {  "SmallIncrement", ScrollAmount.SmallIncrement },
+                {  "NoAmount",       ScrollAmount.ScrollAmount_NoAmount },
+                {  "LargeDecrement", ScrollAmount.ScrollAmount_LargeDecrement },
+                {  "LargeIncrement", ScrollAmount.ScrollAmount_LargeIncrement },
+                {  "SmallDecrement", ScrollAmount.ScrollAmount_SmallDecrement },
+                {  "SmallIncrement", ScrollAmount.ScrollAmount_SmallIncrement },
             };
             if (!scrollAmountMap.ContainsKey(scrollAmountStr))
             {

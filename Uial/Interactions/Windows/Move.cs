@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Contexts.Windows;
+
+using AutomationPatternIdentifier = System.Int32;
 
 namespace Uial.Interactions.Windows
 {
-    public class Move : AbstractPatternInteraction<TransformPattern>, IInteraction
+    public class Move : AbstractPatternInteraction<IUIAutomationTransformPattern>, IInteraction
     {
         public const string Key = "Move";
 
         public override string Name => Key;
-        protected override AutomationPattern AutomationPattern => TransformPattern.Pattern;
+        protected override AutomationPatternIdentifier AutomationPattern => UIA_PatternIds.UIA_TransformPatternId;
 
         private double X { get; set; }
         private double Y { get; set; }

@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Contexts.Windows;
+
+using AutomationPatternIdentifier = System.Int32;
 
 namespace Uial.Interactions.Windows
 {
-    public class SetRangeValue : AbstractPatternInteraction<RangeValuePattern>, IInteraction
+    public class SetRangeValue : AbstractPatternInteraction<IUIAutomationRangeValuePattern>, IInteraction
     {
         public const string Key = "SetRangeValue";
 
         public override string Name => Key;
-        protected override AutomationPattern AutomationPattern => RangeValuePattern.Pattern;
+        protected override AutomationPatternIdentifier AutomationPattern => UIA_PatternIds.UIA_RangeValuePatternId;
 
         private double Value { get; set; }
 

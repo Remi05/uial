@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Contexts.Windows;
+
+using AutomationPatternIdentifier = System.Int32;
 
 namespace Uial.Interactions.Windows
 {
-    public class Resize : AbstractPatternInteraction<TransformPattern>, IInteraction
+    public class Resize : AbstractPatternInteraction<IUIAutomationTransformPattern>, IInteraction
     {
         public const string Key = "Resize";
 
         public override string Name => Key;
-        protected override AutomationPattern AutomationPattern => TransformPattern.Pattern;
+        protected override AutomationPatternIdentifier AutomationPattern => UIA_PatternIds.UIA_TransformPatternId;
 
         private double Width { get; set; }
         private double Height { get; set; }

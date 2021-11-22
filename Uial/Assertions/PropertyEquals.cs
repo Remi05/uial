@@ -1,5 +1,6 @@
-﻿using System.Windows.Automation;
-using Uial.Contexts.Windows;
+﻿using Uial.Contexts.Windows;
+
+using AutomationPropertyIdentifier = System.Int32;
 
 namespace Uial.Assertions
 {
@@ -9,10 +10,10 @@ namespace Uial.Assertions
 
         public string Name => Key;
         private IWindowsVisualContext Context { get; set; }
-        private AutomationProperty Property { get; set; }
+        private AutomationPropertyIdentifier Property { get; set; }
         private object Value { get; set; }
 
-        public PropertyEquals(IWindowsVisualContext context, AutomationProperty property, object value)
+        public PropertyEquals(IWindowsVisualContext context, AutomationPropertyIdentifier property, object value)
         {
             Context = context;
             Property = property;

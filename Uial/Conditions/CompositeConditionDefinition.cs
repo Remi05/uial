@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Scopes;
 
 namespace Uial.Conditions
@@ -23,13 +23,13 @@ namespace Uial.Conditions
             ConditionDefinitions = conditionDefinitions;
         }
 
-        public Condition Resolve(RuntimeScope scope)
+        public IUIAutomationCondition Resolve(RuntimeScope scope)
         {
-            Condition condition = null;
+            IUIAutomationCondition condition = null;
             foreach (IConditionDefinition conditionDefinition in ConditionDefinitions)
             {
-                Condition childCondition = conditionDefinition.Resolve(scope);
-                condition = condition == null ? childCondition : new AndCondition(condition, childCondition);
+                IUIAutomationCondition childCondition = conditionDefinition.Resolve(scope);
+                condition = condition == null ? childCondition : new CUIAutomation().CreateAndCondition(condition, childCondition);
             }
             return condition;
         }

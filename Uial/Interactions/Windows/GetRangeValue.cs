@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Contexts.Windows;
 using Uial.Scopes;
 
 namespace Uial.Interactions.Windows
 {
-    public class GetRangeValue : AbstractPatternInteraction<RangeValuePattern>, IInteraction
+    public class GetRangeValue : AbstractPatternInteraction<IUIAutomationRangeValuePattern>, IInteraction
     {
         public const string Key = "GetRangeValue";
 
         public override string Name => Key;
-        protected override AutomationPattern AutomationPattern => RangeValuePattern.Pattern;
+        protected override int AutomationPattern => UIA_PatternIds.UIA_RangeValuePatternId;
         
         protected string ReferenceName { get; set; }
         protected RuntimeScope Scope { get; set; }
@@ -30,7 +30,7 @@ namespace Uial.Interactions.Windows
         public override void Do()
         {
             base.Do();
-            Scope.ReferenceValues[ReferenceName] = Pattern.Current.Value.ToString();
+            Scope.ReferenceValues[ReferenceName] = Pattern.CurrentValue.ToString();
         }
 
         public static GetRangeValue FromRuntimeValues(IWindowsVisualContext context, RuntimeScope scope, IEnumerable<string> paramValues)

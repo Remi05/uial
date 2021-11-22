@@ -1,14 +1,16 @@
-﻿using System.Windows.Automation;
+﻿using UIAutomationClient;
 using Uial.Contexts.Windows;
+
+using AutomationPatternIdentifier = System.Int32;
 
 namespace Uial.Interactions.Windows
 {
-    public class Collapse : AbstractPatternInteraction<ExpandCollapsePattern>, IInteraction
+    public class Collapse : AbstractPatternInteraction<IUIAutomationExpandCollapsePattern>, IInteraction
     {
         public const string Key = "Collapse";
 
         public override string Name => Key;
-        protected override AutomationPattern AutomationPattern => ExpandCollapsePattern.Pattern;
+        protected override AutomationPatternIdentifier AutomationPattern => UIA_PatternIds.UIA_ExpandCollapsePatternId;
 
         public Collapse(IWindowsVisualContext context) : base(context) { }
 

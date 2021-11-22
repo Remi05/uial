@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Conditions;
 using Uial.Contexts.Windows;
 using Uial.Interactions;
@@ -44,8 +44,8 @@ namespace Uial.Contexts
             }
 
             RuntimeScope runtimeScope = new RuntimeScope(Scope, referenceValues);
-            Condition rootElementCondition = RootElementConditionDefiniton?.Resolve(runtimeScope);
-            Condition uniqueCondition = UniqueConditionDefinition?.Resolve(runtimeScope);
+            IUIAutomationCondition rootElementCondition = RootElementConditionDefiniton?.Resolve(runtimeScope);
+            IUIAutomationCondition uniqueCondition = UniqueConditionDefinition?.Resolve(runtimeScope);
 
             return new WindowsVisualContext(parentContext as IWindowsVisualContext, runtimeScope, Name, rootElementCondition, uniqueCondition);
         }

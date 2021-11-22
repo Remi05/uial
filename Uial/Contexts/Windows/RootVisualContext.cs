@@ -1,4 +1,4 @@
-﻿using System.Windows.Automation;
+﻿using UIAutomationClient;
 using Uial.Scopes;
 
 namespace Uial.Contexts.Windows
@@ -7,7 +7,7 @@ namespace Uial.Contexts.Windows
     {
         public RuntimeScope Scope { get; private set; }
         public string Name => "Root";
-        public AutomationElement RootElement => AutomationElement.RootElement; 
+        public IUIAutomationElement RootElement => new CUIAutomation().GetRootElement(); 
 
         public RootVisualContext(RuntimeScope scope)
         {
