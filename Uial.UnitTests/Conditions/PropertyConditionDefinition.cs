@@ -1,6 +1,8 @@
-﻿using System.Windows.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UIAutomationClient;
 using Uial.Conditions;
+
+using AutomationPropertyIdentifier = System.Int32;
 
 namespace Uial.UnitTests.Conditions
 {
@@ -10,31 +12,31 @@ namespace Uial.UnitTests.Conditions
         [TestMethod]
         public void VerifyControlTypeConditionIsResolved()
         {
-            AutomationProperty expectedProperty = AutomationElement.ControlTypeProperty;
-            ControlType expectedControlType = ControlType.Button;
+            AutomationPropertyIdentifier expectedProperty = UIA_PropertyIds.UIA_ControlTypePropertyId;
+            var expectedControlType = UIA_ControlTypeIds.UIA_ButtonControlTypeId;
             var valueDefinition = ValueDefinition.FromLiteral("Button");
 
             var propertyConditionDefinition = new PropertyConditionDefinition(expectedProperty, valueDefinition);
-            var actualCondition = propertyConditionDefinition.Resolve(null) as PropertyCondition;
+            var actualCondition = propertyConditionDefinition.Resolve(null) as IUIAutomationPropertyCondition;
 
             Assert.IsNotNull(actualCondition);
-            Assert.AreEqual(expectedProperty, actualCondition.Property);
-            Assert.AreEqual(expectedControlType.Id, actualCondition.Value);
+            Assert.AreEqual(expectedProperty, actualCondition.propertyId);
+            Assert.AreEqual(expectedControlType, actualCondition.PropertyValue);
         }
 
         [TestMethod]
         public void VerifyConditionIsResolved()
         {
-            AutomationProperty expectedProperty = AutomationElement.NameProperty;
+            AutomationPropertyIdentifier expectedProperty = UIA_PropertyIds.UIA_NamePropertyId;
             string expectedName = "TestControlName";
             var valueDefinition = ValueDefinition.FromLiteral(expectedName);
 
             var propertyConditionDefinition = new PropertyConditionDefinition(expectedProperty, valueDefinition);
-            var actualCondition = propertyConditionDefinition.Resolve(null) as PropertyCondition;
+            var actualCondition = propertyConditionDefinition.Resolve(null) as IUIAutomationPropertyCondition;
 
             Assert.IsNotNull(actualCondition);
-            Assert.AreEqual(expectedProperty, actualCondition.Property);
-            Assert.AreEqual(expectedName, actualCondition.Value as string);
+            Assert.AreEqual(expectedProperty, actualCondition.propertyId);
+            Assert.AreEqual(expectedName, actualCondition.PropertyValue as string);
         }
     }
 }
