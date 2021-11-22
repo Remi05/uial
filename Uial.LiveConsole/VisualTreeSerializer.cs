@@ -1,88 +1,90 @@
 ﻿using System;
 using System.Text;
 using System.Threading;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Conditions;
 
 namespace Uial.LiveConsole
 {
     public class VisualTreeSerializer
     {
-        public string GetVisualTreeRepresentation(AutomationElement element, TreeScope treeScope)
+        private IUIAutomation UIAutomation { get; set; } = new CUIAutomation();
+
+        public string GetVisualTreeRepresentation(IUIAutomationElement element, TreeScope treeScope)
         {
             switch (treeScope)
             {
-                case TreeScope.Ancestors:
+                case TreeScope.TreeScope_Ancestors:
                     return GetAncestorsRepresentation(element);
-                case TreeScope.Children:
+                case TreeScope.TreeScope_Children:
                     return GetChildrenRepresentation(element);
-                case TreeScope.Descendants:
+                case TreeScope.TreeScope_Descendants:
                     return GetDescendantsRepresentation(element);
-                case TreeScope.Element:
+                case TreeScope.TreeScope_Element:
                     return GetElementRepresentation(element);
-                case TreeScope.Parent:
+                case TreeScope.TreeScope_Parent:
                     return GetParentRepresentation(element);
-                case TreeScope.Subtree:
+                case TreeScope.TreeScope_Subtree:
                     return GetSubtreeRepresentation(element);
             }
 
             throw new Exception($"The given TreeScope \"{treeScope}\" is not supported.");
         }
 
-        public string GetAncestorsRepresentation(AutomationElement element)
+        public string GetAncestorsRepresentation(IUIAutomationElement element)
         {
             string elementRepresentation = GetElementRepresentation(element);
-            if (element == AutomationElement.RootElement)
+            if (element == UIAutomation.GetRootElement())
             {
                 return elementRepresentation;
             }
-            var parent = TreeWalker.RawViewWalker.GetParent(element);
             // TODO: Fix indent.
+            var parent = UIAutomation.CreateTreeWalker(UIAutomation.RawViewCondition).GetParentElement(element);
             return GetAncestorsRepresentation(parent) + "  |----" + elementRepresentation;
         }
 
-        public string GetChildrenRepresentation(AutomationElement element)
+        public string GetChildrenRepresentation(IUIAutomationElement element)
         {
             Thread.Sleep(2000);
-            var children = element.FindAll(TreeScope.Children, Condition.TrueCondition);
+            var children = element.FindAll(TreeScope.TreeScope_Children, UIAutomation.CreateTrueCondition());
             StringBuilder childrenStrBuilder = new StringBuilder();
-            foreach (AutomationElement child in children)
+            for (int i = 0; i < children.Length; ++i)
             {
-                childrenStrBuilder.Append($"  |----" + GetElementRepresentation(child));
+                childrenStrBuilder.Append($"  |----" + GetElementRepresentation(children.GetElement(i)));
             }
             return childrenStrBuilder.ToString();
         }
 
-        public string GetDescendantsRepresentation(AutomationElement element)
+        public string GetDescendantsRepresentation(IUIAutomationElement element)
         {
-            var children = element.FindAll(TreeScope.Children, Condition.TrueCondition);
+            var children = element.FindAll(TreeScope.TreeScope_Children, UIAutomation.CreateTrueCondition());
             StringBuilder descendantsStrBuilder = new StringBuilder();
-            foreach (AutomationElement child in children)
+            for (int i = 0; i < children.Length; ++i)
             {
-                descendantsStrBuilder.Append("  |----" + GetElementRepresentation(child));
-                string descendantsStr = GetDescendantsRepresentation(child);
+                descendantsStrBuilder.Append("  |----" + GetElementRepresentation(children.GetElement(i)));
+                string descendantsStr = GetDescendantsRepresentation(children.GetElement(i));
                 descendantsStrBuilder.Append(descendantsStr.Replace("\n", "\n  "));
             }
             return descendantsStrBuilder.ToString();
         }
 
-        public string GetElementRepresentation(AutomationElement element)
+        public string GetElementRepresentation(IUIAutomationElement element)
         {
             string elementRepresentation = $"[{Conditions.Conditions.GetConditionFromElement(element)}]";
-            if (element == AutomationElement.RootElement)
+            if (element == UIAutomation.GetRootElement())
             {
                 elementRepresentation += " (Root)";
             }
             return elementRepresentation + "\n";
         }
 
-        public string GetParentRepresentation(AutomationElement element)
+        public string GetParentRepresentation(IUIAutomationElement element)
         {
-            var parent = TreeWalker.RawViewWalker.GetParent(element);
+            var parent = UIAutomation.CreateTreeWalker(UIAutomation.RawViewCondition).GetParentElement(element);
             return GetElementRepresentation(parent);
         }
 
-        public string GetSubtreeRepresentation(AutomationElement element)
+        public string GetSubtreeRepresentation(IUIAutomationElement element)
         {
             return GetElementRepresentation(element) + GetDescendantsRepresentation(element);
         }
