@@ -53,7 +53,7 @@ namespace Uial.LiveConsole
             Commands.Add("parent",      (line) => ShowElement(line, TreeScope.TreeScope_Parent));
             Commands.Add("subtree",     (line) => ShowElement(line, TreeScope.TreeScope_Subtree));
             Commands.Add("frompoint",   (line) => FromPoint(line));
-            Commands.Add("import", ImportScript);
+            Commands.Add("import-catalog", ImportScriptFromCatalog);
             Commands.Add("all", ShowAllElements);
         }
 
@@ -81,7 +81,7 @@ namespace Uial.LiveConsole
    
                     if (Parser.IsImport(line))
                     {
-                        ExecutionContext.Script.AddScript(Parser.ParseRepoImport(line));
+                        ExecutionContext.Script.AddScript(Parser.ParseImport(line, null));
                     }
                     else if (Parser.IsModule(line))
                     {
@@ -121,9 +121,9 @@ namespace Uial.LiveConsole
             }
         }
 
-        protected void ImportScript(string line)
+        protected void ImportScriptFromCatalog(string line)
         {
-            string repoStr = $"import 'github:Remi05/uial/samples/contexts/{line}.uial'";
+            string repoStr = $"import 'github:Remi05/uial_catalog/{line}'";
             ExecutionContext.Script.AddScript(Parser.ParseRepoImport(repoStr));
         }
 
