@@ -125,6 +125,7 @@ namespace Uial.LiveConsole
         {
             string repoStr = $"import 'github:Remi05/uial_catalog/{line}'";
             ExecutionContext.Script.AddScript(Parser.ParseRepoImport(repoStr));
+            OutputStream.WriteLine($"Successfully imported \"{line}\" from UIAL catalog.");
         }
 
         protected void ShowAllElements(string line)
