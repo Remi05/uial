@@ -69,9 +69,10 @@ namespace Uial.LiveConsole
                     
                     if (Commands.ContainsKey(commandStr))
                     {
+                        // Remove the command from the line for further processing.
                         if (splits.Length > 1)
                         {
-                            line = string.Concat(splits.Skip(1));
+                            line = string.Join(' ', splits.Skip(1));
                         }
 
                         Commands[commandStr](line);
