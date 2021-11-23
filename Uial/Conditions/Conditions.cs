@@ -1,20 +1,23 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Windows.Automation;
+using UIAutomationClient;
+
+using AutomationIdentifier = System.Int32;
+using AutomationPropertyIdentifier = System.Int32;
+using AutomationControlTypeIdentifier = System.Int32;
 
 namespace Uial.Conditions
 {
     public static class Conditions
     {
-        private static readonly IList<AutomationProperty> IdentifyingProperties = new List<AutomationProperty>()
+        private static readonly IList<AutomationPropertyIdentifier> IdentifyingProperties = new List<AutomationPropertyIdentifier>()
         {
-            AutomationElement.AutomationIdProperty,
-            AutomationElement.ClassNameProperty,
-            AutomationElement.ControlTypeProperty,
-            AutomationElement.NameProperty,
+            UIA_PropertyIds.UIA_AutomationIdPropertyId,
+            UIA_PropertyIds.UIA_ClassNamePropertyId,
+            UIA_PropertyIds.UIA_ControlTypePropertyId,
+            UIA_PropertyIds.UIA_NamePropertyId,
         };
 
-        public static IConditionDefinition GetConditionFromElement(AutomationElement element)
+        public static IConditionDefinition GetConditionFromElement(IUIAutomationElement element)
         {
             if (element == null)
             {
@@ -22,7 +25,7 @@ namespace Uial.Conditions
             }
 
             var propertyConditions = new List<IConditionDefinition>();
-            foreach (AutomationProperty property in IdentifyingProperties)
+            foreach (AutomationPropertyIdentifier property in IdentifyingProperties)
             {
                 object propertyValue = element.GetCurrentPropertyValue(property);
                 string propertyValueStr = PropertyValueToString(propertyValue);
@@ -38,9 +41,9 @@ namespace Uial.Conditions
 
         private static string PropertyValueToString(object propertyValue)
         {
-            if (propertyValue is ControlType)
+            if (propertyValue is AutomationIdentifier && Properties.IsControlTypeIdentifier((AutomationIdentifier)propertyValue))
             {
-                return (propertyValue as ControlType)?.ToUialString();
+                return ((AutomationControlTypeIdentifier)propertyValue).GetControlTypeUialString();
             }
             return propertyValue?.ToString();
         }

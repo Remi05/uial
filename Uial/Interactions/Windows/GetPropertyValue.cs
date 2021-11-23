@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Automation;
 using Uial.Conditions;
 using Uial.Contexts.Windows;
 using Uial.Scopes;
+
+using AutomationPropertyIdentifier = System.Int32;
 
 namespace Uial.Interactions.Windows
 {
@@ -14,15 +15,15 @@ namespace Uial.Interactions.Windows
 
         public override string Name => Key;
 
-        protected AutomationProperty Property { get; set; }
+        protected AutomationPropertyIdentifier Property { get; set; }
         protected string ReferenceName { get; set; }
         protected RuntimeScope Scope { get; set; }
 
-        public GetPropertyValue(IWindowsVisualContext context, AutomationProperty property, string referenceName, RuntimeScope scope) : base(context)
+        public GetPropertyValue(IWindowsVisualContext context, AutomationPropertyIdentifier property, string referenceName, RuntimeScope scope) : base(context)
         {
-            if (property == null || referenceName == null || scope == null)
+            if (referenceName == null || scope == null)
             {
-                throw new ArgumentNullException(property == null ? nameof(property) : referenceName == null ? nameof(referenceName) : nameof(scope));
+                throw new ArgumentNullException(referenceName == null ? nameof(referenceName) : nameof(scope));
             }
             Property = property;
             ReferenceName = referenceName;
@@ -44,7 +45,7 @@ namespace Uial.Interactions.Windows
             }
             string propertyName = paramValues.ElementAt(0);
             string referenceName = paramValues.ElementAt(1);
-            AutomationProperty property = Properties.GetPropertyByName(propertyName);
+            AutomationPropertyIdentifier property = Properties.GetPropertyByName(propertyName);
             return new GetPropertyValue(context, property, referenceName, scope);
         }
     }

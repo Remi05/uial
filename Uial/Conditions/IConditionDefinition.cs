@@ -1,10 +1,10 @@
-﻿using System.Windows.Automation;
+﻿using UIAutomationClient;
 using Uial.Scopes;
 
 namespace Uial.Conditions
 {
     public interface IConditionDefinition
     {
-        Condition Resolve(RuntimeScope scope);
+        IUIAutomationCondition Resolve(RuntimeScope scope);
     }
 }

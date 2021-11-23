@@ -1,13 +1,15 @@
 ﻿using System;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Contexts.Windows;
 using Uial.Contexts;
 
+using AutomationPatternIdentifier = System.Int32;
+
 namespace Uial.Interactions.Windows
 {
-    public abstract class AbstractPatternInteraction<T> : AbstractInteraction, IInteraction where T : BasePattern
+    public abstract class AbstractPatternInteraction<T> : AbstractInteraction, IInteraction where T : class
     {
-        protected abstract AutomationPattern AutomationPattern { get; }
+        protected abstract AutomationPatternIdentifier AutomationPattern { get; }
         protected T Pattern => GetPattern(Context, AutomationPattern);
 
         public AbstractPatternInteraction(IWindowsVisualContext context) : base(context) { }
@@ -25,19 +27,17 @@ namespace Uial.Interactions.Windows
             }
         }
 
-        private static T GetPattern(IWindowsVisualContext context, AutomationPattern automationPattern) 
+        private static T GetPattern(IWindowsVisualContext context, AutomationPatternIdentifier automationPattern) 
         {
-            T pattern;
             try
             {
-                pattern = context.RootElement.GetCurrentPattern(automationPattern) as T;
+                return context.RootElement.GetCurrentPattern(automationPattern) as T;
             }
             catch (InvalidOperationException)
             {
                 // The patten is not supported by the given context's root element.
-                pattern = null;
+                return null;
             }
-            return pattern;
         }
     }
 }

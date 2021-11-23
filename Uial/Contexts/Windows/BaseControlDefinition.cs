@@ -1,4 +1,4 @@
-﻿using System.Windows.Automation;
+﻿using UIAutomationClient;
 using Uial.Conditions;
 using Uial.Scopes;
 
@@ -19,7 +19,7 @@ namespace Uial.Contexts.Windows
 
         public IContext Resolve(IContext parentContext, RuntimeScope currentScope)
         {
-            Condition condition = ConditionDefinition.Resolve(currentScope);
+            IUIAutomationCondition condition = ConditionDefinition.Resolve(currentScope);
             IContext context = new WindowsVisualContext(parentContext as IWindowsVisualContext, currentScope, ControlTypeName, condition);
             return Child?.Resolve(context, currentScope) ?? context;
         }

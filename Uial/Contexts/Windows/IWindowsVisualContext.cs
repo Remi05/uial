@@ -1,10 +1,9 @@
-﻿using System.Windows.Automation;
-using Uial.Scopes;
+﻿using UIAutomationClient;
 
 namespace Uial.Contexts.Windows
 {
     public interface IWindowsVisualContext : IContext
     {
-        AutomationElement RootElement { get; }
+        IUIAutomationElement RootElement { get; }
     }
 }

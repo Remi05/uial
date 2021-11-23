@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Conditions;
 using Uial.Contexts;
 using Uial.Contexts.Windows;
@@ -18,6 +17,7 @@ namespace Uial.LiveConsole
     {
         protected delegate void Command(string line);
 
+        private IUIAutomation UIAutomation { get; set; } = new CUIAutomation();
         protected TextReader InputStream { get; set; }
         protected TextWriter OutputStream { get; set; }
         protected ScriptParser Parser { get; set; } = new ScriptParser();
@@ -45,13 +45,13 @@ namespace Uial.LiveConsole
             Commands.Add("clear", (_) => ClearOutput());
             Commands.Add("exit",  (_) => ShouldExit = true);
             Commands.Add("reset", (_) => ExecutionContext = new ExecutionContext());
-            Commands.Add("root",  (_) => ShowElement(AutomationElement.RootElement, TreeScope.Element));
-            Commands.Add("ancestors",   (line) => ShowElement(line, TreeScope.Ancestors));
-            Commands.Add("children",    (line) => ShowElement(line, TreeScope.Children));
-            Commands.Add("descendants", (line) => ShowElement(line, TreeScope.Descendants));
-            Commands.Add("element",     (line) => ShowElement(line, TreeScope.Element));
-            Commands.Add("parent",      (line) => ShowElement(line, TreeScope.Parent));
-            Commands.Add("subtree",     (line) => ShowElement(line, TreeScope.Subtree));
+            Commands.Add("root",  (_) => ShowElement(UIAutomation.GetRootElement(), TreeScope.TreeScope_Element));
+            Commands.Add("ancestors",   (line) => ShowElement(line, TreeScope.TreeScope_Ancestors));
+            Commands.Add("children",    (line) => ShowElement(line, TreeScope.TreeScope_Children));
+            Commands.Add("descendants", (line) => ShowElement(line, TreeScope.TreeScope_Descendants));
+            Commands.Add("element",     (line) => ShowElement(line, TreeScope.TreeScope_Element));
+            Commands.Add("parent",      (line) => ShowElement(line, TreeScope.TreeScope_Parent));
+            Commands.Add("subtree",     (line) => ShowElement(line, TreeScope.TreeScope_Subtree));
             Commands.Add("frompoint",   (line) => FromPoint(line));
             Commands.Add("import", ImportScript);
             Commands.Add("all", ShowAllElements);
@@ -102,15 +102,15 @@ namespace Uial.LiveConsole
                     else if (Parser.IsCondition(line))
                     {
                         IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
-                        Condition condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
-                        AutomationElement element = AutomationElement.RootElement.FindFirst(TreeScope.Subtree, condition);
-                        ShowElement(element, TreeScope.Element);
+                        var condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
+                        var element = UIAutomation.GetRootElement().FindFirst(TreeScope.TreeScope_Subtree, condition);
+                        ShowElement(element, TreeScope.TreeScope_Element);
                     }
                     else if (Parser.IsBaseContext(line))
                     {
                         IBaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
                         IWindowsVisualContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope) as IWindowsVisualContext;
-                        ShowElement(context.RootElement, TreeScope.Element);
+                        ShowElement(context.RootElement, TreeScope.TreeScope_Element);
                     }
                 }
                 catch (Exception e)
@@ -131,13 +131,13 @@ namespace Uial.LiveConsole
             if (Parser.IsCondition(line))
             {
                 IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
-                Condition condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
-                var elements = AutomationElement.RootElement.FindAll(TreeScope.Subtree, condition);
-                if (elements.Count > 0)
+                var condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
+                var elements = UIAutomation.GetRootElement().FindAll(TreeScope.TreeScope_Subtree, condition);
+                if (elements.Length > 0)
                 {
-                    foreach (AutomationElement element in elements)
+                    for (int i = 0; i < elements.Length; ++i)
                     {
-                        string elementRepresentation = VisualTreeSerializer.GetElementRepresentation(element);
+                        string elementRepresentation = VisualTreeSerializer.GetElementRepresentation(elements.GetElement(i));
                         OutputStream.Write(elementRepresentation);
                     }
                     Console.WriteLine();
@@ -158,8 +158,8 @@ namespace Uial.LiveConsole
             if (Parser.IsCondition(line))
             {
                 IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
-                Condition condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
-                AutomationElement element = AutomationElement.RootElement.FindFirst(TreeScope.Subtree, condition);
+                var condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
+                var element = UIAutomation.GetRootElement().FindFirst(TreeScope.TreeScope_Subtree, condition);
                 ShowElement(element, treeScope);
             }
             else if (Parser.IsBaseContext(line))
@@ -174,7 +174,7 @@ namespace Uial.LiveConsole
             }
         }
 
-        protected void ShowElement(AutomationElement element, TreeScope treeScope)
+        protected void ShowElement(IUIAutomationElement element, TreeScope treeScope)
         {
             if (element == null)
             {
@@ -188,9 +188,9 @@ namespace Uial.LiveConsole
         protected void FromPoint(string line)
         {
             string[] splits = line.Split(',');
-            var point = new Point(double.Parse(splits[0]), double.Parse(splits[1]));
-            var element = AutomationElement.FromPoint(point);
-            ShowElement(element, TreeScope.Element);
+            var point = new tagPOINT() { x = int.Parse(splits[0]), y = int.Parse(splits[1]) };
+            var element = UIAutomation.ElementFromPoint(point);
+            ShowElement(element, TreeScope.TreeScope_Element);
         }
     }
 }

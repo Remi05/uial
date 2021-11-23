@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Windows.Automation;
 using Uial.Conditions;
 using Uial.Contexts;
 using Uial.Contexts.Windows;
@@ -223,7 +222,7 @@ namespace Uial.Parsing
             List<IConditionDefinition> conditionDefinitions = new List<IConditionDefinition>(matches.Count);
             foreach (Match match in matches)
             {
-                AutomationProperty property = Properties.GetPropertyByName(match.Groups[NamedGroups.Property].Value);
+                var property = Properties.GetPropertyByName(match.Groups[NamedGroups.Property].Value);
                 ValueDefinition value = ParseValueDefinition(match.Groups[NamedGroups.Value].Value);
                 conditionDefinitions.Add(new PropertyConditionDefinition(property, value));
             }

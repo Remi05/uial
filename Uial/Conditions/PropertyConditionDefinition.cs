@@ -1,34 +1,36 @@
 ﻿using System;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Contexts;
 using Uial.Scopes;
+
+using AutomationPropertyIdentifier = System.Int32;
 
 namespace Uial.Conditions
 {
     public class PropertyConditionDefinition : IConditionDefinition
     {
-        private AutomationProperty Property { get; set; }
+        private AutomationPropertyIdentifier Property { get; set; }
         private ValueDefinition Value { get; set; }
 
-        public PropertyConditionDefinition(AutomationProperty property, ValueDefinition value)
+        public PropertyConditionDefinition(AutomationPropertyIdentifier property, ValueDefinition value)
         {
-            if (property == null || value == null)
+            if (value == null)
             {
-                throw new ArgumentNullException(property == null ? nameof(property) : nameof(value));
+                throw new ArgumentNullException(nameof(value));
             }
             Property = property;
             Value = value;
         }
 
-        public Condition Resolve(RuntimeScope scope)
+        public IUIAutomationCondition Resolve(RuntimeScope scope)
         {
             object propertyValue = Properties.GetPropertyValue(Property, Value.Resolve(scope));
-            return new PropertyCondition(Property, propertyValue);
+            return new CUIAutomation().CreatePropertyCondition(Property, propertyValue);
         }
 
         public override string ToString()
         {
-            return $"{Property.ToUialString()}={Value}";
+            return $"{Property.GetPropertyUialString()}={Value}";
         }
     }
 }

@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Automation;
+using UIAutomationClient;
 using Uial.Contexts.Windows;
 using Uial.Scopes;
 
+using AutomationPatternIdentifier = System.Int32;
+
 namespace Uial.Interactions.Windows
 {
-    public class GetTextValue : AbstractPatternInteraction<ValuePattern>, IInteraction
+    public class GetTextValue : AbstractPatternInteraction<IUIAutomationValuePattern>, IInteraction
     {
         public const string Key = "GetTextValue";
 
         public override string Name => Key;
-        protected override AutomationPattern AutomationPattern => ValuePattern.Pattern;
+        protected override AutomationPatternIdentifier AutomationPattern => UIA_PatternIds.UIA_ValuePatternId;
 
         protected string ReferenceName { get; set; }
         protected RuntimeScope Scope { get; set; }
@@ -30,7 +32,7 @@ namespace Uial.Interactions.Windows
         public override void Do()
         {
             base.Do();
-            Scope.ReferenceValues[ReferenceName] = Pattern.Current.Value;
+            Scope.ReferenceValues[ReferenceName] = Pattern.CurrentValue;
         }
 
         public static GetTextValue FromRuntimeValues(IWindowsVisualContext context, RuntimeScope scope, IEnumerable<string> paramValues)
