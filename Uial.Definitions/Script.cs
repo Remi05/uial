@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Uial.Modules;
-using Uial.Scenarios;
-using Uial.Scopes;
-using Uial.Testing;
 
-namespace Uial
+namespace Uial.Definitions
 {
     public class Script
     {
         public DefinitionScope RootScope { get; private set; } = new DefinitionScope();
-        public Dictionary<string, IScenarioDefinition> ScenarioDefinitions { get; private set; } = new Dictionary<string, IScenarioDefinition>();
-        public Dictionary<string, ITestableDefinition> TestDefinitions { get; private set; } = new Dictionary<string, ITestableDefinition>();
+        public Dictionary<string, ScenarioDefinition> ScenarioDefinitions { get; private set; } = new Dictionary<string, ScenarioDefinition>();
+        public Dictionary<string, TestableDefinition> TestDefinitions { get; private set; } = new Dictionary<string, TestableDefinition>();
         public Dictionary<string, ModuleDefinition> ModuleDefinitions { get; private set; } = new Dictionary<string, ModuleDefinition>();
 
         public void AddScript(Script script)
