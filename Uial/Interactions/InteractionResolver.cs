@@ -7,7 +7,7 @@ using Uial.Scopes;
 
 namespace Uial.Interactions
 {
-    public class InteractionResolver
+    public class InteractionResolver : IInteractionResolver
     {
         private IBaseInteractionResolver BaseInteractionResolver { get; set; }
 
