@@ -2,16 +2,9 @@
 
 namespace Uial.Definitions
 {
-    public class AssertionDefinition
+    public class AssertionDefinition : BaseInteractionDefinition
     {
-        public string AssertionName { get; private set; }
-
-        public IEnumerable<ReferenceValueDefinition> ParamsValueDefinitions { get; private set; }
-
-        public AssertionDefinition(string assertionName, IEnumerable<ReferenceValueDefinition> paramsValueDefinitions)
-        {
-            AssertionName = assertionName;
-            ParamsValueDefinitions = paramsValueDefinitions;
-        }
+        public AssertionDefinition(string assertionName, IEnumerable<ValueDefinition> paramsValueDefinitions)
+            : base(assertionName, paramsValueDefinitions) { }
     }
 }
