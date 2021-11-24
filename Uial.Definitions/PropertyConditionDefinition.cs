@@ -2,12 +2,12 @@
 
 namespace Uial.Definitions
 {
-    public class PropertyConditionDefinition
+    public class PropertyConditionDefinition : ConditionDefinition
     {
         public string PropertyName { get; private set; }
-        public ReferenceValueDefinition Value { get; private set; }
+        public ValueDefinition Value { get; private set; }
 
-        public PropertyConditionDefinition(string propertyName, ReferenceValueDefinition value)
+        public PropertyConditionDefinition(string propertyName, ValueDefinition value)
         {
             if (value == null)
             {
