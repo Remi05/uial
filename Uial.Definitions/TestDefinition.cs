@@ -6,7 +6,7 @@ namespace Uial.Definitions
     public class TestDefinition : TestableDefinition
     {
         public string TestName { get; protected set; }
-        protected IEnumerable<BaseInteractionDefinition> BaseInteractionDefinitions { get; set; }
+        public IEnumerable<BaseInteractionDefinition> BaseInteractionDefinitions { get; private set; }
 
         public TestDefinition(string testName, IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions)
         {
