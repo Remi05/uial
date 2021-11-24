@@ -1,4 +1,6 @@
-﻿namespace Uial.Modules
+﻿using Uial.Definitions;
+
+namespace Uial.Modules
 {
     public interface IModuleProvider
     {

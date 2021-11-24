@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Uial.Definitions;
 using Uial.Interactions;
 
 namespace Uial.Modules
@@ -11,7 +12,7 @@ namespace Uial.Modules
         {
             var assembly = Assembly.LoadFile(moduleDefinition.BinaryPath);
             var interactionProviders = GetInteractionProviders(assembly);
-            return new Module(moduleDefinition.Name, interactionProviders);
+            return new Module(moduleDefinition.ModuleName, interactionProviders);
         }
 
         protected IEnumerable<IInteractionProvider> GetInteractionProviders(Assembly assembly)

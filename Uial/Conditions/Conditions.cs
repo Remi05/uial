@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UIAutomationClient;
+using Uial.Definitions;
 
 using AutomationIdentifier = System.Int32;
 using AutomationPropertyIdentifier = System.Int32;
@@ -17,22 +18,23 @@ namespace Uial.Conditions
             UIA_PropertyIds.UIA_NamePropertyId,
         };
 
-        public static IConditionDefinition GetConditionFromElement(IUIAutomationElement element)
+        public static ConditionDefinition GetConditionFromElement(IUIAutomationElement element)
         {
             if (element == null)
             {
                 return null;
             }
 
-            var propertyConditions = new List<IConditionDefinition>();
+            var propertyConditions = new List<ConditionDefinition>();
             foreach (AutomationPropertyIdentifier property in IdentifyingProperties)
             {
                 object propertyValue = element.GetCurrentPropertyValue(property);
                 string propertyValueStr = PropertyValueToString(propertyValue);
                 if (!string.IsNullOrWhiteSpace(propertyValueStr))
                 {
-                    var valueDefinition = ValueDefinition.FromLiteral(propertyValueStr);
-                    var propertyCondition = new PropertyConditionDefinition(property, valueDefinition);
+                    string propertyName = Properties.GetPropertyUialString(property);
+                    var valueDefinition = new LiteralValueDefinition(propertyValueStr);
+                    var propertyCondition = new PropertyConditionDefinition(propertyName, valueDefinition);
                     propertyConditions.Add(propertyCondition);
                 }
             }
