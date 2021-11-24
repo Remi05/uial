@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Uial.Modules;
+using Uial.Definitions;
 using Uial.Parsing.Exceptions;
 
 namespace Uial.Parsing.UnitTests
@@ -37,7 +37,7 @@ namespace Uial.Parsing.UnitTests
             ModuleDefinition moduleDefinition = parser.ParseModuleDefinition(ValidModules.BinaryInSameFolder);
 
             Assert.IsNotNull(moduleDefinition, "The parsed ModuleDefinition should not be null.");
-            Assert.AreEqual(ModuleName, moduleDefinition.Name, "The parsed ModuleDefinition's Name should be the given name.");
+            Assert.AreEqual(ModuleName, moduleDefinition.ModuleName, "The parsed ModuleDefinition's Name should be the given name.");
         }
 
         [DataRow(ValidModules.BinaryWithAbsolutePath,   AbsolutePath,              DisplayName = "ValidModule_BinaryWithAbsolutePath")]

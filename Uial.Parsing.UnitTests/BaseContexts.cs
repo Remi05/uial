@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Uial.Contexts;
+using Uial.Definitions;
 
 namespace Uial.Parsing.UnitTests
 {
@@ -28,7 +28,7 @@ namespace Uial.Parsing.UnitTests
         public void ValidBaseContextsCanBeParsed(string baseContextStr)
         {
             ScriptParser parser = new ScriptParser();
-            IBaseContextDefinition baseContextDefinition = parser.ParseBaseContextDefinition(baseContextStr);
+            BaseContextDefinition baseContextDefinition = parser.ParseBaseContextDefinition(baseContextStr);
 
             Assert.IsNotNull(baseContextDefinition, "The parsed IBaseContextDefinition should not be null.");
         }

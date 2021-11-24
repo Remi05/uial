@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Uial.Contexts;
+using Uial.Definitions;
 using Uial.Parsing.Exceptions;
 
 namespace Uial.Parsing.UnitTests
@@ -45,10 +45,10 @@ namespace Uial.Parsing.UnitTests
         public void ContextNameIsParsed()
         {
             ScriptParser parser = new ScriptParser();
-            IContextDefinition contextDefinition = parser.ParseContextDefinitionDeclaration(null, ValidContexts.SingleRootCondition);
+            ContextDefinition contextDefinition = parser.ParseContextDefinitionDeclaration(null, ValidContexts.SingleRootCondition);
 
             Assert.IsNotNull(contextDefinition, "The parsed IContextDefinition should not be null.");
-            Assert.AreEqual(ContextName, contextDefinition.Name, "The parsed IContextDefinition's Name should be the given name.");
+            Assert.AreEqual(ContextName, contextDefinition.ContextName, "The parsed IContextDefinition's ContextName should be the given name.");
         }
 
 
@@ -67,7 +67,7 @@ namespace Uial.Parsing.UnitTests
         public void ValidContextsCanBeParsed(string contextDeclaration)
         {
             ScriptParser parser = new ScriptParser();
-            IContextDefinition contextDefinition = parser.ParseContextDefinitionDeclaration(null, contextDeclaration);
+            ContextDefinition contextDefinition = parser.ParseContextDefinitionDeclaration(null, contextDeclaration);
 
             Assert.IsNotNull(contextDefinition, "The parsed IContextDefinition should not be null.");
         }

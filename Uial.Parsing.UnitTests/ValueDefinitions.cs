@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Uial.Definitions;
 using Uial.Parsing.Exceptions;
 
 namespace Uial.Parsing.UnitTests
@@ -52,13 +53,13 @@ namespace Uial.Parsing.UnitTests
         }
 
 
-        [DataRow(Valid.Literals.EmptyString,       DisplayName = "Valid_Literals_EmptyString")]
-        [DataRow(Valid.Literals.Number,            DisplayName = "Valid_Literals_Number")]
-        [DataRow(Valid.Literals.ReferenceChar,     DisplayName = "Valid_Literals_ReferenceChar")]
-        [DataRow(Valid.Literals.ReferenceInQuotes, DisplayName = "Valid_Literals_ReferenceInQuotes")]
-        [DataRow(Valid.Literals.SpecialChars,      DisplayName = "Valid_Literals_SpecialChars")]
-        [DataRow(Valid.Literals.Text,              DisplayName = "Valid_Literals_Text")]
-        [DataRow(Valid.Literals.WhiteSpace,        DisplayName = "Valid_Literals_WhiteSpace")]
+        [DataRow(Valid.Literals.EmptyString,        DisplayName = "Valid_Literals_EmptyString")]
+        [DataRow(Valid.Literals.Number,             DisplayName = "Valid_Literals_Number")]
+        [DataRow(Valid.Literals.ReferenceChar,      DisplayName = "Valid_Literals_ReferenceChar")]
+        [DataRow(Valid.Literals.ReferenceInQuotes,  DisplayName = "Valid_Literals_ReferenceInQuotes")]
+        [DataRow(Valid.Literals.SpecialChars,       DisplayName = "Valid_Literals_SpecialChars")]
+        [DataRow(Valid.Literals.Text,               DisplayName = "Valid_Literals_Text")]
+        [DataRow(Valid.Literals.WhiteSpace,         DisplayName = "Valid_Literals_WhiteSpace")]
         [DataRow(Valid.References.Basic,            DisplayName = "Valid_References_Basic")]
         [DataRow(Valid.References.AllLower,         DisplayName = "Valid_References_AllLower")]
         [DataRow(Valid.References.AllUpper,         DisplayName = "Valid_References_AllUpper")]
@@ -73,10 +74,10 @@ namespace Uial.Parsing.UnitTests
         }
 
 
-        [DataRow(Invalid.Literals.MissingQuoteAtEnd,   DisplayName = "Invalid_Literals_MissingQuoteAtEnd")]
-        [DataRow(Invalid.Literals.MissingQuoteAtStart, DisplayName = "Invalid_Literals_MissingQuoteAtStart")]
-        [DataRow(Invalid.Literals.DoubleQuotesText,    DisplayName = "Invalid_Literals_DoubleQuotesText")]
-        [DataRow(Invalid.Literals.SingleQuoteText,     DisplayName = "Invalid_Literals_SingleQuoteText")]
+        [DataRow(Invalid.Literals.MissingQuoteAtEnd,    DisplayName = "Invalid_Literals_MissingQuoteAtEnd")]
+        [DataRow(Invalid.Literals.MissingQuoteAtStart,  DisplayName = "Invalid_Literals_MissingQuoteAtStart")]
+        [DataRow(Invalid.Literals.DoubleQuotesText,     DisplayName = "Invalid_Literals_DoubleQuotesText")]
+        [DataRow(Invalid.Literals.SingleQuoteText,      DisplayName = "Invalid_Literals_SingleQuoteText")]
         [DataRow(Invalid.References.Empty,              DisplayName = "Invalid_References_Empty")]
         [DataRow(Invalid.References.MissingPrefix,      DisplayName = "Invalid_References_MissingPrefix")]
         [DataRow(Invalid.References.TextBeforePrefix,   DisplayName = "Invalid_References_TextBeforePrefix")]

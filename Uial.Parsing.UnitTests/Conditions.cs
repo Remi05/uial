@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Uial.Conditions;
+using Uial.Definitions;
 using Uial.Parsing.Exceptions;
 
 namespace Uial.Parsing.UnitTests
@@ -22,8 +22,8 @@ namespace Uial.Parsing.UnitTests
         }
 
 
-        [DataRow(ValidConditions.SingleLiteralCondition,     DisplayName = "ValidConditions_SingleLiteralCondition")]
-        [DataRow(ValidConditions.CompositeLiteralCondition , DisplayName = "ValidConditions_CompositeLiteralCondition")]
+        [DataRow(ValidConditions.SingleLiteralCondition,      DisplayName = "ValidConditions_SingleLiteralCondition")]
+        [DataRow(ValidConditions.CompositeLiteralCondition,   DisplayName = "ValidConditions_CompositeLiteralCondition")]
         [DataRow(ValidConditions.SingleReferenceCondition,    DisplayName = "ValidConditions_SingleReferenceCondition")]
         [DataRow(ValidConditions.CompositeReferenceCondition, DisplayName = "ValidConditions_CompositeReferenceCondition")]
         [DataRow(ValidConditions.CompositeMixedCondition,     DisplayName = "ValidConditions_CompositeMixedCondition")]
@@ -31,7 +31,7 @@ namespace Uial.Parsing.UnitTests
         public void ValidConditionsCanBeParsed(string conditionStr)
         {
             ScriptParser parser = new ScriptParser();
-            IConditionDefinition conditionDefinition = parser.ParseConditionDefinition(conditionStr);
+            ConditionDefinition conditionDefinition = parser.ParseConditionDefinition(conditionStr);
 
             Assert.IsNotNull(conditionDefinition, "The parsed IBaseContextDefinition should not be null.");
         }
