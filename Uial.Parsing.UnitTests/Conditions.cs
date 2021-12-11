@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Uial.Definitions;
+using Uial.DataModels;
 using Uial.Parsing.Exceptions;
 
 namespace Uial.Parsing.UnitTests

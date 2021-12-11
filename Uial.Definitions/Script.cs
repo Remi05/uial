@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Uial.Definitions
+namespace Uial.DataModels
 {
     public class Script
     {
@@ -21,6 +21,15 @@ namespace Uial.Definitions
                 RootScope.ContextDefinitions.Add(contextName, script.RootScope.ContextDefinitions[contextName]);
             }
 
+            foreach (string interactionName in script.RootScope.InteractionDefinitions.Keys)
+            {
+                if (RootScope.InteractionDefinitions.ContainsKey(interactionName))
+                {
+                    throw new Exception($"Interaction \"{interactionName}\" already exists in the current scope.");
+                }
+                RootScope.InteractionDefinitions.Add(interactionName, script.RootScope.InteractionDefinitions[interactionName]);
+            }
+
             foreach (string scenarioName in script.ScenarioDefinitions.Keys)
             {
                 if (ScenarioDefinitions.ContainsKey(scenarioName))
@@ -28,6 +37,15 @@ namespace Uial.Definitions
                     throw new Exception($"Scenario \"{scenarioName}\" already exists.");
                 }
                 ScenarioDefinitions.Add(scenarioName, script.ScenarioDefinitions[scenarioName]);
+            }
+
+            foreach (string testName in script.TestDefinitions.Keys)
+            {
+                if (TestDefinitions.ContainsKey(testName))
+                {
+                    throw new Exception($"Test(group) \"{testName}\" already exists.");
+                }
+                TestDefinitions.Add(testName, script.TestDefinitions[testName]);
             }
 
             foreach (string moduleName in script.ModuleDefinitions.Keys)

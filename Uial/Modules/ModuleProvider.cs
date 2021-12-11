@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Uial.Definitions;
+using Uial.DataModels;
 using Uial.Interactions;
 
 namespace Uial.Modules
@@ -15,7 +15,7 @@ namespace Uial.Modules
             return new Module(moduleDefinition.ModuleName, interactionProviders);
         }
 
-        protected IEnumerable<IInteractionProvider> GetInteractionProviders(Assembly assembly)
+        protected ICollection<IInteractionProvider> GetInteractionProviders(Assembly assembly)
         {
             var interactionProviders = new List<IInteractionProvider>();
             var types = assembly.GetExportedTypes();

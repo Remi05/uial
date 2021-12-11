@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Uial.Contexts;
-using Uial.Scopes;
+using Uial.Values;
 
 namespace Uial.Interactions.Core
 {
@@ -14,32 +14,32 @@ namespace Uial.Interactions.Core
 
         protected IContext Context { get; set; }
         protected string ReferenceName { get; set; }
-        protected RuntimeScope Scope { get; set; }
+        protected IReferenceValueStore ReferenceValueStore { get; set; }
 
-        public IsAvailable(IContext context, string referenceName, RuntimeScope scope)
+        public IsAvailable(IContext context, string referenceName, IReferenceValueStore referenceValueStore)
         {
-            if (referenceName == null || scope == null)
+            if (referenceName == null || referenceValueStore == null)
             {
-                throw new ArgumentNullException(referenceName == null ? nameof(referenceName): nameof(scope));
+                throw new ArgumentNullException(referenceName == null ? nameof(referenceName): nameof(referenceValueStore));
             }
             Context = context;
             ReferenceName = referenceName;
-            Scope = scope;
+            ReferenceValueStore = referenceValueStore;
         }
 
         public void Do()
         {
-            Scope.ReferenceValues[ReferenceName] = (Context?.IsAvailable() ?? false).ToString();
+            ReferenceValueStore.SetValue(ReferenceName, (Context?.IsAvailable() ?? false).ToString());
         }
 
-        public static IsAvailable FromRuntimeValues(IContext context, RuntimeScope scope, IEnumerable<string> paramValues)
+        public static IsAvailable FromRuntimeValues(IContext context, IEnumerable<object> paramValues, IReferenceValueStore referenceValueStore)
         {
             if (paramValues.Count() != 1)
             {
                 throw new InvalidParameterCountException(1, paramValues.Count());
             }
-            string referenceName = paramValues.ElementAt(0);
-            return new IsAvailable(context, referenceName, scope);
+            string referenceName = paramValues.ElementAt(0) as string;
+            return new IsAvailable(context, referenceName, referenceValueStore);
         }
     }
 }

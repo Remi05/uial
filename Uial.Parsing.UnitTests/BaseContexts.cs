@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Uial.Definitions;
+using Uial.DataModels;
 
 namespace Uial.Parsing.UnitTests
 {

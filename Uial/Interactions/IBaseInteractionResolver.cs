@@ -1,11 +1,11 @@
 ﻿using Uial.Contexts;
-using Uial.Definitions;
-using Uial.Scopes;
+using Uial.DataModels;
+using Uial.Values;
 
 namespace Uial.Interactions
 {
     public interface IBaseInteractionResolver
     {
-        IInteraction Resolve(BaseInteractionDefinition baseInteractionDefinition, IContext parentContext, IInteractionProvider interactionProvider, RuntimeScope currentScope);
+        IInteraction Resolve(BaseInteractionDefinition baseInteractionDefinition, IContext parentContext, IReferenceValueStore referenceValueStore);
     }
 }

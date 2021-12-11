@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Uial.Contexts;
-using Uial.Contexts.Windows;
+using Uial.DataModels;
 using Uial.Interactions;
 using Uial.Modules;
 using Uial.Scopes;
+using Uial.Windows.Contexts;
 
 namespace Uial.LiveConsole
 {

@@ -1,11 +1,10 @@
 ﻿using Uial.Contexts;
-using Uial.Definitions;
-using Uial.Interactions;
+using Uial.DataModels;
 
 namespace Uial.Scenarios
 {
     public interface IScenarioResolver
     {
-        Scenario Resolve(ScenarioDefinition scenarioDefinition, IContext context, IInteractionProvider interactionProvider);
+        Scenario Resolve(ScenarioDefinition scenarioDefinition, IContext context);
     }
 }

@@ -38,7 +38,7 @@ namespace Uial.Interactions.Core
             }
         }
 
-        public static WaitUntilAvailable FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
+        public static WaitUntilAvailable FromRuntimeValues(IContext context, IEnumerable<object> paramValues)
         {
             TimeSpan? timeout = null;
             if (paramValues == null)
@@ -51,7 +51,7 @@ namespace Uial.Interactions.Core
             }
             if (paramValues.Count() == 1)
             {
-                double milliseconds = double.Parse(paramValues.ElementAt(0));
+                double milliseconds = double.Parse(paramValues.ElementAt(0) as string);
                 timeout = TimeSpan.FromMilliseconds(milliseconds);
             }
             return new WaitUntilAvailable(context, timeout);

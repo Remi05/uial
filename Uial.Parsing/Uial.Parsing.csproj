@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Uial.Definitions\Uial.Definitions.csproj" />
+    <ProjectReference Include="..\Uial.Definitions\Uial.DataModels.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,33 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using Uial.Contexts;
-using Uial.Definitions;
-using Uial.Scopes;
+using Uial.DataModels;
+using Uial.Values;
 
 namespace Uial.Interactions
 {
     public class BaseInteractionResolver : IBaseInteractionResolver
     {
-        private IBaseContextResolver BaseContextResolver { get; set; }
-        private IValueResolver ValueResolver { get; set; }
+        protected IInteractionProvider InteractionProvider { get; set; }
+        protected IBaseContextResolver BaseContextResolver { get; set; }
+        protected IValueResolver ValueResolver { get; set; }
 
-        public BaseInteractionResolver(IBaseContextResolver baseContextResolver, IValueResolver valueResolver)
+        public BaseInteractionResolver(IInteractionProvider interactionProvider, IBaseContextResolver baseContextResolver, IValueResolver valueResolver)
         {
+            InteractionProvider = interactionProvider;
             BaseContextResolver = baseContextResolver;
             ValueResolver = valueResolver;
         }
 
-        public IInteraction Resolve(BaseInteractionDefinition baseInteractionDefinition, IContext parentContext, IInteractionProvider interactionProvider, RuntimeScope currentScope)
+        public IInteraction Resolve(BaseInteractionDefinition baseInteractionDefinition, IContext parentContext, IReferenceValueStore referenceValueStore)
         {
-            IContext context = BaseContextResolver.Resolve(baseInteractionDefinition.ContextDefinition, parentContext, currentScope) ?? parentContext;
-            IEnumerable<string> paramValues = baseInteractionDefinition.ParamsValueDefinitions.Select((valueDefinition) => ValueResolver.Resolve(valueDefinition, currentScope));
-
-            //if (context.Scope.InteractionDefinitions.ContainsKey(baseInteractionDefinition.InteractionName))
-            //{
-            //    return context.Scope.InteractionDefinitions[baseInteractionDefinition.InteractionName].Resolve(context, interactionProvider, paramValues);
-            //}
-
-            return interactionProvider.GetInteractionByName(context, currentScope, baseInteractionDefinition.InteractionName, paramValues);
+            if (baseInteractionDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(baseInteractionDefinition));
+            }
+            BaseContextDefinition baseContextDefinition = baseInteractionDefinition.ContextDefinition;
+            IContext context = baseContextDefinition == null ? null : BaseContextResolver.Resolve(baseContextDefinition, parentContext) ?? parentContext;
+            var paramValues = baseInteractionDefinition.ParamsValueDefinitions.Select(valueDefinition => ValueResolver.Resolve(valueDefinition, referenceValueStore));
+            return InteractionProvider.GetInteractionByName(baseInteractionDefinition.InteractionName, paramValues, context);
         }
     }
 }

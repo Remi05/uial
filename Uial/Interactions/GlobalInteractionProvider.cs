@@ -2,37 +2,39 @@
 using System.Collections.Generic;
 using System.Linq;
 using Uial.Contexts;
-using Uial.Scopes;
-
 
 namespace Uial.Interactions
 {
     public class GlobalInteractionProvider : IInteractionProvider
     {
-        protected IList<IInteractionProvider> InteractionProviders { get; set; }
+        protected ISet<IInteractionProvider> InteractionProviders { get; set; } = new HashSet<IInteractionProvider>();
 
-        public GlobalInteractionProvider(IList<IInteractionProvider> interactionProviders)
+        public void AddProvider(IInteractionProvider interactionProvider)
         {
-            if (interactionProviders == null)
+            InteractionProviders.Add(interactionProvider);
+        }
+
+        public void AddMultipleProviders(ICollection<IInteractionProvider> interactionProviders)
+        {
+            foreach (var interactionProvider in interactionProviders)
             {
-                throw new ArgumentNullException(nameof(interactionProviders));
+                InteractionProviders.Add(interactionProvider);
             }
-            InteractionProviders = interactionProviders;
         }
 
-        public bool IsKnownInteraction(string interactionName)
+        public bool IsInteractionAvailableForContext(string interactionName, IContext context)
         {
-            return InteractionProviders.Any(interactionProvider => interactionProvider.IsKnownInteraction(interactionName));
+            return InteractionProviders.Any(interactionProvider => interactionProvider.IsInteractionAvailableForContext(interactionName, context));
         }
 
-        public IInteraction GetInteractionByName(IContext context, RuntimeScope scope, string interactionName, IEnumerable<string> paramValues)
+        public IInteraction GetInteractionByName(string interactionName, IEnumerable<object> paramValues, IContext context)
         {
-            if (!IsKnownInteraction(interactionName))
+            if (!IsInteractionAvailableForContext(interactionName, context))
             {
                 throw new InteractionUnavailableException(interactionName);
             }
-            IInteractionProvider interactionProvider = InteractionProviders.First(provider => provider.IsKnownInteraction(interactionName));
-            return interactionProvider?.GetInteractionByName(context, scope, interactionName, paramValues);
+            IInteractionProvider interactionProvider = InteractionProviders.First(provider => provider.IsInteractionAvailableForContext(interactionName, context));
+            return interactionProvider.GetInteractionByName(interactionName, paramValues, context);
         }
     }
 }

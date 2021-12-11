@@ -1,5 +1,5 @@
 ﻿
-namespace Uial.Definitions
+namespace Uial.DataModels
 {
     public class ModuleDefinition
     {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using Uial.Definitions;
+using Uial.DataModels;
 using Uial.Parsing.Exceptions;
 
 namespace Uial.Parsing
@@ -278,14 +278,11 @@ namespace Uial.Parsing
                 rootElementCondition = ParseConditionDefinition(rootElementConditionStr);
             }
 
-            ConditionDefinition uniqueCondition = null;
-            if (contextMatch.Groups[NamedGroups.UniqueCondition].Success)
-            {
-                string uniqueConditionStr = contextMatch.Groups[NamedGroups.UniqueCondition].Value;
-                uniqueCondition = ParseConditionDefinition(uniqueConditionStr);
-            }
+            string contextType = ""; // TODO: Add parsing of context type.
+            IEnumerable<ValueDefinition> parameters = null; // TODO: Add parsing of params.
+            var contextScopeDefinition = new ContextScopeDefinition(contextType, parameters, rootElementCondition);
 
-            return new ContextDefinition(scope, name, paramNames, rootElementCondition, uniqueCondition);
+            return new ContextDefinition(scope, name, paramNames, contextScopeDefinition);
         }
 
         public ContextDefinition ParseContextDefinition(DefinitionScope scope, List<string> lines)
@@ -306,12 +303,12 @@ namespace Uial.Parsing
                 if (IsContext(lines[curLine]))
                 {
                     ContextDefinition childContextDefinition = ParseContextDefinition(currentScope, childBloc);
-                    currentScope.ContextDefinitions.Add(childContextDefinition.ContextName, childContextDefinition);
+                    currentScope.ContextDefinitions.Add(childContextDefinition.Name, childContextDefinition);
                 }
                 else if (IsInteraction(lines[curLine]))
                 {
                     InteractionDefinition interactionDefinition = ParseInteractionDefinition(currentScope, childBloc);
-                    currentScope.InteractionDefinitions.Add(interactionDefinition.InteractionName, interactionDefinition);
+                    currentScope.InteractionDefinitions.Add(interactionDefinition.Name, interactionDefinition);
                 }
                 else
                 {
@@ -330,6 +327,8 @@ namespace Uial.Parsing
                 return null;
             }
 
+            ContextScopeDefinition contextScopeDefinition;
+
             string contextStr = contextStrings.First();
 
             Regex controlRegex = new Regex(ControlPattern);
@@ -339,20 +338,24 @@ namespace Uial.Parsing
                 string controlTypeName = controlMatch.Groups[NamedGroups.ControlType].Value;
                 string conditionStr = controlMatch.Groups[NamedGroups.ControlCondition].Value;
                 ConditionDefinition identifyingCondition = ParseConditionDefinition(conditionStr);
-                return new BaseContextDefinition(controlTypeName, null, identifyingCondition, ParseBaseContextDefinition(contextStrings.Skip(1)));
+                contextScopeDefinition = new ContextScopeDefinition(controlTypeName, null, identifyingCondition);
             }
-
-            Regex customContextRegex = new Regex(CustomContextPattern);
-            Match customContextMatch = customContextRegex.Match(contextStr);
-            string contextName = customContextMatch.Groups[NamedGroups.ContextName].Value;
-
-            IEnumerable<ValueDefinition> paramValues = new List<ValueDefinition>();
-            if (customContextMatch.Groups[NamedGroups.ContextParams].Success)
+            else
             {
-                string paramsStr = customContextMatch.Groups[NamedGroups.ContextParams].Value;
-                paramValues = ParseParamValues(paramsStr);
+                Regex customContextRegex = new Regex(CustomContextPattern);
+                Match customContextMatch = customContextRegex.Match(contextStr);
+                string contextName = customContextMatch.Groups[NamedGroups.ContextName].Value;
+
+                IEnumerable<ValueDefinition> paramValues = new List<ValueDefinition>();
+                if (customContextMatch.Groups[NamedGroups.ContextParams].Success)
+                {
+                    string paramsStr = customContextMatch.Groups[NamedGroups.ContextParams].Value;
+                    paramValues = ParseParamValues(paramsStr);
+                }
+                contextScopeDefinition = new ContextScopeDefinition(contextName, paramValues, null);
             }
-            return new BaseContextDefinition(contextName, paramValues, null, ParseBaseContextDefinition(contextStrings.Skip(1)));
+
+            return new BaseContextDefinition(contextScopeDefinition, ParseBaseContextDefinition(contextStrings.Skip(1)));
         }
 
         public BaseContextDefinition ParseBaseContextDefinition(string baseContextStr)
@@ -550,12 +553,12 @@ namespace Uial.Parsing
                 if (IsScenario(currentLine))
                 {
                     ScenarioDefinition scenarioDefinition = ParseScenarioDefinition(blocLines);
-                    script.ScenarioDefinitions.Add(scenarioDefinition.ScenarioName, scenarioDefinition);
+                    script.ScenarioDefinitions.Add(scenarioDefinition.Name, scenarioDefinition);
                 }
                 else if (IsContext(currentLine))
                 {
                     ContextDefinition contextDefinition = ParseContextDefinition(script.RootScope, blocLines);
-                    script.RootScope.ContextDefinitions.Add(contextDefinition.ContextName, contextDefinition);
+                    script.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
                 }
                 else if (IsTestGroup(currentLine))
                 {
