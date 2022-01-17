@@ -4,12 +4,13 @@ using System.IO;
 using System.Linq;
 using UIAutomationClient;
 using Uial.Contexts;
-using Uial.Windows.Contexts;
 using Uial.DataModels;
 using Uial.Interactions;
 using Uial.Modules;
 using Uial.Parsing;
 using Uial.Scopes;
+using Uial.Windows.Conditions;
+using Uial.Windows.Contexts;
 
 namespace Uial.LiveConsole
 {
@@ -98,20 +99,23 @@ namespace Uial.LiveConsole
                     else if (Parser.IsBaseInteraction(line))
                     {
                         BaseInteractionDefinition baseInteractionDefinition = Parser.ParseBaseInteractionDefinition(line);
-                        IInteraction interaction = baseInteractionDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.InteractionProvider, ExecutionContext.RootScope);
+                        var baseInteractionResolver = new BaseInteractionResolver(null, null, null); // TODO: Fix initialization
+                        IInteraction interaction = baseInteractionResolver.Resolve(baseInteractionDefinition, ExecutionContext.RootContext, null); // TODO: Fix value store
                         interaction.Do();
                     }
                     else if (Parser.IsCondition(line))
                     {
                         ConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
-                        var condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
+                        var conditionResolver = new ConditionResolver(null); // TODO: Fix initialization
+                        var condition = conditionResolver.Resolve(conditionDefinition, null); // TODO: Fix value store
                         var element = UIAutomation.GetRootElement().FindFirst(TreeScope.TreeScope_Subtree, condition);
                         ShowElement(element, TreeScope.TreeScope_Element);
                     }
                     else if (Parser.IsBaseContext(line))
                     {
                         BaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
-                        IWindowsVisualContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope) as IWindowsVisualContext;
+                        var baseContextResolver = new BaseContextResolver(null, null); // TODO: Fix initialization
+                        IWindowsVisualContext context = baseContextResolver.Resolve(baseContextDefinition, ExecutionContext.RootContext) as IWindowsVisualContext;
                         ShowElement(context.RootElement, TreeScope.TreeScope_Element);
                     }
                 }
@@ -134,7 +138,8 @@ namespace Uial.LiveConsole
             if (Parser.IsCondition(line))
             {
                 ConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
-                var condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
+                var conditionResolver = new ConditionResolver(null); // TODO: Fix initialization
+                var condition = conditionResolver.Resolve(conditionDefinition, null); // TODO: Fix value store
                 var elements = UIAutomation.GetRootElement().FindAll(TreeScope.TreeScope_Subtree, condition);
                 if (elements.Length > 0)
                 {
@@ -161,14 +166,16 @@ namespace Uial.LiveConsole
             if (Parser.IsCondition(line))
             {
                 ConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
-                var condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
+                var conditionResolver = new ConditionResolver(null); // TODO: Fix initialization
+                var condition = conditionResolver.Resolve(conditionDefinition, null); // TODO: Fix value store
                 var element = UIAutomation.GetRootElement().FindFirst(TreeScope.TreeScope_Subtree, condition);
                 ShowElement(element, treeScope);
             }
             else if (Parser.IsBaseContext(line))
             {
                 BaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
-                IWindowsVisualContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope) as IWindowsVisualContext;
+                var baseContextResolver = new BaseContextResolver(null, null); // TODO: Fix initialization
+                IWindowsVisualContext context = baseContextResolver.Resolve(baseContextDefinition, ExecutionContext.RootContext) as IWindowsVisualContext;
                 ShowElement(context.RootElement, treeScope);
             }
             else

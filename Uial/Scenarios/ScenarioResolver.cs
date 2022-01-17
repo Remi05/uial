@@ -3,6 +3,7 @@ using System.Linq;
 using Uial.Contexts;
 using Uial.DataModels;
 using Uial.Interactions;
+using Uial.Values;
 
 namespace Uial.Scenarios
 {
@@ -15,9 +16,9 @@ namespace Uial.Scenarios
             BaseInteractionResolver = baseInteractionResolver;
         }
 
-        public Scenario Resolve(ScenarioDefinition scenarioDefinition, IContext context)
+        public Scenario Resolve(ScenarioDefinition scenarioDefinition, IContext context, IReferenceValueStore referenceValueStore)
         {
-            IEnumerable<IInteraction> interactions = scenarioDefinition.BaseInteractionDefinitions.Select((interactionDefinition) => BaseInteractionResolver.Resolve(interactionDefinition, context));
+            IEnumerable<IInteraction> interactions = scenarioDefinition.BaseInteractionDefinitions.Select((interactionDefinition) => BaseInteractionResolver.Resolve(interactionDefinition, context, referenceValueStore));
             return new Scenario(scenarioDefinition.Name, interactions);
         }
     }

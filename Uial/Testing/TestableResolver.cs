@@ -3,6 +3,7 @@ using System.Linq;
 using Uial.Contexts;
 using Uial.DataModels;
 using Uial.Interactions;
+using Uial.Values;
 
 namespace Uial.Testing
 {
@@ -15,32 +16,32 @@ namespace Uial.Testing
             BaseInteractionResolver = baseInteractionResolver;
         }
 
-        public ITestable Resolve(TestableDefinition testableDefinition, IContext context)
+        public ITestable Resolve(TestableDefinition testableDefinition, IContext context, IReferenceValueStore referenceValueStore)
         {
             if (testableDefinition is TestDefinition)
             {
-                return Resolve((TestDefinition)testableDefinition, context);
+                return Resolve((TestDefinition)testableDefinition, context, referenceValueStore);
             }
             if (testableDefinition is TestGroupDefinition)
             {
-                return Resolve((TestGroupDefinition)testableDefinition, context);
+                return Resolve((TestGroupDefinition)testableDefinition, context, referenceValueStore);
             }
             return null;
         }
 
-        public Test Resolve(TestDefinition testDefinition, IContext context)
+        public Test Resolve(TestDefinition testDefinition, IContext context, IReferenceValueStore referenceValueStore)
         {
             IEnumerable<IInteraction> interactions = testDefinition.BaseInteractionDefinitions.Select(
-                (interactionDefinition) => BaseInteractionResolver.Resolve(interactionDefinition, context)
+                (interactionDefinition) => BaseInteractionResolver.Resolve(interactionDefinition, context, referenceValueStore)
             );
             return new Test(testDefinition.TestName, interactions);
         }
 
 
-        public TestGroup Resolve(TestGroupDefinition testGroupDefinition, IContext context)
+        public TestGroup Resolve(TestGroupDefinition testGroupDefinition, IContext context, IReferenceValueStore referenceValueStore)
         {
             IEnumerable<ITestable> children = testGroupDefinition.ChildrenDefinitions.Select(
-                (childDefinition) => Resolve(childDefinition, context)
+                (childDefinition) => Resolve(childDefinition, context, referenceValueStore)
             );
             return new TestGroup(testGroupDefinition.TestGroupName, children);
         }

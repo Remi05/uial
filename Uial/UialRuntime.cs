@@ -96,7 +96,7 @@ namespace Uial
             {
                 throw new ArgumentException($"Test \"{testName}\" could not be found.");
             }
-            ITestable test = TestableResolver.Resolve(RootScript.TestDefinitions[testName], RootContext);
+            ITestable test = TestableResolver.Resolve(RootScript.TestDefinitions[testName], RootContext, null); // TODO: Add value store
             return test.RunTest();
         }
     }

@@ -48,7 +48,7 @@ namespace Uial.Parsing.UnitTests
             ContextDefinition contextDefinition = parser.ParseContextDefinitionDeclaration(null, ValidContexts.SingleRootCondition);
 
             Assert.IsNotNull(contextDefinition, "The parsed IContextDefinition should not be null.");
-            Assert.AreEqual(ContextName, contextDefinition.ContextName, "The parsed IContextDefinition's ContextName should be the given name.");
+            Assert.AreEqual(ContextName, contextDefinition.Name, "The parsed IContextDefinition's ContextName should be the given name.");
         }
 
 

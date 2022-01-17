@@ -4,6 +4,7 @@ using Uial.DataModels;
 using Uial.Parsing;
 using Uial.Scopes;
 using Uial.Testing;
+using Uial.Values;
 
 namespace Uial.Cli
 {
@@ -74,7 +75,7 @@ namespace Uial.Cli
 
             try
             {
-                var scope = new RuntimeScope(script.RootScope, new Dictionary<string, object>());
+                var scope = new RuntimeScope(script.RootScope, new ReferenceValueStore());
                 var rootContext = new Windows.Contexts.RootVisualContext(scope);
 
                 var runtime = new UialRuntime(rootContext);

@@ -34,10 +34,10 @@ namespace Uial.UnitTests.Interactions
             var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
             var parentContext = new MockContext(runtimeScope);
             var interactionDefinition = new InteractionDefinition(new DefinitionScope(), expectedName, new List<string>(), new List<BaseInteractionDefinition>());
-            var interactionResolver = new InteractionResolver();
+            var interactionResolver = new InteractionResolver(null);
             
             // Act
-            IInteraction interaction = interactionResolver.Resolve(interactionDefinition, parentContext, null, new List<string>());
+            IInteraction interaction = interactionResolver.Resolve(interactionDefinition, new List<object>(), parentContext);
             
             // Assert
             Assert.AreEqual(expectedName, interaction.Name);
@@ -48,15 +48,15 @@ namespace Uial.UnitTests.Interactions
         {
             // Arrange
             var paramNames = new List<string>() { "TestParamName1" };
-            var paramValues = new List<string>();
+            var paramValues = new List<object>();
 
             var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
             var parentContext = new MockContext(runtimeScope);
             var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", paramNames, new List<BaseInteractionDefinition>());
-            var interactionResolver = new InteractionResolver();
+            var interactionResolver = new InteractionResolver(null);
 
             // Act + Assert
-            Assert.ThrowsException<InvalidParameterCountException>(() => interactionResolver.Resolve(interactionDefinition, parentContext, null, paramValues));
+            Assert.ThrowsException<InvalidParameterCountException>(() => interactionResolver.Resolve(interactionDefinition, paramValues, parentContext));
         }
 
         [TestMethod]
@@ -64,15 +64,15 @@ namespace Uial.UnitTests.Interactions
         {
             // Arrange
             var paramNames = new List<string>();
-            var paramValues = new List<string>() { "TestParamValue1" };
+            var paramValues = new List<object>() { "TestParamValue1" };
 
             var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
             var parentContext = new MockContext(runtimeScope);
             var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", paramNames, new List<BaseInteractionDefinition>());
-            var interactionResolver = new InteractionResolver();
+            var interactionResolver = new InteractionResolver(null);
 
             // Act + Assert
-            Assert.ThrowsException<InvalidParameterCountException>(() => interactionResolver.Resolve(interactionDefinition, parentContext, null, paramValues));
+            Assert.ThrowsException<InvalidParameterCountException>(() => interactionResolver.Resolve(interactionDefinition, paramValues, parentContext));
         }
 
         [TestMethod]
@@ -94,10 +94,10 @@ namespace Uial.UnitTests.Interactions
             var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
             var parentContext = new MockContext(runtimeScope);
             var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", new List<string>(), mockBaseInteractions);
-            var interactionResolver = new InteractionResolver();
+            var interactionResolver = new InteractionResolver(null);
 
             // Act
-            IInteraction interaction = interactionResolver.Resolve(interactionDefinition, parentContext, null, new List<string>());
+            IInteraction interaction = interactionResolver.Resolve(interactionDefinition, new List<object>(), parentContext);
             interaction.Do();
 
             // Assert

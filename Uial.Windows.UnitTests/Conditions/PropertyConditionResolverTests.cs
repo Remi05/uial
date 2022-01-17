@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UIAutomationClient;
-using Uial.Conditions;
 using Uial.DataModels;
+using Uial.Windows.Conditions;
 
 using AutomationPropertyIdentifier = System.Int32;
 
@@ -17,8 +17,9 @@ namespace Uial.UnitTests.Conditions
             var expectedControlType = UIA_ControlTypeIds.UIA_ButtonControlTypeId;
             var valueDefinition = new LiteralValueDefinition("Button");
 
-            var propertyConditionDefinition = new PropertyConditionDefinition(expectedProperty, valueDefinition);
-            var actualCondition = propertyConditionDefinition.Resolve(null) as IUIAutomationPropertyCondition;
+            var propertyConditionDefinition = new PropertyConditionDefinition(Properties.GetControlTypeUialString(expectedProperty), valueDefinition);
+            var conditionResolver = new ConditionResolver(null);
+            var actualCondition = conditionResolver.Resolve(propertyConditionDefinition, null) as IUIAutomationPropertyCondition;
 
             Assert.IsNotNull(actualCondition);
             Assert.AreEqual(expectedProperty, actualCondition.propertyId);
@@ -32,8 +33,9 @@ namespace Uial.UnitTests.Conditions
             string expectedName = "TestControlName";
             var valueDefinition = new LiteralValueDefinition(expectedName);
 
-            var propertyConditionDefinition = new PropertyConditionDefinition(expectedProperty, valueDefinition);
-            var actualCondition = propertyConditionDefinition.Resolve(null) as IUIAutomationPropertyCondition;
+            var propertyConditionDefinition = new PropertyConditionDefinition(Properties.GetPropertyUialString(expectedProperty), valueDefinition);
+            var conditionResolver = new ConditionResolver(null);
+            var actualCondition = conditionResolver.Resolve(propertyConditionDefinition, null) as IUIAutomationPropertyCondition;
 
             Assert.IsNotNull(actualCondition);
             Assert.AreEqual(expectedProperty, actualCondition.propertyId);

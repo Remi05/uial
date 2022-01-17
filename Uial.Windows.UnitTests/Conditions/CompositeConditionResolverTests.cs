@@ -2,10 +2,10 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UIAutomationClient;
-using Uial.Conditions;
 using Uial.DataModels;
+using Uial.Windows.Conditions;
 
-namespace Uial.UnitTests.Conditions
+namespace Uial.Windows.UnitTests.Conditions
 {
     [TestClass]
     public class CompositeConditionResolverTests
@@ -50,15 +50,16 @@ namespace Uial.UnitTests.Conditions
             };
 
             IEnumerable<PropertyConditionDefinition> conditionDefinitions = expectedConditions.Select(
-                (condition) => new PropertyConditionDefinition(condition.propertyId, new LiteralValueDefinition(condition.PropertyValue as string))
+                (condition) => new PropertyConditionDefinition(Properties.GetPropertyUialString(condition.propertyId), new LiteralValueDefinition(condition.PropertyValue as string))
             );
 
             var compositeConditionDefinition = new CompositeConditionDefinition(conditionDefinitions);
-            var compositeConditon = compositeConditionDefinition.Resolve(null) as IUIAutomationAndCondition;
-            Assert.IsNotNull(compositeConditon);
+            var conditionResolver = new ConditionResolver(null);
+            var compositeCondition = conditionResolver.Resolve(compositeConditionDefinition, null);
+            Assert.IsNotNull(compositeCondition);
 
             var actualConditions = new List<IUIAutomationPropertyCondition>();
-            FlattenConditions(compositeConditon, actualConditions);
+            FlattenConditions(compositeCondition as IUIAutomationAndCondition, actualConditions);
 
             Assert.IsTrue(expectedConditions.SequenceEqual(actualConditions, new ProperyConditionComparer()));
         }
@@ -68,11 +69,12 @@ namespace Uial.UnitTests.Conditions
         {
             var uiAutomation = new CUIAutomation();
             var expectedCondition = uiAutomation.CreatePropertyCondition(UIA_PropertyIds.UIA_NamePropertyId, "TestControlName") as IUIAutomationPropertyCondition;
-            var conditionDefinition = new PropertyConditionDefinition(expectedCondition.propertyId, new LiteralValueDefinition(expectedCondition.PropertyValue as string));
+            var conditionDefinition = new PropertyConditionDefinition(Properties.GetPropertyUialString(expectedCondition.propertyId), new LiteralValueDefinition(expectedCondition.PropertyValue as string));
             var conditionDefinitions = new List<ConditionDefinition>() { conditionDefinition };
 
             var compositeConditionDefinition = new CompositeConditionDefinition(conditionDefinitions);
-            var actualCondition = compositeConditionDefinition.Resolve(null) as IUIAutomationPropertyCondition;
+            var conditionResolver = new ConditionResolver(null);
+            var actualCondition = conditionResolver.Resolve(compositeConditionDefinition, null) as IUIAutomationPropertyCondition;
 
             Assert.IsNotNull(actualCondition);
             Assert.IsTrue(new ProperyConditionComparer().Equals(expectedCondition, actualCondition));

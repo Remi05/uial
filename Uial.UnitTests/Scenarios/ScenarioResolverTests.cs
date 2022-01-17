@@ -16,7 +16,7 @@ namespace Uial.UnitTests.Scenarios
         {
             string expectedName = "TestScenario";
             var scenarioDefinition = new ScenarioDefinition(expectedName, new List<BaseInteractionDefinition>());
-            Assert.AreEqual(expectedName, scenarioDefinition.ScenarioName);
+            Assert.AreEqual(expectedName, scenarioDefinition.Name);
         }
 
         [TestMethod]
@@ -24,7 +24,7 @@ namespace Uial.UnitTests.Scenarios
         {
             string expectedName = "TestScenario";
             var scenarioDefinition = new ScenarioDefinition(expectedName, new List<BaseInteractionDefinition>());
-            var scenarioResolver = new ScenarioResolver();
+            var scenarioResolver = new ScenarioResolver(null);
             Scenario scenario = scenarioResolver.Resolve(scenarioDefinition, null, null);
             Assert.AreEqual(expectedName, scenario.Name);
         }
@@ -43,7 +43,7 @@ namespace Uial.UnitTests.Scenarios
             );
 
             var scenarioDefinition = new ScenarioDefinition("TestScenario", mockBaseInteractions);
-            var scenarioResolver = new ScenarioResolver();
+            var scenarioResolver = new ScenarioResolver(null);
             Scenario scenario = scenarioResolver.Resolve(scenarioDefinition, null, null);
             scenario.Do();
 

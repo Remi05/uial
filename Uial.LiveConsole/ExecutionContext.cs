@@ -10,31 +10,27 @@ namespace Uial.LiveConsole
 {
     public class ExecutionContext
     {
-        private List<IInteractionProvider> InteractionProviders { get; set; }
         public Script Script { get; protected set; }
         public RuntimeScope RootScope { get; protected set; }
         public IContext RootContext { get; protected set; }
-        public IInteractionProvider InteractionProvider { get; protected set; }
+        public GlobalInteractionProvider InteractionProvider { get; protected set; }
 
         public ExecutionContext()
         {
             Script = new Script();
-            RootScope = new RuntimeScope(Script.RootScope, new Dictionary<string, string>());
+            RootScope = new RuntimeScope(Script.RootScope, new Values.ReferenceValueStore());
             RootContext = new RootVisualContext(RootScope);
-            InteractionProviders = new List<IInteractionProvider>()
-            {
-                new Interactions.Core.CoreInteractionProvider(),
-                new Interactions.Windows.VisualInteractionProvider(),
-            };
-            InteractionProvider = new GlobalInteractionProvider(InteractionProviders);
+            InteractionProvider = new GlobalInteractionProvider();
+            InteractionProvider.AddProvider(new Interactions.Core.CoreInteractionProvider());
+            InteractionProvider.AddProvider(new Windows.Interactions.VisualInteractionProvider());
         }
 
         public void AddModule(ModuleDefinition moduleDefinition)
         {
             var moduleProvider = new ModuleProvider();
             Module module = moduleProvider.GetModule(moduleDefinition);
-            InteractionProviders.AddRange(module.InteractionProviders);
-            InteractionProvider = new GlobalInteractionProvider(InteractionProviders);
+            InteractionProvider = new GlobalInteractionProvider();
+            InteractionProvider.AddMultipleProviders(module.InteractionProviders);
         }
     }
 }
