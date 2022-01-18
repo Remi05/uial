@@ -76,7 +76,9 @@ namespace Uial.Cli
             try
             {
                 var runtime = new UialRuntime();
-                runtime.AddContextProvider(new Windows.Contexts.WindowsVisualContextProvider());
+                var valueResolver = new ValueResolver();
+                var conditionResolver = new Windows.Conditions.ConditionResolver(valueResolver);
+                runtime.AddContextProvider(new Windows.Contexts.WindowsVisualContextProvider(conditionResolver));
                 runtime.AddInteractionProvider(new Windows.Interactions.WindowsVisualInteractionProvider());
 
                 if (scenarioName != null)
