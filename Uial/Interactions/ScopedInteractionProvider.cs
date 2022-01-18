@@ -20,7 +20,7 @@ namespace Uial.Interactions
 
         public bool IsInteractionAvailableForContext(string interactionName, IContext context)
         {
-            return context.Scope.InteractionDefinitions.ContainsKey(interactionName);
+            return context != null && context.Scope.InteractionDefinitions.ContainsKey(interactionName);
         }
 
         public IInteraction GetInteractionByName(string interactionName, IEnumerable<object> paramValues, IContext context)

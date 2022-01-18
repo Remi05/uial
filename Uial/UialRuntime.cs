@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using Uial.Contexts;
 using Uial.DataModels;
 using Uial.Interactions;
+using Uial.Interactions.Core;
 using Uial.Modules;
 using Uial.Scopes;
 using Uial.Testing;
+using Uial.Values;
 
 namespace Uial
 {
@@ -17,39 +19,45 @@ namespace Uial
         protected IModuleProvider ModuleProvider { get; set; }
 
         protected IBaseContextResolver BaseContextResolver { get; set; }
-        protected IContextResolver ContextResolver { get; set; }
         protected IBaseInteractionResolver BaseInteractionResolver { get; set; }
         protected IInteractionResolver InteractionResolver { get; set; }
         protected IValueResolver ValueResolver { get; set; }
         protected ITestableResolver TestableResolver { get; set; }
+        protected IReferenceValueStore ReferenceValueStore { get; set; }
 
-        protected Script RootScript { get; set; } = new Script();
+        public Script RootScript { get; set; }
         public RuntimeScope RootScope { get; protected set; }
         public IContext RootContext { get; protected set; }
 
-        public UialRuntime(IContext rootContext)
+        public UialRuntime()
         {
-
+            Initialize();
         }
 
-        public void Initialize()
+        protected void Initialize()
         {
+            RootScript = new Script();
+            ReferenceValueStore = new ReferenceValueStore();
+            RootScope = new RuntimeScope(RootScript.RootScope, ReferenceValueStore);
+            RootContext = new BasicContext("Root", RootScope);
+
             ContextProvider = new GlobalContextProvider();
             InteractionProvider = new GlobalInteractionProvider();
             ModuleProvider = new ModuleProvider();
 
             ValueResolver = new ValueResolver();
-            ContextResolver = new ContextResolver();
             BaseContextResolver = new BaseContextResolver(ContextProvider, ValueResolver);
             BaseInteractionResolver = new BaseInteractionResolver(InteractionProvider, BaseContextResolver, ValueResolver);
             InteractionResolver = new InteractionResolver(BaseInteractionResolver);
             TestableResolver = new TestableResolver(BaseInteractionResolver);
+            ReferenceValueStore = new ReferenceValueStore();
 
-            var scopeContextProvider = new ScopedContextProvider(ContextResolver);
+            var scopeContextProvider = new ScopedContextProvider(ContextProvider);
             ContextProvider.AddProvider(scopeContextProvider);
 
             var scopeInteractionProvider = new ScopedInteractionProvider(InteractionResolver);
             InteractionProvider.AddProvider(scopeInteractionProvider);
+            InteractionProvider.AddProvider(new CoreInteractionProvider());
         }
 
         public void AddScript(Script script)

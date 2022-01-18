@@ -75,13 +75,9 @@ namespace Uial.Cli
 
             try
             {
-                var scope = new RuntimeScope(script.RootScope, new ReferenceValueStore());
-                var rootContext = new Windows.Contexts.RootVisualContext(scope);
-
-                var runtime = new UialRuntime(rootContext);
+                var runtime = new UialRuntime();
                 runtime.AddContextProvider(new Windows.Contexts.WindowsVisualContextProvider());
-                runtime.AddInteractionProvider(new Interactions.Core.CoreInteractionProvider());
-                runtime.AddInteractionProvider(new Windows.Interactions.VisualInteractionProvider());
+                runtime.AddInteractionProvider(new Windows.Interactions.WindowsVisualInteractionProvider());
 
                 if (scenarioName != null)
                 {

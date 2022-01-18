@@ -24,12 +24,13 @@ namespace Uial.Windows.Conditions
             }
             if (conditionDefinition is PropertyConditionDefinition)
             {
-                ResolvePropertyCondition(conditionDefinition as PropertyConditionDefinition, referenceValueStore);
+                return ResolvePropertyCondition(conditionDefinition as PropertyConditionDefinition, referenceValueStore);
             }
             else if (conditionDefinition is CompositeConditionDefinition)
             {
-                ResolveCompositeCondition(conditionDefinition as CompositeConditionDefinition, referenceValueStore);
+                return ResolveCompositeCondition(conditionDefinition as CompositeConditionDefinition, referenceValueStore);
             }
+            // TODO: throw InvalidConditionDefinitionTypeException
             return null;
         }
 

@@ -5,11 +5,11 @@ namespace Uial.Contexts
 {
     public class ScopedContextProvider : IContextProvider
     {
-        protected IContextResolver ContextResolver { get; set; }
+        protected IContextProvider ContextProvider { get; set; }
 
-        public ScopedContextProvider(IContextResolver contextResolver)
+        public ScopedContextProvider(IContextProvider contextProvider)
         {
-            ContextResolver = contextResolver;
+            ContextProvider = contextProvider;
         }
 
         public bool IsKnownContext(ContextScopeDefinition contextScopeDefinition, IContext parentContext)
@@ -30,7 +30,7 @@ namespace Uial.Contexts
                 var specifiedContextScope = new ContextScopeDefinition(contextDefinition.ContextScope.ContextType, contextDefinition.ContextScope.Parameters, specifiedConditionDefinition);
                 contextDefinition = new ContextDefinition(contextDefinition.Scope, contextDefinition.Name, contextDefinition.ParamNames, specifiedContextScope);
             }
-            return ContextResolver.Resolve(contextDefinition, paramValues, parentContext);
+            return ContextProvider.GetContextFromDefinition(contextDefinition.ContextScope, paramValues, parentContext);
         }
     }
 }

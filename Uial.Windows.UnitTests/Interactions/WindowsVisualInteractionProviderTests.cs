@@ -8,7 +8,7 @@ using Uial.UnitTests.Windows.Contexts;
 namespace Uial.UnitTests.Windows.Interactions
 {
     [TestClass]
-    public class VisualInteractionProviderTests
+    public class WindowsVisualInteractionProviderTests
     {
         [DataRow(Close.Key)]
         [DataRow(Collapse.Key)]
@@ -32,7 +32,7 @@ namespace Uial.UnitTests.Windows.Interactions
         public void VerifyInteractionIsKnown(string interactionName)
         {
             // Arrange
-            var interactionProvider = new VisualInteractionProvider();
+            var interactionProvider = new WindowsVisualInteractionProvider();
 
             // Act
             bool actualIsKnownInteraction = interactionProvider.IsInteractionAvailableForContext(interactionName, null);
@@ -46,7 +46,7 @@ namespace Uial.UnitTests.Windows.Interactions
         public void VerifyInteractionIsNotKnown(string interactionName)
         {
             // Arrange
-            var interactionProvider = new VisualInteractionProvider();
+            var interactionProvider = new WindowsVisualInteractionProvider();
 
             // Act
             bool actualIsKnownInteraction = interactionProvider.IsInteractionAvailableForContext(interactionName, null);
@@ -60,7 +60,7 @@ namespace Uial.UnitTests.Windows.Interactions
         public void VerifyGettingUnknownInteractionThrows(string interactionName)
         {
             // Arrange
-            var interactionProvider = new VisualInteractionProvider();
+            var interactionProvider = new WindowsVisualInteractionProvider();
 
             // Act + Assert
             Assert.ThrowsException<InteractionUnavailableException>(() => interactionProvider.GetInteractionByName(interactionName, null, new MockWindowsVisualContext()));
@@ -70,7 +70,7 @@ namespace Uial.UnitTests.Windows.Interactions
         public void VerifyGettingInteractionOutsideWindowsContextThrows()
         {
             // Arrange
-            var interactionProvider = new VisualInteractionProvider();
+            var interactionProvider = new WindowsVisualInteractionProvider();
 
             // Act + Assert
             Assert.ThrowsException<InvalidWindowsVisualContextException>(() => interactionProvider.GetInteractionByName(null, null, new MockContext()));

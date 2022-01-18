@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using UIAutomationClient;
 using Uial.Contexts;
 using Uial.DataModels;
+using Uial.Scopes;
 using Uial.Windows.Conditions;
 
 namespace Uial.Windows.Contexts
@@ -14,9 +13,14 @@ namespace Uial.Windows.Contexts
 
         protected IConditionResolver ConditionResolver { get; set; }
 
+        public WindowsVisualContextProvider(IConditionResolver conditionResolver)
+        {
+            ConditionResolver = conditionResolver;
+        }
+
         public bool IsKnownContext(ContextScopeDefinition contextScopeDefinition, IContext parentContext)
         {
-            return contextScopeDefinition.ContextType == ProviderAlias;
+            return contextScopeDefinition.ContextType == ""; // ProviderAlias;
         }
 
         public IContext GetContextFromDefinition(ContextScopeDefinition contextScopeDefinition, IEnumerable<object> paramValues, IContext parentContext)
@@ -24,9 +28,10 @@ namespace Uial.Windows.Contexts
             IUIAutomationCondition elementCondition = ConditionResolver.Resolve(contextScopeDefinition.ScopeCondition, parentContext.Scope.ReferenceValueStore);
             if (parentContext == null || !(parentContext is IWindowsVisualContext))
             {
-                // TOOD: Create root visual context
+                parentContext = new RootVisualContext(parentContext.Scope);
             }
-            return new WindowsVisualContext(parentContext as IWindowsVisualContext, null, "", elementCondition); // TODO: Fix
+            var runtimeScope = new RuntimeScope(new DefinitionScope(new DefinitionScope()), null);
+            return new WindowsVisualContext(parentContext as IWindowsVisualContext, runtimeScope, "", elementCondition); // TODO: Fix scope
         }
     }
 }

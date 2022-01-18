@@ -8,9 +8,9 @@ using Uial.DataModels;
 using Uial.Interactions;
 using Uial.Modules;
 using Uial.Parsing;
-using Uial.Scopes;
 using Uial.Windows.Conditions;
 using Uial.Windows.Contexts;
+using Uial.Windows.Interactions;
 
 namespace Uial.LiveConsole
 {
@@ -23,8 +23,7 @@ namespace Uial.LiveConsole
         protected TextWriter OutputStream { get; set; }
         protected ScriptParser Parser { get; set; } = new ScriptParser();
         protected VisualTreeSerializer VisualTreeSerializer = new VisualTreeSerializer();
-        protected ExecutionContext ExecutionContext { get; set; } = new ExecutionContext();
-        protected UialRuntime Runtime { get; set; }
+        protected LiveInterpreterRuntime Runtime { get; set; }
         protected IDictionary<string, Command> Commands { get; set; } = new Dictionary<string, Command>();
         protected Action ClearOutput { get; set; }
         protected bool ShouldExit { get; set; } = false;
@@ -38,7 +37,19 @@ namespace Uial.LiveConsole
             InputStream = inputStream;
             OutputStream = outputStream;
             ClearOutput = clearOutput;
+
+            InitializeRuntime();
             InitializeCommands();
+        }
+
+        protected void InitializeRuntime()
+        {
+            var valueResolver = new ValueResolver();
+            var conditionResolver = new ConditionResolver(valueResolver);
+
+            Runtime = new LiveInterpreterRuntime();
+            Runtime.AddContextProvider(new WindowsVisualContextProvider(conditionResolver));
+            Runtime.AddInteractionProvider(new WindowsVisualInteractionProvider());
         }
 
         protected void InitializeCommands()
@@ -46,7 +57,7 @@ namespace Uial.LiveConsole
             Commands.Add("cls",   (_) => ClearOutput());
             Commands.Add("clear", (_) => ClearOutput());
             Commands.Add("exit",  (_) => ShouldExit = true);
-            Commands.Add("reset", (_) => ExecutionContext = new ExecutionContext());
+            Commands.Add("reset", (_) => InitializeRuntime());
             Commands.Add("root",  (_) => ShowElement(UIAutomation.GetRootElement(), TreeScope.TreeScope_Element));
             Commands.Add("ancestors",   (line) => ShowElement(line, TreeScope.TreeScope_Ancestors));
             Commands.Add("children",    (line) => ShowElement(line, TreeScope.TreeScope_Children));
@@ -92,31 +103,18 @@ namespace Uial.LiveConsole
                     }
                     else if (Parser.IsContext(line))
                     {
-                        DefinitionScope currentScope = new DefinitionScope(ExecutionContext.Script.RootScope);
+                        DefinitionScope currentScope = new DefinitionScope(Runtime.RootScript.RootScope);
                         ContextDefinition contextDefinition = Parser.ParseContextDefinitionDeclaration(currentScope, line);
-                        ExecutionContext.RootScope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
+                        Runtime.RootContext.Scope.ContextDefinitions.Add(contextDefinition.Name, contextDefinition);
                     }
                     else if (Parser.IsBaseInteraction(line))
                     {
                         BaseInteractionDefinition baseInteractionDefinition = Parser.ParseBaseInteractionDefinition(line);
-                        var baseInteractionResolver = new BaseInteractionResolver(null, null, null); // TODO: Fix initialization
-                        IInteraction interaction = baseInteractionResolver.Resolve(baseInteractionDefinition, ExecutionContext.RootContext, null); // TODO: Fix value store
-                        interaction.Do();
+                        Runtime.RunInteraction(baseInteractionDefinition);
                     }
-                    else if (Parser.IsCondition(line))
+                    else if (Parser.IsCondition(line) || Parser.IsBaseContext(line))
                     {
-                        ConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
-                        var conditionResolver = new ConditionResolver(null); // TODO: Fix initialization
-                        var condition = conditionResolver.Resolve(conditionDefinition, null); // TODO: Fix value store
-                        var element = UIAutomation.GetRootElement().FindFirst(TreeScope.TreeScope_Subtree, condition);
-                        ShowElement(element, TreeScope.TreeScope_Element);
-                    }
-                    else if (Parser.IsBaseContext(line))
-                    {
-                        BaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
-                        var baseContextResolver = new BaseContextResolver(null, null); // TODO: Fix initialization
-                        IWindowsVisualContext context = baseContextResolver.Resolve(baseContextDefinition, ExecutionContext.RootContext) as IWindowsVisualContext;
-                        ShowElement(context.RootElement, TreeScope.TreeScope_Element);
+                        ShowElement(line, TreeScope.TreeScope_Element);
                     }
                 }
                 catch (Exception e)
@@ -129,7 +127,7 @@ namespace Uial.LiveConsole
         protected void ImportScriptFromCatalog(string line)
         {
             string repoStr = $"import 'github:Remi05/uial_catalog/{line}'";
-            ExecutionContext.Script.AddScript(Parser.ParseRepoImport(repoStr));
+            Runtime.AddScript(Parser.ParseRepoImport(repoStr));
             OutputStream.WriteLine($"Successfully imported \"{line}\" from UIAL catalog.");
         }
 
@@ -138,7 +136,7 @@ namespace Uial.LiveConsole
             if (Parser.IsCondition(line))
             {
                 ConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
-                var conditionResolver = new ConditionResolver(null); // TODO: Fix initialization
+                var conditionResolver = new ConditionResolver(new ValueResolver());
                 var condition = conditionResolver.Resolve(conditionDefinition, null); // TODO: Fix value store
                 var elements = UIAutomation.GetRootElement().FindAll(TreeScope.TreeScope_Subtree, condition);
                 if (elements.Length > 0)
@@ -166,7 +164,7 @@ namespace Uial.LiveConsole
             if (Parser.IsCondition(line))
             {
                 ConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
-                var conditionResolver = new ConditionResolver(null); // TODO: Fix initialization
+                var conditionResolver = new ConditionResolver(new ValueResolver());
                 var condition = conditionResolver.Resolve(conditionDefinition, null); // TODO: Fix value store
                 var element = UIAutomation.GetRootElement().FindFirst(TreeScope.TreeScope_Subtree, condition);
                 ShowElement(element, treeScope);
@@ -174,8 +172,7 @@ namespace Uial.LiveConsole
             else if (Parser.IsBaseContext(line))
             {
                 BaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
-                var baseContextResolver = new BaseContextResolver(null, null); // TODO: Fix initialization
-                IWindowsVisualContext context = baseContextResolver.Resolve(baseContextDefinition, ExecutionContext.RootContext) as IWindowsVisualContext;
+                var context = Runtime.ResolveBaseContext(baseContextDefinition) as IWindowsVisualContext;
                 ShowElement(context.RootElement, treeScope);
             }
             else

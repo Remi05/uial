@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Uial.Contexts;
 using Uial.DataModels;
 using Uial.Interactions;
 
@@ -12,7 +13,8 @@ namespace Uial.Modules
         {
             var assembly = Assembly.LoadFile(moduleDefinition.BinaryPath);
             var interactionProviders = GetInteractionProviders(assembly);
-            return new Module(moduleDefinition.ModuleName, interactionProviders);
+            var contextProviders = GetContextProviders(assembly);
+            return new Module(moduleDefinition.ModuleName, interactionProviders, contextProviders);
         }
 
         protected ICollection<IInteractionProvider> GetInteractionProviders(Assembly assembly)
@@ -33,6 +35,24 @@ namespace Uial.Modules
             return interactionProviders;
         }
 
+        protected ICollection<IContextProvider> GetContextProviders(Assembly assembly)
+        {
+            var contextProviders = new List<IContextProvider>();
+            var types = assembly.GetExportedTypes();
+
+            foreach (Type type in types)
+            {
+                bool isIContextProvider = type.GetInterface(nameof(IContextProvider)) != null;
+                if (isIContextProvider)
+                {
+                    IContextProvider contextProvider = GetContextProviderInstance(assembly, type);
+                    contextProviders.Add(contextProvider);
+                }
+            }
+
+            return contextProviders;
+        }
+
         protected IInteractionProvider GetInteractionProviderInstance(Assembly assembly, Type interactionProviderType)
         {
             object interactionProviderObject = Activator.CreateInstance(interactionProviderType);
@@ -47,6 +67,22 @@ namespace Uial.Modules
             }
 
             return (IInteractionProvider)interactionProviderObject;
+        }
+
+        protected IContextProvider GetContextProviderInstance(Assembly assembly, Type contextProviderType)
+        {
+            object contextProviderObject = Activator.CreateInstance(contextProviderType);
+            if (contextProviderObject == null)
+            {
+                throw new Exception($"Failed to create instance of type {contextProviderType.Name}.");
+            }
+
+            if (!(contextProviderObject is IContextProvider))
+            {
+                throw new Exception($"{contextProviderType.Name} does not inherit from {nameof(IContextProvider)}");
+            }
+
+            return (IContextProvider)contextProviderObject;
         }
     }
 }

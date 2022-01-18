@@ -7,11 +7,11 @@ using Uial.Windows.Contexts;
 
 namespace Uial.Windows.Interactions
 {
-    public class VisualInteractionProvider : IInteractionProvider
+    public class WindowsVisualInteractionProvider : IInteractionProvider
     {
-        protected delegate IInteraction VisualInteractionFactory(IWindowsVisualContext windowsVisualContext, IEnumerable<object> paramValues, IReferenceValueStore referenceValueStore);
+        protected delegate IInteraction WindowsVisualInteractionFactory(IWindowsVisualContext windowsVisualContext, IEnumerable<object> paramValues, IReferenceValueStore referenceValueStore);
 
-        protected IDictionary<string, VisualInteractionFactory> KnownInteractions = new Dictionary<string, VisualInteractionFactory>()
+        protected IDictionary<string, WindowsVisualInteractionFactory> KnownInteractions = new Dictionary<string, WindowsVisualInteractionFactory>()
         {
             { Close.Key,            (windowsVisualContext, _, __) => new Close(windowsVisualContext) },
             { Collapse.Key,         (windowsVisualContext, _, __) => new Collapse(windowsVisualContext) },
