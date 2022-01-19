@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uial.DataModels", "Uial.Def
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uial.Windows", "Uia.Windows\Uial.Windows.csproj", "{06B65320-C488-455F-A33D-9F6AD98FF008}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uial.Windows.UnitTests", "Uial.Windows.UnitTests\Uial.Windows.UnitTests.csproj", "{F91990FE-0416-44E7-BAC2-652A27B5CFD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uial.Windows.UnitTests", "Uial.Windows.UnitTests\Uial.Windows.UnitTests.csproj", "{F91990FE-0416-44E7-BAC2-652A27B5CFD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

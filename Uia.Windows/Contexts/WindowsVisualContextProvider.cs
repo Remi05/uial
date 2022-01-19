@@ -20,7 +20,7 @@ namespace Uial.Windows.Contexts
 
         public bool IsKnownContext(ContextScopeDefinition contextScopeDefinition, IContext parentContext)
         {
-            return contextScopeDefinition.ContextType == ""; // ProviderAlias;
+            return contextScopeDefinition.ContextType == ProviderAlias;
         }
 
         public IContext GetContextFromDefinition(ContextScopeDefinition contextScopeDefinition, IEnumerable<object> paramValues, IContext parentContext)

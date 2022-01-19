@@ -11,11 +11,12 @@ namespace Uial.Parsing
 {
     public class ScriptParser : IScriptParser
     {
-        static class BlocIdentifiers
+        static class Identifiers
         {
             public const string Assertion = "Assert";
             public const string Comment = "//";
             public const string Context = "context";
+            public const string ContextDefinition = "is";
             public const string Import = "import";
             public const string Interaction = "interaction";
             public const string Module = "module";
@@ -29,6 +30,7 @@ namespace Uial.Parsing
             public const string Context = "context";
             public const string ContextName = "contextName";
             public const string ContextParams = "contextParams";
+            public const string ContextType = "contextType";
             public const string CustomContext = "customContext";
             public const string ControlCondition = "controlCondition";
             public const string ControlType = "controlType";
@@ -43,7 +45,6 @@ namespace Uial.Parsing
             public const string Reference = "ref";
             public const string RepoName = "repoName";
             public const string RootElementCondition = "rootCondition";
-            public const string UniqueCondition = "uniqueCondition";
             public const string Value = "value";
         }
 
@@ -65,20 +66,21 @@ namespace Uial.Parsing
         const string PathPattern = "(?<path>(?:[a-zA-Z]\\:[\\\\\\/])?(?:[a-zA-Z0-9\\._-]+[\\\\\\/])*[a-zA-Z0-9\\._-]+\\.[a-zA-Z0-9]+)";
         const string RepoPathPattern = "github:(?<repoName>[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+)/" + PathPattern;
         const string BlocNamePattern = "(?<name>[a-zA-Z]+)";
+        const string ControlTypePattern = "(?<contextType>[a-zA-Z]+)";
 
-        const string RepoImportPattern = BlocIdentifiers.Import + "\\s+'" + RepoPathPattern + "'"; 
-        const string LocalImportPattern = BlocIdentifiers.Import + "\\s+'" + PathPattern + "'";
-        const string ContextPattern = BlocIdentifiers.Context + "\\s+" + BlocNamePattern + "\\s*(?:" + ParamsDeclarationPattern + ")?(?:\\s+\\[\\s*(?<rootCondition>" + ConditionPattern + ")\\s*\\])?(?:\\s+\\{\\s*(?<uniqueCondition>" + ConditionPattern + ")\\s*\\})?\\s*:\\s*$";
-        const string InteractionPattern = BlocIdentifiers.Interaction + "\\s+" + BlocNamePattern + "\\s*(?:" + ParamsDeclarationPattern + ")?\\s*:";
-        const string ScenarioPattern = BlocIdentifiers.Scenario + "\\s+" + BlocNamePattern + "\\s*:";
-        const string TestPattern = BlocIdentifiers.Test + "\\s+" + BlocNamePattern + "\\s*:";
-        const string TestGroupPattern = BlocIdentifiers.TestGroup + "\\s+" + BlocNamePattern + "\\s*:";
+        const string RepoImportPattern = Identifiers.Import + "\\s+'" + RepoPathPattern + "'"; 
+        const string LocalImportPattern = Identifiers.Import + "\\s+'" + PathPattern + "'";
+        const string ContextPattern = Identifiers.Context + "\\s+" + BlocNamePattern + "\\s*(?:" + ParamsDeclarationPattern + ")?(?:\\s+" + Identifiers.ContextDefinition + "\\s+" + ControlTypePattern + "\\s*\\[\\s*(?<rootCondition>" + ConditionPattern + ")\\s*\\])?\\s*:\\s*$";
+        const string InteractionPattern = Identifiers.Interaction + "\\s+" + BlocNamePattern + "\\s*(?:" + ParamsDeclarationPattern + ")?\\s*:";
+        const string ScenarioPattern = Identifiers.Scenario + "\\s+" + BlocNamePattern + "\\s*:";
+        const string TestPattern = Identifiers.Test + "\\s+" + BlocNamePattern + "\\s*:";
+        const string TestGroupPattern = Identifiers.TestGroup + "\\s+" + BlocNamePattern + "\\s*:";
         const string BaseInteractionPattern = "^\\s*(?<context>" + BaseContextPattern + "(?:::" + BaseContextPattern + ")*)?::(?<interaction>[a-zA-Z]+)" + ParamsPattern + "\\s*$";
-        const string ModulePattern = BlocIdentifiers.Module + "\\s+" + BlocNamePattern + "\\s*\\(\\s*\"" + PathPattern + "\"\\s*\\)";
+        const string ModulePattern = Identifiers.Module + "\\s+" + BlocNamePattern + "\\s*\\(\\s*\"" + PathPattern + "\"\\s*\\)";
 
         public bool IsAssertion(string line)
         {
-            return line.Trim().StartsWith(BlocIdentifiers.Assertion);
+            return line.Trim().StartsWith(Identifiers.Assertion);
         }
 
         public bool IsBaseContext(string line)
@@ -95,12 +97,12 @@ namespace Uial.Parsing
 
         public bool IsComment(string line)
         {
-            return line.Trim().StartsWith(BlocIdentifiers.Comment);
+            return line.Trim().StartsWith(Identifiers.Comment);
         }
 
         public bool IsImport(string line)
         {
-            return line.Trim().StartsWith(BlocIdentifiers.Import);
+            return line.Trim().StartsWith(Identifiers.Import);
         }
 
         public bool IsCondition(string line)
@@ -111,32 +113,32 @@ namespace Uial.Parsing
 
         public bool IsContext(string line)
         {
-            return line.Trim().StartsWith(BlocIdentifiers.Context);
+            return line.Trim().StartsWith(Identifiers.Context);
         }
 
         public bool IsInteraction(string line)
         {
-            return line.Trim().StartsWith(BlocIdentifiers.Interaction);
+            return line.Trim().StartsWith(Identifiers.Interaction);
         }
 
         public bool IsModule(string line)
         {
-            return line.Trim().StartsWith(BlocIdentifiers.Module);
+            return line.Trim().StartsWith(Identifiers.Module);
         }
 
         public bool IsScenario(string line)
         {
-            return line.Trim().StartsWith(BlocIdentifiers.Scenario);
+            return line.Trim().StartsWith(Identifiers.Scenario);
         }
 
         public bool IsTest(string line)
         {
-            return line.Trim().StartsWith(BlocIdentifiers.Test);
+            return line.Trim().StartsWith(Identifiers.Test);
         }
 
         public bool IsTestGroup(string line)
         {
-            return line.Trim().StartsWith(BlocIdentifiers.TestGroup);
+            return line.Trim().StartsWith(Identifiers.TestGroup);
         }
 
         private int CountIndentSpaces(string line)
@@ -271,15 +273,18 @@ namespace Uial.Parsing
                 paramNames = ParseParamsDeclaration(paramsStr);
             }
 
+            // TODO: Improve ContextScopeDefinition parsing.
+            string contextType = null;
             ConditionDefinition rootElementCondition = null;
-            if (contextMatch.Groups[NamedGroups.RootElementCondition].Success)
+            if (contextMatch.Groups[NamedGroups.ContextType].Success
+             && contextMatch.Groups[NamedGroups.RootElementCondition].Success)
             {
+                contextType = contextMatch.Groups[NamedGroups.ContextType].Value;
                 string rootElementConditionStr = contextMatch.Groups[NamedGroups.RootElementCondition].Value;
                 rootElementCondition = ParseConditionDefinition(rootElementConditionStr);
             }
 
-            string contextType = ""; // TODO: Add parsing of context type.
-            IEnumerable<ValueDefinition> parameters = null; // TODO: Add parsing of params.
+            IEnumerable<ValueDefinition> parameters = null; // TODO: Add parsing of context type params.
             var contextScopeDefinition = new ContextScopeDefinition(contextType, parameters, rootElementCondition);
 
             return new ContextDefinition(scope, name, paramNames, contextScopeDefinition);
