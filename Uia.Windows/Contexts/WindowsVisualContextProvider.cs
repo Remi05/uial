@@ -20,12 +20,19 @@ namespace Uial.Windows.Contexts
 
         public bool IsKnownContext(ContextScopeDefinition contextScopeDefinition, IContext parentContext)
         {
-            return contextScopeDefinition.ContextType == ProviderAlias;
+            return contextScopeDefinition.ContextType == ProviderAlias || Properties.IsControlTypeName(contextScopeDefinition.ContextType);
         }
 
         public IContext GetContextFromDefinition(ContextScopeDefinition contextScopeDefinition, IEnumerable<object> paramValues, IContext parentContext)
         {
-            IUIAutomationCondition elementCondition = ConditionResolver.Resolve(contextScopeDefinition.ScopeCondition, parentContext.Scope.ReferenceValueStore);
+            ConditionDefinition scopeCondition = contextScopeDefinition.ScopeCondition;
+            if (Properties.IsControlTypeName(contextScopeDefinition.ContextType))
+            {
+                var controlTypeCondition = new PropertyConditionDefinition("ControlType", new LiteralValueDefinition(contextScopeDefinition.ContextType));
+                scopeCondition = new CompositeConditionDefinition(new List<ConditionDefinition>() { scopeCondition, controlTypeCondition });
+            }
+
+            IUIAutomationCondition elementCondition = ConditionResolver.Resolve(scopeCondition, parentContext.Scope.ReferenceValueStore);
             if (parentContext == null || !(parentContext is IWindowsVisualContext))
             {
                 parentContext = new RootVisualContext(parentContext.Scope);

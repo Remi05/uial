@@ -95,6 +95,11 @@ namespace Uial.Windows.Conditions
             return ControlTypeMap.Values.Contains(identifier);
         }
 
+        public static bool IsControlTypeName(string name)
+        {
+            return ControlTypeMap.Keys.Contains(name);
+        }
+
         public static string GetControlTypeUialString(this AutomationIdentifier controlType)
         {
             return !IsControlTypeIdentifier(controlType) ? null : (string)ControlTypeMap.Keys.Where(controlTypeName => ControlTypeMap[controlTypeName] == controlType).Single();
