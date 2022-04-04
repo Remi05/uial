@@ -15,6 +15,18 @@ namespace Uial.Interactions
         }
     }
 
+    public class InteractionProviderConflictException : Exception
+    {
+        private string InteractionName { get; set; }
+
+        public override string Message => $"Interaction \"{InteractionName}\" is known by multiple interaction providers, don't know which to chose.";
+
+        public InteractionProviderConflictException(string interactionName)
+        {
+            InteractionName = interactionName;
+        }
+    }
+
     public class InvalidParameterCountException : Exception
     {
         private int ExpectedParamsCount { get; set; }

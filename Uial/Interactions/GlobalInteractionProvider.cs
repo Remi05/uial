@@ -29,11 +29,18 @@ namespace Uial.Interactions
 
         public IInteraction GetInteractionByName(string interactionName, IEnumerable<object> paramValues, IContext context)
         {
-            if (!IsInteractionAvailableForContext(interactionName, context))
+            var matchingInterationProviders = InteractionProviders.Where(provider => provider.IsInteractionAvailableForContext(interactionName, context));
+            if (matchingInterationProviders.Count() == 0)
             {
                 throw new InteractionUnavailableException(interactionName);
             }
-            IInteractionProvider interactionProvider = InteractionProviders.First(provider => provider.IsInteractionAvailableForContext(interactionName, context));
+
+            if (matchingInterationProviders.Count() > 1)
+            {
+                throw new InteractionProviderConflictException(interactionName);
+            }
+
+            IInteractionProvider interactionProvider = matchingInterationProviders.First();
             return interactionProvider.GetInteractionByName(interactionName, paramValues, context);
         }
     }
