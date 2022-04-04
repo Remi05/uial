@@ -27,9 +27,9 @@ namespace Uial.Values
 
         public IReferenceValueStore GetCopy()
         {
-            var newValueScope = new ReferenceValueStore();
-            newValueScope.Values = new Dictionary<string, object>(Values);
-            return newValueScope;
+            var copyValueStore = new ReferenceValueStore();
+            copyValueStore.Values = new Dictionary<string, object>(Values);
+            return copyValueStore;
         }
 
         public IReferenceValueStore WithValues(IDictionary<string, object> newValues)
