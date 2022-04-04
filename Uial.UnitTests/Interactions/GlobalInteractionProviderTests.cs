@@ -78,6 +78,33 @@ namespace Uial.UnitTests.Interactions.Core
             Assert.IsFalse(actualIsKnownInteraction);
         }
 
+        [TestMethod]
+        public void VerifyGettingKnownInteractionReturnsInteraction()
+        {
+            // Arrange
+            string interactionName1 = "TestKnownInteraction1";
+            string interactionName2 = "TestKnownInteraction2";
+
+            var expectedInteraction1 = new MockInteraction(interactionName1);
+            var mockInteractionProvider1 = new MockInteractionProvider();
+            mockInteractionProvider1.InteractionsMap[interactionName1] = expectedInteraction1;
+
+            var expectedInteraction2 = new MockInteraction(interactionName2);
+            var mockInteractionProvider2 = new MockInteractionProvider();
+            mockInteractionProvider2.InteractionsMap[interactionName2] = expectedInteraction2;
+
+            var mockInteractionProviders = new List<IInteractionProvider>() { mockInteractionProvider1, mockInteractionProvider2 };
+            var globalInteractionProvider = new GlobalInteractionProvider();
+            globalInteractionProvider.AddMultipleProviders(mockInteractionProviders);
+
+            // Act
+            var actualInteraction1 = globalInteractionProvider.GetInteractionByName(interactionName1, null, null);
+            var actualInteraction2 = globalInteractionProvider.GetInteractionByName(interactionName2, null, null);
+
+            // Assert
+            Assert.AreEqual(expectedInteraction1, actualInteraction1);
+            Assert.AreEqual(expectedInteraction2, actualInteraction2);
+        }
 
         [TestMethod]
         public void VerifyGettingUnknownInteractionThrows()
@@ -89,6 +116,25 @@ namespace Uial.UnitTests.Interactions.Core
 
             // Act + Assert
             Assert.ThrowsException<InteractionUnavailableException>(() => globalInteractionProvider.GetInteractionByName("TestUnknownInteraction", null, null));
+        }
+
+        [TestMethod]
+        public void VerifyGettingInteractionKnownByMultipleProvidersThrows()
+        {
+            // Arrange
+            string interactionName = "TestKnownInteraction";
+
+            var mockInteractionProvider1 = new MockInteractionProvider();
+            mockInteractionProvider1.InteractionsMap[interactionName] = new MockInteraction();
+            var mockInteractionProvider2 = new MockInteractionProvider();
+            mockInteractionProvider2.InteractionsMap[interactionName] = new MockInteraction();
+
+            var mockInteractionProviders = new List<IInteractionProvider>() { mockInteractionProvider1, mockInteractionProvider2 };
+            var globalInteractionProvider = new GlobalInteractionProvider();
+            globalInteractionProvider.AddMultipleProviders(mockInteractionProviders);
+
+            // Act + Assert
+            Assert.ThrowsException<InteractionProviderConflictException>(() => globalInteractionProvider.GetInteractionByName(interactionName, null, null));
         }
     }
 }
