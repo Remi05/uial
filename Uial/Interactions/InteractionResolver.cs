@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Uial.Contexts;
 using Uial.DataModels;
@@ -17,18 +18,38 @@ namespace Uial.Interactions
 
         public IInteraction Resolve(InteractionDefinition interactionDefinition, IEnumerable<object> paramValues, IContext parentContext)
         {
-            if (paramValues.Count() != interactionDefinition.ParamNames.Count())
+            if (interactionDefinition == null || parentContext == null)
             {
-                throw new InvalidParameterCountException(interactionDefinition.ParamNames.Count(), paramValues.Count());
+                throw new ArgumentNullException(interactionDefinition == null ? nameof(interactionDefinition) : nameof(parentContext));
             }
 
-            IReferenceValueStore valueStore = parentContext.Scope.ReferenceValueStore.GetCopy();
-            foreach (var param in interactionDefinition.ParamNames.Zip(paramValues))
+            int paramNamesCount = (interactionDefinition.ParamNames?.Count()).GetValueOrDefault(0);
+            int paramValuesCount = (paramValues?.Count()).GetValueOrDefault(0);
+            if (paramValuesCount != paramNamesCount)
             {
-                valueStore.SetValue(param.First, param.Second);
+                throw new InvalidParameterCountException(paramNamesCount, paramValuesCount);
             }
 
-            IEnumerable<IInteraction> interactions = interactionDefinition.BaseInteractionDefinitions.Select((interactionDefinition) => BaseInteractionResolver.Resolve(interactionDefinition, parentContext, valueStore));
+            IEnumerable<IInteraction> interactions = new List<IInteraction>();
+
+            if (interactionDefinition.BaseInteractionDefinitions != null && interactionDefinition.BaseInteractionDefinitions.Count() > 0)
+            {
+                IReferenceValueStore valueStore = parentContext.Scope.ReferenceValueStore.GetCopy();
+                if (paramValuesCount != 0)
+                {
+                    foreach (var param in interactionDefinition.ParamNames.Zip(paramValues))
+                    {
+                        valueStore.SetValue(param.First, param.Second);
+                    }
+                }
+
+                foreach (BaseInteractionDefinition baseInteractionDefinition in interactionDefinition.BaseInteractionDefinitions)
+                {
+                    IInteraction interaction = BaseInteractionResolver.Resolve(baseInteractionDefinition, parentContext, valueStore);
+                    interactions.Append(interaction);
+                }
+            }
+
             return new CompositeInteraction(interactionDefinition.Name, interactions);
         }
     }

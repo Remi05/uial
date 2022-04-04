@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Uial.DataModels;
@@ -13,19 +14,6 @@ namespace Uial.UnitTests.Interactions
     public class InteractionResolverTests
     {
         [TestMethod]
-        public void VerifyNameIsSet()
-        {
-            // Arrange
-            string expectedName = "TestInteractionDefinition";
-
-            // Act
-            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), expectedName, new List<string>(), new List<BaseInteractionDefinition>());
-            
-            // Assert
-            Assert.AreEqual(expectedName, interactionDefinition.Name);
-        }
-
-        [TestMethod]
         public void VerifyResolvedInteractionHasSameName()
         {
             // Arrange
@@ -33,14 +21,37 @@ namespace Uial.UnitTests.Interactions
 
             var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
             var parentContext = new MockContext(runtimeScope);
-            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), expectedName, new List<string>(), new List<BaseInteractionDefinition>());
+            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), expectedName, null,null);
             var interactionResolver = new InteractionResolver(null);
             
             // Act
-            IInteraction interaction = interactionResolver.Resolve(interactionDefinition, new List<object>(), parentContext);
+            IInteraction interaction = interactionResolver.Resolve(interactionDefinition, null, parentContext);
             
             // Assert
             Assert.AreEqual(expectedName, interaction.Name);
+        }
+
+        [TestMethod]
+        public void VerifyResolvingNullInteractionDefinitionThrows()
+        {
+            // Arrange
+            var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
+            var parentContext = new MockContext(runtimeScope);
+            var interactionResolver = new InteractionResolver(null);
+
+            // Act + Assert
+            Assert.ThrowsException<ArgumentNullException>(() => interactionResolver.Resolve(null, new List<object>(), parentContext));
+        }
+
+        [TestMethod]
+        public void VerifyResolvingWithNullContextThrows()
+        {
+            // Arrange
+            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", null, null);
+            var interactionResolver = new InteractionResolver(null);
+
+            // Act + Assert
+            Assert.ThrowsException<ArgumentNullException>(() => interactionResolver.Resolve(interactionDefinition, new List<object>(), null));
         }
 
         [TestMethod]
@@ -52,7 +63,7 @@ namespace Uial.UnitTests.Interactions
 
             var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
             var parentContext = new MockContext(runtimeScope);
-            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", paramNames, new List<BaseInteractionDefinition>());
+            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", paramNames, null);
             var interactionResolver = new InteractionResolver(null);
 
             // Act + Assert
@@ -68,7 +79,7 @@ namespace Uial.UnitTests.Interactions
 
             var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
             var parentContext = new MockContext(runtimeScope);
-            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", paramNames, new List<BaseInteractionDefinition>());
+            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", paramNames, null);
             var interactionResolver = new InteractionResolver(null);
 
             // Act + Assert
@@ -76,32 +87,64 @@ namespace Uial.UnitTests.Interactions
         }
 
         [TestMethod]
-        public void VerifyResolvedCompositeIteractionBaseInteractionDefinitionsAreResolved()
+        public void VerifyValueStoreIsPopulatedWithParamValues()
         {
-            // TODO: Add Interactions to context
-
             // Arrange
-            var interactionsToCall = new List<string>() { "MockInteraction1", "MockInteraction2", "MockInteraction3", };
-            var interactionsCalled = new List<string>();
+            var expectedParamValues = new Dictionary<string, object>()
+            {
+                { "ParamName1", "ParamValue1" },
+                { "ParamName2", 254 },
+                { "ParamName3", 35.0f },
+            };
 
-            IEnumerable<IInteraction> mockInteractions = interactionsToCall.Select(
-                (interactionName) => new MockInteraction(interactionName, () => interactionsCalled.Add(interactionName))
-            );
-            IEnumerable<BaseInteractionDefinition> mockBaseInteractions = interactionsToCall.Select(
-                (interactionName) => new BaseInteractionDefinition(interactionName)
-            );
+            var baseInteractionDefinitions = new List<BaseInteractionDefinition>() {
+                new BaseInteractionDefinition("MockInteraction1"),
+                new BaseInteractionDefinition("MockInteraction2"),
+            };
+
+            var mockBaseInteractionResolver = new MockBaseInteractionResolver();
+            var interactionResolver = new InteractionResolver(mockBaseInteractionResolver);
+            
+            var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
+            var parentContext = new MockContext(runtimeScope);
+            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", expectedParamValues.Keys.ToList(), baseInteractionDefinitions);
+
+            // Act
+            interactionResolver.Resolve(interactionDefinition, expectedParamValues.Values.ToList(), parentContext);
+            var passedValueStore = mockBaseInteractionResolver.LastPassedValueStore;
+
+            // Assert
+            foreach (string paramName in expectedParamValues.Keys)
+            {
+                object expectedParamValue = expectedParamValues[paramName];
+                object actualParamValue = passedValueStore.GetValue(paramName);
+                Assert.AreEqual(expectedParamValue, actualParamValue);
+            }
+        }
+
+        [TestMethod]
+        public void VerifyBaseInteractionDefinitionsAreResolvedWithBaseInteractionResolver()
+        {
+            // Arrange
+            var expectedBaseInteractionDefinitions = new List<BaseInteractionDefinition>() {
+                new BaseInteractionDefinition("MockInteraction1"),
+                new BaseInteractionDefinition("MockInteraction2"),
+                new BaseInteractionDefinition("MockInteraction3"),
+            };
+
+            var mockBaseInteractionResolver = new MockBaseInteractionResolver();
+            var interactionResolver = new InteractionResolver(mockBaseInteractionResolver);
 
             var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
             var parentContext = new MockContext(runtimeScope);
-            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", new List<string>(), mockBaseInteractions);
-            var interactionResolver = new InteractionResolver(null);
+            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", null, expectedBaseInteractionDefinitions);
 
             // Act
-            IInteraction interaction = interactionResolver.Resolve(interactionDefinition, new List<object>(), parentContext);
-            interaction.Do();
+            interactionResolver.Resolve(interactionDefinition, new List<object>(), parentContext);
+            var actualBaseInteractionDefinitions = mockBaseInteractionResolver.ResolvedBaseInteractions;
 
             // Assert
-            Assert.IsTrue(interactionsToCall.SequenceEqual(interactionsCalled));
+            Assert.IsTrue(expectedBaseInteractionDefinitions.SequenceEqual(actualBaseInteractionDefinitions));
         }
     }
 }
