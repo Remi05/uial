@@ -6,7 +6,7 @@ namespace Uial.DataModels
 {
     public class CompositeConditionDefinition : ConditionDefinition
     {
-        public IEnumerable<ConditionDefinition> Conditions { get; private set; }
+        public IEnumerable<ConditionDefinition> Conditions { get; protected set; }
 
         public CompositeConditionDefinition(IEnumerable<ConditionDefinition> conditions)
         {

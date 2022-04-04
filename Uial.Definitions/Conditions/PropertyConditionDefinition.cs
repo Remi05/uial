@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 
 namespace Uial.DataModels
 {
     public class PropertyConditionDefinition : ConditionDefinition
     {
-        public string PropertyName { get; private set; }
-        public ValueDefinition Value { get; private set; }
+        public string PropertyName { get; protected set; }
+        public ValueDefinition Value { get; protected set; }
 
         public PropertyConditionDefinition(string propertyName, ValueDefinition value)
         {

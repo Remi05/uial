@@ -5,10 +5,10 @@ namespace Uial.DataModels
 {
     public class InteractionDefinition
     {
-        public DefinitionScope Scope { get; private set; }
-        public string Name { get; private set; }
-        public IEnumerable<string> ParamNames { get; private set; }
-        public IEnumerable<BaseInteractionDefinition> BaseInteractionDefinitions { get; private set; }
+        public DefinitionScope Scope { get; protected set; }
+        public string Name { get; protected set; }
+        public IEnumerable<string> ParamNames { get; protected set; }
+        public IEnumerable<BaseInteractionDefinition> BaseInteractionDefinitions { get; protected set; }
 
         public InteractionDefinition(DefinitionScope scope, string name, IEnumerable<string> paramNames, IEnumerable<BaseInteractionDefinition> baseInteractionDefinitions)
         {

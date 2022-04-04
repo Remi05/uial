@@ -5,10 +5,10 @@ namespace Uial.DataModels
 {
     public class ContextDefinition
     {
-        public DefinitionScope Scope { get; private set; }
-        public string Name { get; private set; }
-        public IEnumerable<string> ParamNames { get; private set; }
-        public ContextScopeDefinition ContextScope { get; private set; }
+        public DefinitionScope Scope { get; protected set; }
+        public string Name { get; protected set; }
+        public IEnumerable<string> ParamNames { get; protected set; }
+        public ContextScopeDefinition ContextScope { get; protected set; }
 
         public ContextDefinition(DefinitionScope scope, string name, IEnumerable<string> paramNames = null, ContextScopeDefinition contextScope = null)
         {
