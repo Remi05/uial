@@ -1,17 +1,12 @@
-﻿using System;
-
+﻿
 namespace Uial.DataModels
 {
     public class LiteralValueDefinition : ValueDefinition
     {
-        public object LiteralValue { get; private set; }
+        public object LiteralValue { get; protected set; }
 
         public LiteralValueDefinition(object literalValue) 
         {
-            if (literalValue == null)
-            {
-                throw new ArgumentNullException(nameof(literalValue));
-            }
             LiteralValue = literalValue;
         }
 

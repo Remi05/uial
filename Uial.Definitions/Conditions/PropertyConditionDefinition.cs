@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Uial.DataModels
 {
@@ -9,9 +9,13 @@ namespace Uial.DataModels
 
         public PropertyConditionDefinition(string propertyName, ValueDefinition value)
         {
-            if (value == null)
+            if (propertyName == null || value == null)
             {
-                throw new ArgumentNullException(nameof(value));
+                throw new ArgumentNullException(propertyName == null ? nameof(propertyName) : nameof(value));
+            }
+            if (string.IsNullOrWhiteSpace(propertyName))
+            {
+                throw new ArgumentException($"{nameof(propertyName)} cannot be empty or white space.");
             }
             PropertyName = propertyName;
             Value = value;

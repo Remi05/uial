@@ -77,11 +77,11 @@ namespace Uial.DataModels.UnitTests
         [DataRow(1, DisplayName = "ValidBaseInteractionDefinitions_Single")]
         [DataRow(5, DisplayName = "ValidBaseInteractionDefinitions_Multiple")]
         [DataTestMethod]
-        public void Constructor_NullBaseInteractionDefinitionsIsSet(uint baseInteractionDefinitionsCount)
+        public void Constructor_NullBaseInteractionDefinitionsIsSet(int baseInteractionDefinitionsCount)
         {
             // Arrange
             var expectedBaseInteractionDefinitions = new List<BaseInteractionDefinition>();
-            for (uint i = 0; i < baseInteractionDefinitionsCount; ++i)
+            for (int i = 0; i < baseInteractionDefinitionsCount; ++i)
             {
                 expectedBaseInteractionDefinitions.Add(new BaseInteractionDefinition($"BaseInteraction{i}"));
             }
