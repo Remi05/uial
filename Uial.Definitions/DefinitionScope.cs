@@ -4,9 +4,9 @@ namespace Uial.DataModels
 {
     public class DefinitionScope
     {
-        public Dictionary<string, ContextDefinition> ContextDefinitions { get; private set; } = new Dictionary<string, ContextDefinition>();
-        public Dictionary<string, InteractionDefinition> InteractionDefinitions { get; private set; } = new Dictionary<string, InteractionDefinition>();
-        public Dictionary<string, StateDefinition> StateDefinitions { get; private set; } = new Dictionary<string, StateDefinition>();
+        public Dictionary<string, ContextDefinition> ContextDefinitions { get; protected set; } = new Dictionary<string, ContextDefinition>();
+        public Dictionary<string, InteractionDefinition> InteractionDefinitions { get; protected set; } = new Dictionary<string, InteractionDefinition>();
+        public Dictionary<string, StateDefinition> StateDefinitions { get; protected set; } = new Dictionary<string, StateDefinition>();
 
         public DefinitionScope() { }
 
