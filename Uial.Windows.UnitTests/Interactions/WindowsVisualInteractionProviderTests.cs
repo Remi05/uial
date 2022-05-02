@@ -35,7 +35,7 @@ namespace Uial.UnitTests.Windows.Interactions
             var interactionProvider = new WindowsVisualInteractionProvider();
 
             // Act
-            bool actualIsKnownInteraction = interactionProvider.IsInteractionAvailableForContext(interactionName, null);
+            bool actualIsKnownInteraction = interactionProvider.IsInteractionAvailableForContext(interactionName, new MockWindowsVisualContext());
             
             // Assert
             Assert.IsTrue(actualIsKnownInteraction);
@@ -49,7 +49,7 @@ namespace Uial.UnitTests.Windows.Interactions
             var interactionProvider = new WindowsVisualInteractionProvider();
 
             // Act
-            bool actualIsKnownInteraction = interactionProvider.IsInteractionAvailableForContext(interactionName, null);
+            bool actualIsKnownInteraction = interactionProvider.IsInteractionAvailableForContext(interactionName, new MockWindowsVisualContext());
 
             // Assert
             Assert.IsFalse(actualIsKnownInteraction);
@@ -73,7 +73,7 @@ namespace Uial.UnitTests.Windows.Interactions
             var interactionProvider = new WindowsVisualInteractionProvider();
 
             // Act + Assert
-            Assert.ThrowsException<InvalidWindowsVisualContextException>(() => interactionProvider.GetInteractionByName(null, null, new MockContext()));
+            Assert.ThrowsException<InteractionUnavailableException>(() => interactionProvider.GetInteractionByName(Close.Key, null, new MockContext()));
         }
     }
 }
