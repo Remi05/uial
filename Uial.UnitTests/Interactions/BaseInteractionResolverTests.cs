@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Uial.Contexts;
 using Uial.DataModels;
@@ -46,25 +47,26 @@ namespace Uial.UnitTests.Interactions
         public void InteractionParamsAreResolvedFromValueResolver()
         {
             // Arrange
-            object expectedParamValue = "test value";
+            var expectedParamValues = new Dictionary<ValueDefinition, object>()
+            {
+                { new ReferenceValueDefinition("$testRefValue1"), "test value" },
+                { new ReferenceValueDefinition("$testRefValue2"), 15 },
+                { new ReferenceValueDefinition("$testRefValue3"), 25.0f },
+            };
+
             string interactionName = "TestInteraction";
-            ValueDefinition valueDefinition = new ReferenceValueDefinition("$testRefValue");
-            var paramsDefinitions = new List<ValueDefinition>() { valueDefinition };
-            var baseInteractionDefinition = new BaseInteractionDefinition(interactionName, paramsDefinitions);
+            var baseInteractionDefinition = new BaseInteractionDefinition(interactionName, expectedParamValues.Keys);
             var mockInteractionProvider = new MockInteractionProvider();
             mockInteractionProvider.InteractionsMap[interactionName] = null;
 
-            var mockValueResolver = new MockValueResolver();
-            mockValueResolver.ValuesMap[valueDefinition] = expectedParamValue;
+            var mockValueResolver = new MockValueResolver(expectedParamValues);
 
             // Act
             var baseInteractionResolver = new BaseInteractionResolver(mockInteractionProvider, null, mockValueResolver);
             baseInteractionResolver.Resolve(baseInteractionDefinition, null, null);
 
-            object actualParamValue = mockInteractionProvider.PassedParamValues.GetEnumerator().Current;
-
             // Assert
-            Assert.AreEqual(expectedParamValue, actualParamValue);
+            Assert.IsTrue(expectedParamValues.Values.SequenceEqual(mockInteractionProvider.PassedParamValues));
         }
 
         [TestMethod]
@@ -74,7 +76,7 @@ namespace Uial.UnitTests.Interactions
             string interactionName = "TestInteraction";
             var expectedContext = new MockContext(name: "TestContext");
             var baseContextDefinition = new BaseContextDefinition(new ContextScopeDefinition("TestContextDefinition"));
-            var baseInteractionDefinition = new BaseInteractionDefinition(interactionName);
+            var baseInteractionDefinition = new BaseInteractionDefinition(interactionName, contextDefinition: baseContextDefinition);
             var mockInteractionProvider = new MockInteractionProvider();
             mockInteractionProvider.InteractionsMap[interactionName] = null;
 
