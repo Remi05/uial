@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Uial.Interactions;
 
-namespace Uial.UnitTests.Interactions.Core
+namespace Uial.UnitTests.Interactions
 {
     [TestClass]
     public class GlobalInteractionProviderTests
