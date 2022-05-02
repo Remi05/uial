@@ -3,7 +3,7 @@ using Uial.Interactions;
 
 namespace Uial.UnitTests.Interactions
 {
-    class MockInteraction : IInteraction
+    public class MockInteraction : IInteraction
     {
         public string Name { get; protected set; }
         protected Action DoAction { get; set; }

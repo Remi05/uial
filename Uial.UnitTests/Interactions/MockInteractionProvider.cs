@@ -5,7 +5,7 @@ using Uial.Scopes;
 
 namespace Uial.UnitTests.Interactions
 {
-    class MockInteractionProvider : IInteractionProvider
+    public class MockInteractionProvider : IInteractionProvider
     {
         public IDictionary<string, IInteraction> InteractionsMap { get; protected set; } = new Dictionary<string, IInteraction>();
 

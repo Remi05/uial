@@ -8,7 +8,7 @@ using Uial.Values;
 
 namespace Uial.UnitTests.Interactions
 {
-    internal class MockBaseInteractionResolver : IBaseInteractionResolver
+    public class MockBaseInteractionResolver : IBaseInteractionResolver
     {
         public IDictionary<BaseInteractionDefinition, IInteraction> InteractionsMap { get; protected set; } = new Dictionary<BaseInteractionDefinition, IInteraction>();
 

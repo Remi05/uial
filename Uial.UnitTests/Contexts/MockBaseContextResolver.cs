@@ -4,7 +4,7 @@ using Uial.DataModels;
 
 namespace Uial.UnitTests.Contexts
 {
-    class MockBaseContextResolver : IBaseContextResolver
+    public class MockBaseContextResolver : IBaseContextResolver
     {
         public Dictionary<BaseContextDefinition, IContext> ContextsMap { get; protected set; } = new Dictionary<BaseContextDefinition, IContext>();
 
