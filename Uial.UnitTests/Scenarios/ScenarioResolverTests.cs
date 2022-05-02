@@ -40,7 +40,7 @@ namespace Uial.UnitTests.Scenarios
         }
 
         [TestMethod]
-        public void VerifyResolvedScenarioInteractionDefinitionsAreResolved()
+        public void VerifyScenarioInteractionDefinitionsAreResolved()
         {
             // Arrange
             var interactionsToCall = new List<string>() { "MockInteraction1", "MockInteraction2", "MockInteraction3", };
