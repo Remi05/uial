@@ -4,13 +4,26 @@ using Uial.Values;
 
 namespace Uial.UnitTests.Values
 {
-    class MockValueResolver : IValueResolver
+    public class MockValueResolver : IValueResolver
     {
-        public Dictionary<ValueDefinition, object> ValuesMap { get; protected set; } = new Dictionary<ValueDefinition, object>();
+        public Dictionary<ValueDefinition, object> ValuesMap { get; protected set; }
 
-        public object Resolve(ValueDefinition valueDefintion, IReferenceValueStore referenceValueStore)
+        public MockValueResolver(Dictionary<ValueDefinition, object> valuesMap) 
         {
-            return ValuesMap[valueDefintion];
+            ValuesMap = valuesMap;
+        }
+
+        public MockValueResolver()
+            : this(new Dictionary<ValueDefinition, object>()) { }
+
+        public object Resolve(ValueDefinition valueDefinition, IReferenceValueStore referenceValueStore)
+        {
+            var literalValueDefinition = valueDefinition as LiteralValueDefinition;
+            if (literalValueDefinition != null)
+            {
+                return literalValueDefinition.LiteralValue;
+            }
+            return ValuesMap[valueDefinition];
         }
     }
 }
