@@ -122,6 +122,8 @@ namespace Uial.UnitTests.Interactions
             }
         }
 
+        // TODO: Add test around resolved interactions being passed to CompositeInteraction constructor.
+
         [TestMethod]
         public void VerifyBaseInteractionDefinitionsAreResolvedWithBaseInteractionResolver()
         {
@@ -138,6 +140,37 @@ namespace Uial.UnitTests.Interactions
             var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
             var parentContext = new MockContext(runtimeScope);
             var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", null, expectedBaseInteractionDefinitions);
+
+            // Act
+            interactionResolver.Resolve(interactionDefinition, new List<object>(), parentContext);
+            var actualBaseInteractionDefinitions = mockBaseInteractionResolver.ResolvedBaseInteractions;
+
+            // Assert
+            Assert.IsTrue(expectedBaseInteractionDefinitions.SequenceEqual(actualBaseInteractionDefinitions));
+        }
+
+        [TestMethod]
+        public void VerifyResolvedInteractionExecutesBaseInteractions()
+        {
+            // Arrange
+            var expectedInteractions = new List<string>() {
+                "TestInteraction1",
+                "TestInteraction2",
+                "TestInteraction3",
+            };
+
+            var expectedBaseInteractionDefinitions = new List<BaseInteractionDefinition>() {
+                new BaseInteractionDefinition("MockInteraction1"),
+                new BaseInteractionDefinition("MockInteraction2"),
+                new BaseInteractionDefinition("MockInteraction3"),
+            };
+
+            var mockBaseInteractionResolver = new MockBaseInteractionResolver();
+            var interactionResolver = new InteractionResolver(mockBaseInteractionResolver);
+
+            var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
+            var parentContext = new MockContext(runtimeScope);
+            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", new List<string>(), expectedBaseInteractionDefinitions);
 
             // Act
             interactionResolver.Resolve(interactionDefinition, new List<object>(), parentContext);
