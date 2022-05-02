@@ -18,7 +18,16 @@ namespace Uial.Scenarios
 
         public Scenario Resolve(ScenarioDefinition scenarioDefinition, IContext context, IReferenceValueStore referenceValueStore)
         {
-            IEnumerable<IInteraction> interactions = scenarioDefinition.BaseInteractionDefinitions.Select((interactionDefinition) => BaseInteractionResolver.Resolve(interactionDefinition, context, referenceValueStore));
+            var interactions = new List<IInteraction>();
+            if (scenarioDefinition.BaseInteractionDefinitions != null && scenarioDefinition.BaseInteractionDefinitions.Count() > 0)
+            {
+                foreach (BaseInteractionDefinition baseInteractionDefinition in scenarioDefinition.BaseInteractionDefinitions)
+                {
+                    IInteraction interaction = BaseInteractionResolver.Resolve(baseInteractionDefinition, context, referenceValueStore);
+                    interactions.Add(interaction);
+                }
+            }
+
             return new Scenario(scenarioDefinition.Name, interactions);
         }
     }

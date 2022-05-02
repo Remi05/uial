@@ -24,9 +24,12 @@ namespace Uial.UnitTests.Scenarios
             var interactionsToCall = new List<string>() { "MockInteraction1", "MockInteraction2", "MockInteraction3", };
             var interactionsCalled = new List<string>();
 
-            List<MockInteraction> mockInteractions = interactionsToCall.Select(
-                (interactionName) => new MockInteraction(interactionName, () => interactionsCalled.Add(interactionName))
-            ).ToList();
+            var mockInteractions = new List<MockInteraction>();
+            foreach (string interactionName in interactionsToCall)
+            {
+                var mockInteraction = new MockInteraction(interactionName, () => interactionsCalled.Add(interactionName));
+                mockInteractions.Add(mockInteraction);
+            }
 
             var scenario = new Scenario("TestScenario", mockInteractions);
             scenario.Do();

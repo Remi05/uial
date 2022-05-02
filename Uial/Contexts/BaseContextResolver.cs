@@ -21,7 +21,17 @@ namespace Uial.Contexts
             {
                 return null;
             }            
-            IEnumerable<object> paramValues = baseContextDefintition.ContextScope.Parameters.Select((valueDefinition) => ValueResolver.Resolve(valueDefinition, parentContext.Scope.ReferenceValueStore));
+
+            var paramValues = new List<object>();
+            if (baseContextDefintition.ContextScope.Parameters != null)
+            {
+                foreach (var paramValueDefinition in baseContextDefintition.ContextScope.Parameters)
+                {
+                    object paramValue = ValueResolver.Resolve(paramValueDefinition, parentContext.Scope.ReferenceValueStore);
+                    paramValues.Add(paramValue);
+                }
+            }
+
             IContext context = ContextProvider.GetContextFromDefinition(baseContextDefintition.ContextScope, paramValues, parentContext);
             return Resolve(baseContextDefintition.ChildContext, context) ?? context;
         }

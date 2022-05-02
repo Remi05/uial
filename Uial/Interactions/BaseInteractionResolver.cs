@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Uial.Contexts;
 using Uial.DataModels;
@@ -27,7 +28,17 @@ namespace Uial.Interactions
             }
             BaseContextDefinition baseContextDefinition = baseInteractionDefinition.ContextDefinition;
             IContext context = baseContextDefinition == null ? null : BaseContextResolver.Resolve(baseContextDefinition, parentContext) ?? parentContext;
-            var paramValues = baseInteractionDefinition.ParamsValueDefinitions.Select(valueDefinition => ValueResolver.Resolve(valueDefinition, referenceValueStore));
+
+            var paramValues = new List<object>();
+            if (baseInteractionDefinition.ParamsValueDefinitions != null)
+            {
+                foreach (var paramValueDefinition in baseInteractionDefinition.ParamsValueDefinitions)
+                {
+                    object paramValue = ValueResolver.Resolve(paramValueDefinition, referenceValueStore);
+                    paramValues.Add(paramValue);
+                }
+            }      
+            
             return InteractionProvider.GetInteractionByName(baseInteractionDefinition.InteractionName, paramValues, context);
         }
     }

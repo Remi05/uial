@@ -31,18 +31,32 @@ namespace Uial.Testing
 
         public Test Resolve(TestDefinition testDefinition, IContext context, IReferenceValueStore referenceValueStore)
         {
-            IEnumerable<IInteraction> interactions = testDefinition.BaseInteractionDefinitions.Select(
-                (interactionDefinition) => BaseInteractionResolver.Resolve(interactionDefinition, context, referenceValueStore)
-            );
+            var interactions = new List<IInteraction>();
+            if (testDefinition.BaseInteractionDefinitions != null && testDefinition.BaseInteractionDefinitions.Count() > 0)
+            {
+                foreach (BaseInteractionDefinition baseInteractionDefinition in testDefinition.BaseInteractionDefinitions)
+                {
+                    IInteraction interaction = BaseInteractionResolver.Resolve(baseInteractionDefinition, context, referenceValueStore);
+                    interactions.Add(interaction);
+                }
+            }
+
             return new Test(testDefinition.TestName, interactions);
         }
 
 
         public TestGroup Resolve(TestGroupDefinition testGroupDefinition, IContext context, IReferenceValueStore referenceValueStore)
         {
-            IEnumerable<ITestable> children = testGroupDefinition.ChildrenDefinitions.Select(
-                (childDefinition) => Resolve(childDefinition, context, referenceValueStore)
-            );
+            var children = new List<ITestable>();
+            if (testGroupDefinition.ChildrenDefinitions != null && testGroupDefinition.ChildrenDefinitions.Count() > 0)
+            {
+                foreach (TestableDefinition childDefinition in testGroupDefinition.ChildrenDefinitions)
+                {
+                    ITestable child = Resolve(childDefinition, context, referenceValueStore);
+                    children.Add(child);
+                }
+            }
+
             return new TestGroup(testGroupDefinition.TestGroupName, children);
         }
     }

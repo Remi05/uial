@@ -30,8 +30,7 @@ namespace Uial.Interactions
                 throw new InvalidParameterCountException(paramNamesCount, paramValuesCount);
             }
 
-            IEnumerable<IInteraction> interactions = new List<IInteraction>();
-
+            var interactions = new List<IInteraction>();
             if (interactionDefinition.BaseInteractionDefinitions != null && interactionDefinition.BaseInteractionDefinitions.Count() > 0)
             {
                 IReferenceValueStore valueStore = parentContext.Scope.ReferenceValueStore.GetCopy();
@@ -46,7 +45,7 @@ namespace Uial.Interactions
                 foreach (BaseInteractionDefinition baseInteractionDefinition in interactionDefinition.BaseInteractionDefinitions)
                 {
                     IInteraction interaction = BaseInteractionResolver.Resolve(baseInteractionDefinition, parentContext, valueStore);
-                    interactions.Append(interaction);
+                    interactions.Add(interaction);
                 }
             }
 
