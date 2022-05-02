@@ -122,7 +122,35 @@ namespace Uial.UnitTests.Interactions
             }
         }
 
-        // TODO: Add test around resolved interactions being passed to CompositeInteraction constructor.
+        [TestMethod]
+        public void VerifyResolvedBaseInteractionDefinitionsAreExecuted()
+        {
+            // Arrange
+            var interactionsToCall = new List<string>() { "MockInteraction1", "MockInteraction2", "MockInteraction3", };
+            var interactionsCalled = new List<string>();
+
+            var mockBaseInteractions = new Dictionary<BaseInteractionDefinition, IInteraction>();
+            foreach (var interactionName in interactionsToCall)
+            {
+                var mockInteraction = new MockInteraction(interactionName, () => interactionsCalled.Add(interactionName));
+                var baseInteractionDefinition = new BaseInteractionDefinition(interactionName);
+                mockBaseInteractions[baseInteractionDefinition] = mockInteraction;
+            }
+
+            var mockBaseInteractionResolver = new MockBaseInteractionResolver(mockBaseInteractions);
+            var interactionResolver = new InteractionResolver(mockBaseInteractionResolver);
+
+            var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
+            var parentContext = new MockContext(runtimeScope);
+            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "TestInteraction", null, mockBaseInteractions.Keys);
+   
+            // Act
+            IInteraction interaction = interactionResolver.Resolve(interactionDefinition, new List<object>(), new MockContext());
+            interaction.Do();
+
+            // Assert
+            Assert.IsTrue(interactionsToCall.SequenceEqual(interactionsCalled));
+        }
 
         [TestMethod]
         public void VerifyBaseInteractionDefinitionsAreResolvedWithBaseInteractionResolver()
@@ -170,7 +198,7 @@ namespace Uial.UnitTests.Interactions
 
             var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
             var parentContext = new MockContext(runtimeScope);
-            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", new List<string>(), expectedBaseInteractionDefinitions);
+            var interactionDefinition = new InteractionDefinition(new DefinitionScope(), "", new List<string>(), expectedBaseInteractionDefinitions);    
 
             // Act
             interactionResolver.Resolve(interactionDefinition, new List<object>(), parentContext);
