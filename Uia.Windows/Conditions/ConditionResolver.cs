@@ -53,6 +53,12 @@ namespace Uial.Windows.Conditions
                     automationConditions.Add(automationCondition);
                 }
             }
+            if (automationConditions.Count == 1)
+            {
+                // CreateAndConditionFromArray returns null if automationConditions
+                // contains a single item so we just return the condition instead.
+                return automationConditions[0];
+            }
             return UIAutomation.CreateAndConditionFromArray(automationConditions.ToArray());
         }
     }
