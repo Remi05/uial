@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Uial.Contexts;
 using Uial.DataModels;
@@ -18,6 +19,11 @@ namespace Uial.Scenarios
 
         public Scenario Resolve(ScenarioDefinition scenarioDefinition, IContext context, IReferenceValueStore referenceValueStore)
         {
+            if (scenarioDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioDefinition));
+            }
+
             var interactions = new List<IInteraction>();
             if (scenarioDefinition.BaseInteractionDefinitions != null && scenarioDefinition.BaseInteractionDefinitions.Count() > 0)
             {

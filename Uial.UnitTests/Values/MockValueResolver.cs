@@ -6,9 +6,9 @@ namespace Uial.UnitTests.Values
 {
     public class MockValueResolver : IValueResolver
     {
-        public Dictionary<ValueDefinition, object> ValuesMap { get; protected set; }
+        public IDictionary<ValueDefinition, object> ValuesMap { get; protected set; }
 
-        public MockValueResolver(Dictionary<ValueDefinition, object> valuesMap) 
+        public MockValueResolver(IDictionary<ValueDefinition, object> valuesMap) 
         {
             ValuesMap = valuesMap;
         }

@@ -10,11 +10,19 @@ namespace Uial.UnitTests.Interactions
 {
     public class MockBaseInteractionResolver : IBaseInteractionResolver
     {
-        public IDictionary<BaseInteractionDefinition, IInteraction> InteractionsMap { get; protected set; } = new Dictionary<BaseInteractionDefinition, IInteraction>();
+        public IDictionary<BaseInteractionDefinition, IInteraction> InteractionsMap { get; protected set; }
 
         public List<BaseInteractionDefinition> ResolvedBaseInteractions { get; private set; } = new List<BaseInteractionDefinition>();
         public IContext LastPassedParentContext { get; private set; }
         public IReferenceValueStore LastPassedValueStore { get; private set; }
+
+        public MockBaseInteractionResolver(IDictionary<BaseInteractionDefinition, IInteraction> interactionsMap)
+        {
+            InteractionsMap = interactionsMap;
+        }
+
+        public MockBaseInteractionResolver()
+            : this(new Dictionary<BaseInteractionDefinition, IInteraction>()) { }
 
         public IInteraction Resolve(BaseInteractionDefinition baseInteractionDefinition, IContext parentContext, IReferenceValueStore referenceValueStore)
         {
