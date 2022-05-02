@@ -33,7 +33,7 @@ namespace Uial.Interactions
             var interactions = new List<IInteraction>();
             if (interactionDefinition.BaseInteractionDefinitions != null && interactionDefinition.BaseInteractionDefinitions.Count() > 0)
             {
-                IReferenceValueStore valueStore = parentContext.Scope.ReferenceValueStore.GetCopy();
+                IReferenceValueStore valueStore = parentContext.Scope?.ReferenceValueStore?.GetCopy();
                 if (paramValuesCount != 0)
                 {
                     foreach (var param in interactionDefinition.ParamNames.Zip(paramValues))
