@@ -1,4 +1,6 @@
-﻿namespace Uial.Modules
+﻿using Uial.DataModels;
+
+namespace Uial.Modules
 {
     public interface IModuleProvider
     {

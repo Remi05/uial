@@ -1,4 +1,4 @@
-﻿using Uial.Scopes;
+﻿using Uial.Scopes; 
 
 namespace Uial.Contexts
 {

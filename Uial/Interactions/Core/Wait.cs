@@ -22,13 +22,17 @@ namespace Uial.Interactions.Core
             Thread.Sleep(Duration);
         }
 
-        public static Wait FromRuntimeValues(IEnumerable<string> paramValues)
+        public static Wait FromRuntimeValues(IEnumerable<object> paramValues)
         {
+            if (paramValues == null)
+            {
+                throw new ArgumentNullException(nameof(paramValues));
+            }
             if (paramValues.Count() != 1)
             {
                 throw new InvalidParameterCountException(1, paramValues.Count());
             }
-            double milliseconds = double.Parse(paramValues.ElementAt(0));
+            double milliseconds = double.Parse(paramValues.ElementAt(0) as string);
             TimeSpan duration = TimeSpan.FromMilliseconds(milliseconds);
             return new Wait(duration);
         }

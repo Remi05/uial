@@ -22,7 +22,11 @@ namespace Uial.Testing
 
         public ITestResults RunTest()
         {
-            IEnumerable<ITestResults> childrenResults = Children.Select((child) => child.RunTest());
+            var childrenResults = new List<ITestResults>();
+            foreach (var child in Children)
+            {
+                childrenResults.Add(child.RunTest());
+            }
             return new TestGroupResults(Name, childrenResults);
         }
     }

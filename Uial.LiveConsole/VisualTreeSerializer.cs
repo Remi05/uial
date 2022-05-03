@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading;
 using UIAutomationClient;
-using Uial.Conditions;
+using Uial.Windows.Conditions;
 
 namespace Uial.LiveConsole
 {
@@ -70,7 +70,7 @@ namespace Uial.LiveConsole
 
         public string GetElementRepresentation(IUIAutomationElement element)
         {
-            string elementRepresentation = $"[{Conditions.Conditions.GetConditionFromElement(element)}]";
+            string elementRepresentation = $"[{Conditions.GetConditionFromElement(element)}]";
             if (element == UIAutomation.GetRootElement())
             {
                 elementRepresentation += " (Root)";

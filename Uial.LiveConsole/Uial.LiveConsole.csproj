@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Uia.Windows\Uial.Windows.csproj" />
     <ProjectReference Include="..\Uial.Parsing\Uial.Parsing.csproj" />
     <ProjectReference Include="..\Uial\Uial.csproj" />
   </ItemGroup>

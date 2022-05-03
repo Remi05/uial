@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
-using Uial.Contexts;
-using Uial.Interactions;
+using Uial.DataModels;
+using Uial.Values;
 
 namespace Uial.Scopes
 {
     public class RuntimeScope
     {
-        public Dictionary<string, string> ReferenceValues { get; private set; } = new Dictionary<string, string>();
-        public Dictionary<string, IContextDefinition> ContextDefinitions { get; private set; } = new Dictionary<string, IContextDefinition>();
-        public Dictionary<string, IInteractionDefinition> InteractionDefinitions { get; private set; } = new Dictionary<string, IInteractionDefinition>();
+        public Dictionary<string, ContextDefinition> ContextDefinitions { get; private set; } = new Dictionary<string, ContextDefinition>();
+        public Dictionary<string, InteractionDefinition> InteractionDefinitions { get; private set; } = new Dictionary<string, InteractionDefinition>();
+        public IReferenceValueStore ReferenceValueStore { get; private set; }
 
-        public RuntimeScope(DefinitionScope definitionScope, Dictionary<string, string> referenceValues)
+        public RuntimeScope(DefinitionScope definitionScope, IReferenceValueStore referenceValueStore)
         {
-            ReferenceValues = referenceValues;
             ContextDefinitions = definitionScope.ContextDefinitions;
             InteractionDefinitions = definitionScope.InteractionDefinitions;
+            ReferenceValueStore = referenceValueStore;
         }
     }
 }
