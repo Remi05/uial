@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace Uial.Interactions.Core
 
         public WaitUntilAvailable(IContext context, TimeSpan? timeout = null)
         {
-            if (Context == null)
+            if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
