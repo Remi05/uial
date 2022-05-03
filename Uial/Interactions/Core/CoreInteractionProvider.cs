@@ -11,7 +11,7 @@ namespace Uial.Interactions.Core
         protected IDictionary<string, InteractionFactory> KnownInteractions = new Dictionary<string, InteractionFactory>()
         {
             { IsAvailable.Key,         (context, paramValues, referenceValueStore) => IsAvailable.FromRuntimeValues(context, paramValues, referenceValueStore) },
-            { Wait.Key,                (context, paramValues, _) => WaitUntilAvailable.FromRuntimeValues(context, paramValues) },
+            { Wait.Key,                (context, paramValues, _) => Wait.FromRuntimeValues(paramValues) },
             { WaitUntilAvailable.Key,  (context, paramValues, _) => WaitUntilAvailable.FromRuntimeValues(context, paramValues) },
         };
 
@@ -26,7 +26,7 @@ namespace Uial.Interactions.Core
             {
                 throw new InteractionUnavailableException(interactionName);
             }
-            return KnownInteractions[interactionName](context, paramValues, context.Scope.ReferenceValueStore); // TODO: Review value store, should be of interaction
+            return KnownInteractions[interactionName](context, paramValues, context?.Scope?.ReferenceValueStore); // TODO: Review value store, should be of interaction
         }
     }
 }
