@@ -1,7 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Uial.DataModels;
 using Uial.Interactions;
 using Uial.Interactions.Core;
+using Uial.Scopes;
+using Uial.Values;
+using Uial.UnitTests.Contexts;
 
 namespace Uial.UnitTests.Interactions.Core
 {
@@ -12,7 +15,7 @@ namespace Uial.UnitTests.Interactions.Core
         [DataRow(Wait.Key)]
         [DataRow(WaitUntilAvailable.Key)]
         [DataTestMethod]
-        public void VerifyInteractionIsKnown(string interactionName)
+        public void VerifyInteractionIsAvailable(string interactionName)
         {
             // Arrange
             var interactionProvider = new CoreInteractionProvider();
@@ -26,7 +29,7 @@ namespace Uial.UnitTests.Interactions.Core
 
         [DataRow("TestUnknownInteraction")]
         [DataTestMethod]
-        public void VerifyInteractionIsNotKnown(string interactionName)
+        public void VerifyInteractionIsNotAvailable(string interactionName)
         {
             // Arrange
             var interactionProvider = new CoreInteractionProvider();
@@ -38,20 +41,45 @@ namespace Uial.UnitTests.Interactions.Core
             Assert.IsFalse(actualIsKnownInteraction);
         }
 
-        [DataRow(IsAvailable.Key,        typeof(IsAvailable))]
-        [DataRow(Wait.Key,               typeof(Wait))]
-        [DataRow(WaitUntilAvailable.Key, typeof(WaitUntilAvailable))]
-        [DataTestMethod]
-        public void VerifyGettingKnownInteractionsReturnCorrectType(string interactionName, Type interactionType)
+        [TestMethod]
+        public void VerifyGetInteractionNameReturnsCorrectType_IsAvailable()
+        {
+            // Arrange
+            var runtimeScope = new RuntimeScope(new DefinitionScope(), new ReferenceValueStore());
+            var mockContext = new MockContext(runtimeScope);
+            var interactionProvider = new CoreInteractionProvider();
+
+            // Act
+            var interaction = interactionProvider.GetInteractionByName(IsAvailable.Key, new object[]{ "$isAvailableValue" }, mockContext);
+
+            // Assert
+            Assert.IsInstanceOfType(interaction, typeof(IsAvailable));
+        }
+
+        [TestMethod]
+        public void VerifyGetInteractionNameReturnsCorrectType_Wait()
         {
             // Arrange
             var interactionProvider = new CoreInteractionProvider();
 
             // Act
-            var interaction = interactionProvider.GetInteractionByName(interactionName, null, null);
+            var interaction = interactionProvider.GetInteractionByName(Wait.Key, new object[] { "10.0" }, null);
 
             // Assert
-            Assert.IsInstanceOfType(interaction, interactionType);
+            Assert.IsInstanceOfType(interaction, typeof(Wait));
+        }
+
+        [TestMethod]
+        public void VerifyGetInteractionNameReturnsCorrectType_WaitUntilAvailable()
+        {
+            // Arrange
+            var interactionProvider = new CoreInteractionProvider();
+
+            // Act
+            var interaction = interactionProvider.GetInteractionByName(WaitUntilAvailable.Key, null, new MockContext());
+
+            // Assert
+            Assert.IsInstanceOfType(interaction, typeof(WaitUntilAvailable));
         }
 
         [DataRow("TestUnknownInteraction")]
