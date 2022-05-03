@@ -24,6 +24,10 @@ namespace Uial.Interactions.Core
 
         public static Wait FromRuntimeValues(IEnumerable<object> paramValues)
         {
+            if (paramValues == null)
+            {
+                throw new ArgumentNullException(nameof(paramValues));
+            }
             if (paramValues.Count() != 1)
             {
                 throw new InvalidParameterCountException(1, paramValues.Count());
