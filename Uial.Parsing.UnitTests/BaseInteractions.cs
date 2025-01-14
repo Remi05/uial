@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Uial.Interactions;
+using Uial.DataModels;
 using Uial.Parsing.Exceptions;
 
 namespace Uial.Parsing.UnitTests
@@ -44,7 +44,7 @@ namespace Uial.Parsing.UnitTests
         public void ValidBaseInteractionsCanBeParsed(string baseInteractionStr)
         {
             ScriptParser parser = new ScriptParser();
-            IBaseInteractionDefinition baseInteraction = parser.ParseBaseInteractionDefinition(baseInteractionStr);
+            BaseInteractionDefinition baseInteraction = parser.ParseBaseInteractionDefinition(baseInteractionStr);
 
             Assert.IsNotNull(baseInteraction, "The parsed IBaseInteractionDefinition should not be null.");
         }

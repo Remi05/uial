@@ -17,7 +17,7 @@ namespace Uial.Interactions.Core
 
         public WaitUntilAvailable(IContext context, TimeSpan? timeout = null)
         {
-            if (Context == null)
+            if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
@@ -38,21 +38,20 @@ namespace Uial.Interactions.Core
             }
         }
 
-        public static WaitUntilAvailable FromRuntimeValues(IContext context, IEnumerable<string> paramValues)
+        public static WaitUntilAvailable FromRuntimeValues(IContext context, IEnumerable<object> paramValues)
         {
             TimeSpan? timeout = null;
-            if (paramValues == null)
+            if (paramValues != null)
             {
-                throw new ArgumentNullException(nameof(paramValues));
-            }
-            if (paramValues.Count() > 1)
-            {
-                throw new InvalidParameterCountException(1, paramValues.Count());
-            }
-            if (paramValues.Count() == 1)
-            {
-                double milliseconds = double.Parse(paramValues.ElementAt(0));
-                timeout = TimeSpan.FromMilliseconds(milliseconds);
+                if (paramValues.Count() > 1)
+                {
+                    throw new InvalidParameterCountException(1, paramValues.Count());
+                }
+                if (paramValues.Count() == 1)
+                {
+                    double milliseconds = double.Parse(paramValues.ElementAt(0) as string);
+                    timeout = TimeSpan.FromMilliseconds(milliseconds);
+                }
             }
             return new WaitUntilAvailable(context, timeout);
         }

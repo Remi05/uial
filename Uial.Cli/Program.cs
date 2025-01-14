@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Uial.Contexts.Windows;
-using Uial.Scenarios;
+using Uial.DataModels;
+using Uial.Parsing;
 using Uial.Scopes;
 using Uial.Testing;
-using Uial.Parsing;
-using Uial.Interactions;
-using Uial.Modules;
+using Uial.Values;
 
 namespace Uial.Cli
 {
@@ -57,10 +55,10 @@ namespace Uial.Cli
                 }
             }
 
-            RunScenario(scriptFilePath, scenarioName, testName);
+            RunScript(scriptFilePath, scenarioName, testName);
         }
 
-        private static void RunScenario(string scriptFilePath, string scenarioName, string testName)
+        private static void RunScript(string scriptFilePath, string scenarioName, string testName)
         {
             var parser = new ScriptParser();
             Script script;
@@ -77,60 +75,26 @@ namespace Uial.Cli
 
             try
             {
-                var scope = new RuntimeScope(script.RootScope, new Dictionary<string, string>());
-                var rootContext = new RootVisualContext(scope);
-
-                var interactionProviders = new List<IInteractionProvider>()
-                {
-                    new Interactions.Core.CoreInteractionProvider(),
-                    new Interactions.Windows.VisualInteractionProvider(),
-                };
-
-                var importedInteractionProviders = GetImportedInteractionProviders(script);
-                interactionProviders.AddRange(importedInteractionProviders);
-
-                var interactionProvider = new GlobalInteractionProvider(interactionProviders);
+                var runtime = new UialRuntime();
+                var valueResolver = new ValueResolver();
+                var conditionResolver = new Windows.Conditions.ConditionResolver(valueResolver);
+                runtime.AddContextProvider(new Windows.Contexts.WindowsVisualContextProvider(conditionResolver));
+                runtime.AddInteractionProvider(new Windows.Interactions.WindowsVisualInteractionProvider());
 
                 if (scenarioName != null)
                 {
-                    if (!script.ScenarioDefinitions.ContainsKey(scenarioName))
-                    {
-                        Console.WriteLine($"Scenario \"{scenarioName}\" could not be found in the given script.");
-                        return;
-                    }
-                    Scenario scenario = script.ScenarioDefinitions[scenarioName].Resolve(rootContext, interactionProvider);
-                    scenario.Do();
+                    runtime.RunScenario(scenarioName);
                 }
                 else if (testName != null)
                 {
-                    if (!script.TestDefinitions.ContainsKey(testName))
-                    {
-                        Console.WriteLine($"Test \"{testName}\" could not be found in the given script.");
-                        return;
-                    }
-                    ITestable test = script.TestDefinitions[testName].Resolve(rootContext, interactionProvider);
-                    ITestResults results = test.RunTest();
-                    Console.WriteLine(results);
+                    ITestResults results = runtime.RunTest(testName);
+                    Console.WriteLine(results);                 
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"An error occured while running the specified scenario:\n{e.Message}");
+                Console.WriteLine($"An error occured while running the specified scenario/test:\n{e.Message}");
             }
-        }
-
-        private static List<IInteractionProvider> GetImportedInteractionProviders(Script script)
-        {
-            var interactionProviders = new List<IInteractionProvider>();
-            var moduleProvider = new ModuleProvider();
-
-            foreach (ModuleDefinition moduleDefinition in script.ModuleDefinitions.Values)
-            {
-                Module module = moduleProvider.GetModule(moduleDefinition);
-                interactionProviders.AddRange(module.InteractionProviders);
-            }
-
-            return interactionProviders;
         }
     }
 }

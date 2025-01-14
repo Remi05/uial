@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.Apps.Test" Version="1.0.181205002" />
+    <ProjectReference Include="..\Uial.Definitions\Uial.DataModels.csproj" />
   </ItemGroup>
 
 </Project>

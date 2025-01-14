@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Uial.Assertions;
 
 namespace Uial.UnitTests.Assertions
 {
-    class MockAssertion : IAssertion
+    public class MockAssertion : IAssertion
     {
         public string Name { get; protected set; }
         protected Func<bool> AssertFunc { get; set; }

@@ -3,7 +3,7 @@ using Uial.Scopes;
 
 namespace Uial.UnitTests.Contexts
 {
-    class MockContext : IContext
+    public class MockContext : IContext
     {
         public RuntimeScope Scope { get; protected set; }
         public string Name { get; protected set; }

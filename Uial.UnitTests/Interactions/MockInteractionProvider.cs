@@ -5,23 +5,25 @@ using Uial.Scopes;
 
 namespace Uial.UnitTests.Interactions
 {
-    class MockInteractionProvider : IInteractionProvider
+    public class MockInteractionProvider : IInteractionProvider
     {
-        protected IDictionary<string, IInteraction> KnownInteractions { get; set; }
-         
-        public MockInteractionProvider(IDictionary<string, IInteraction> knownInteractions)
+        public IDictionary<string, IInteraction> InteractionsMap { get; protected set; } = new Dictionary<string, IInteraction>();
+
+        public string PassedInteractionName { get; protected set; }
+        public IEnumerable<object> PassedParamValues { get; protected set; }
+        public IContext PassedContext { get; protected set; }
+
+        public bool IsInteractionAvailableForContext(string interactionName, IContext context)
         {
-            KnownInteractions = knownInteractions;
+            return InteractionsMap.ContainsKey(interactionName);
         }
 
-        public bool IsKnownInteraction(string interactionName)
+        public IInteraction GetInteractionByName(string interactionName, IEnumerable<object> paramValues, IContext context)
         {
-            return KnownInteractions.ContainsKey(interactionName);
-        }
-
-        public IInteraction GetInteractionByName(IContext context, RuntimeScope scope, string interactionName, IEnumerable<string> paramValues)
-        {
-            return KnownInteractions[interactionName];
+            PassedInteractionName = interactionName;
+            PassedParamValues = paramValues;
+            PassedContext = context;
+            return InteractionsMap[interactionName];
         }
     }
 }
