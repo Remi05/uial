@@ -45,14 +45,19 @@ namespace Uial.LiveConsole
             Commands.Add("clear", (_) => ClearOutput());
             Commands.Add("exit",  (_) => ShouldExit = true);
             Commands.Add("reset", (_) => ExecutionContext = new ExecutionContext());
-            Commands.Add("root",  (_) => ShowElement(UIAutomation.GetRootElement(), TreeScope.TreeScope_Element));
-            Commands.Add("ancestors",   (line) => ShowElement(line, TreeScope.TreeScope_Ancestors));
-            Commands.Add("children",    (line) => ShowElement(line, TreeScope.TreeScope_Children));
-            Commands.Add("descendants", (line) => ShowElement(line, TreeScope.TreeScope_Descendants));
-            Commands.Add("element",     (line) => ShowElement(line, TreeScope.TreeScope_Element));
-            Commands.Add("parent",      (line) => ShowElement(line, TreeScope.TreeScope_Parent));
-            Commands.Add("subtree",     (line) => ShowElement(line, TreeScope.TreeScope_Subtree));
-            Commands.Add("frompoint",   (line) => FromPoint(line));
+            Commands.Add("root",  (_) => ShowElement(ExecutionContext.RootVisualContext.RootElement, TreeScope.TreeScope_Element));
+            Commands.Add(".",     (_) => ShowElement(ExecutionContext.RootVisualContext.RootElement, TreeScope.TreeScope_Element));
+            Commands.Add("ancestors",    (line) => ShowElement(line, TreeScope.TreeScope_Ancestors));
+            Commands.Add("children",     (line) => ShowElement(line, TreeScope.TreeScope_Children));
+            Commands.Add("ls",           (line) => ShowElement(line, TreeScope.TreeScope_Children));
+            Commands.Add("dir",          (line) => ShowElement(line, TreeScope.TreeScope_Children));
+            Commands.Add("descendants",  (line) => ShowElement(line, TreeScope.TreeScope_Descendants));
+            Commands.Add("element",      (line) => ShowElement(line, TreeScope.TreeScope_Element));
+            Commands.Add("parent",       (line) => ShowElement(line, TreeScope.TreeScope_Parent));
+            Commands.Add("subtree",      (line) => ShowElement(line, TreeScope.TreeScope_Subtree));
+            Commands.Add("set-context",  SetContext);
+            Commands.Add("cd",           SetContext);
+            Commands.Add("frompoint",    FromPoint);
             Commands.Add("import-catalog", ImportScriptFromCatalog);
             Commands.Add("all", ShowAllElements);
         }
@@ -63,6 +68,8 @@ namespace Uial.LiveConsole
             {
                 try
                 {
+                    OutputStream.Write(GetActiveContextString() + "> ");
+
                     string line = InputStream.ReadLine();
                     string[] splits = line.Split(' ');
                     string commandStr = splits[0];              
@@ -70,11 +77,7 @@ namespace Uial.LiveConsole
                     if (Commands.ContainsKey(commandStr))
                     {
                         // Remove the command from the line for further processing.
-                        if (splits.Length > 1)
-                        {
-                            line = string.Join(' ', splits.Skip(1));
-                        }
-
+                        line = string.Join(' ', splits.Skip(1));
                         Commands[commandStr](line);
                         continue;
                     }
@@ -104,7 +107,7 @@ namespace Uial.LiveConsole
                     {
                         IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
                         var condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
-                        var element = UIAutomation.GetRootElement().FindFirst(TreeScope.TreeScope_Subtree, condition);
+                        var element = ExecutionContext.RootVisualContext.RootElement.FindFirst(TreeScope.TreeScope_Subtree, condition);
                         ShowElement(element, TreeScope.TreeScope_Element);
                     }
                     else if (Parser.IsBaseContext(line))
@@ -119,6 +122,23 @@ namespace Uial.LiveConsole
                     OutputStream.WriteLine(e.Message + "\n");
                 }
             }
+        }
+
+        protected string GetActiveContextString()
+        {
+            if (!string.IsNullOrWhiteSpace(ExecutionContext.RootContext.Name))
+            {
+                return ExecutionContext.RootContext.Name;
+            }
+            if (!string.IsNullOrWhiteSpace(ExecutionContext.RootVisualContext.RootElement.CurrentName))
+            {
+                return ExecutionContext.RootVisualContext.RootElement.CurrentName;
+            }
+            if (!string.IsNullOrWhiteSpace(ExecutionContext.RootVisualContext.RootElement.CurrentAutomationId))
+            {
+                return ExecutionContext.RootVisualContext.RootElement.CurrentAutomationId;
+            }
+            return VisualTreeSerializer.GetVisualTreeRepresentation(ExecutionContext.RootVisualContext.RootElement, TreeScope.TreeScope_Element);
         }
 
         protected void ImportScriptFromCatalog(string line)
@@ -157,11 +177,15 @@ namespace Uial.LiveConsole
 
         protected void ShowElement(string line, TreeScope treeScope)
         {
-            if (Parser.IsCondition(line))
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                ShowElement(ExecutionContext.RootVisualContext.RootElement, treeScope);
+            }
+            else if (Parser.IsCondition(line))
             {
                 IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
                 var condition = conditionDefinition.Resolve(ExecutionContext.RootScope);
-                var element = UIAutomation.GetRootElement().FindFirst(TreeScope.TreeScope_Subtree, condition);
+                var element = (ExecutionContext.RootContext as IWindowsVisualContext).RootElement.FindFirst(TreeScope.TreeScope_Subtree, condition);
                 ShowElement(element, treeScope);
             }
             else if (Parser.IsBaseContext(line))
@@ -193,6 +217,28 @@ namespace Uial.LiveConsole
             var point = new tagPOINT() { x = int.Parse(splits[0]), y = int.Parse(splits[1]) };
             var element = UIAutomation.ElementFromPoint(point);
             ShowElement(element, TreeScope.TreeScope_Element);
+        }
+
+        protected void SetContext(string line)
+        {
+            if (Parser.IsCondition(line))
+            {
+                IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
+                DefinitionScope currentScope = new DefinitionScope(ExecutionContext.Script.RootScope);
+                IContextDefinition contextDefinition = new ContextDefinition(currentScope, "", [], rootElementConditionDefiniton: conditionDefinition);
+                IWindowsVisualContext context  = contextDefinition.Resolve(ExecutionContext.RootContext, []) as IWindowsVisualContext;
+                ExecutionContext.PushContext(context);
+            }
+            else if (Parser.IsBaseContext(line))
+            {
+                IBaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
+                IWindowsVisualContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope) as IWindowsVisualContext;
+                ExecutionContext.PushContext(context);
+            }
+            else if (line.Trim() == "..")
+            {
+                ExecutionContext.PopContext();
+            }
         }
     }
 }
