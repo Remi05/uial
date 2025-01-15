@@ -58,6 +58,7 @@ namespace Uial.LiveConsole
             Commands.Add("set-context",  SetContext);
             Commands.Add("cd",           SetContext);
             Commands.Add("frompoint",    FromPoint);
+            Commands.Add("run",          RunScenario);
             Commands.Add("import-catalog", ImportScriptFromCatalog);
             Commands.Add("all", ShowAllElements);
         }
@@ -239,6 +240,12 @@ namespace Uial.LiveConsole
             {
                 ExecutionContext.PopContext();
             }
+        }
+
+        protected void RunScenario(string line)
+        {
+            Scenarios.Scenario scenario = ExecutionContext.Script.ScenarioDefinitions[line.Trim()].Resolve(ExecutionContext.RootContext, ExecutionContext.InteractionProvider);
+            scenario.Do();
         }
     }
 }
