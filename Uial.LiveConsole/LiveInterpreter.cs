@@ -55,9 +55,10 @@ namespace Uial.LiveConsole
             Commands.Add("element",      (line) => ShowElement(line, TreeScope.TreeScope_Element));
             Commands.Add("parent",       (line) => ShowElement(line, TreeScope.TreeScope_Parent));
             Commands.Add("subtree",      (line) => ShowElement(line, TreeScope.TreeScope_Subtree));
+            Commands.Add("frompoint",    FromPoint);
             Commands.Add("set-context",  SetContext);
             Commands.Add("cd",           SetContext);
-            Commands.Add("frompoint",    FromPoint);
+            Commands.Add("known",        ListKnownContexts);
             Commands.Add("run",          RunScenario);
             Commands.Add("import-catalog", ImportScriptFromCatalog);
             Commands.Add("all", ShowAllElements);
@@ -239,6 +240,33 @@ namespace Uial.LiveConsole
             else if (line.Trim() == "..")
             {
                 ExecutionContext.PopContext();
+            }
+        }
+
+        protected void ListKnownContexts(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                ListContexts(ExecutionContext.RootScope);
+            }
+            else if (Parser.IsBaseContext(line))
+            {
+                IBaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
+                IContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope);
+                ListContexts(context.Scope);
+            }
+        }
+
+        protected void ListContexts(RuntimeScope scope)
+        {
+            foreach (ContextDefinition contextDefinition in scope.ContextDefinitions.Values)
+            {
+                string contextString = contextDefinition.Name;
+                if (contextDefinition.ParamNames.Count() > 0)
+                {
+                    contextString += "(" + string.Join(", ", contextDefinition.ParamNames) + ")";
+                }
+                OutputStream.WriteLine(contextString);
             }
         }
 
