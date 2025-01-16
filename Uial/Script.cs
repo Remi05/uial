@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Uial.Modules;
 using Uial.Scenarios;
 using Uial.Scopes;
