@@ -38,11 +38,11 @@ jobs:
     - name: Publish UIAL LiveConsole
       uses: actions/upload-artifact@v4
       with:	
-        name: 'UIAL LiveConsole'	
-        path: '.\Uial.LiveConsole\bin\${{matrix.configuration}}\net9.0-windows10.0.22000\'
+        name: 'uial-live-console-${{matrix.configuration}}'	
+        path: '.\Uial.LiveConsole\bin\${{matrix.configuration}}\net9.0\'
         
     - name: Publish UIAL CLI
       uses: actions/upload-artifact@v4
       with:	
-        name: 'UIAL CLI'	
-        path: '.\Uial.Cli\bin\${{matrix.configuration}}\net9.0-windows10.0.22000\'
+        name: 'uial-cli-${{matrix.configuration}}'	
+        path: '.\Uial.Cli\bin\${{matrix.configuration}}\net9.0\'
