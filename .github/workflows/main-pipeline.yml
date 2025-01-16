@@ -36,13 +36,13 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       
     - name: Publish UIAL LiveConsole
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:	
         name: 'UIAL LiveConsole'	
         path: '.\Uial.LiveConsole\bin\${{matrix.configuration}}\net9.0-windows10.0.22000\'
         
     - name: Publish UIAL CLI
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:	
         name: 'UIAL CLI'	
         path: '.\Uial.Cli\bin\${{matrix.configuration}}\net9.0-windows10.0.22000\'
