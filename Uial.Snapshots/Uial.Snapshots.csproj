@@ -1,17 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net9.0-windows10.0.22000</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.Apps.Test" Version="1.0.181205002" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Uial.Parsing\Uial.Parsing.csproj" />
-    <ProjectReference Include="..\Uial.Snapshots\Uial.Snapshots.csproj" />
     <ProjectReference Include="..\Uial\Uial.csproj" />
   </ItemGroup>
 
