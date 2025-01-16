@@ -84,6 +84,7 @@ namespace Uial.Cli
                 {
                     new Interactions.Core.CoreInteractionProvider(),
                     new Interactions.Windows.VisualInteractionProvider(),
+                    new Snapshots.SnapshotsInteractionProvider(),
                 };
 
                 var importedInteractionProviders = GetImportedInteractionProviders(script);
