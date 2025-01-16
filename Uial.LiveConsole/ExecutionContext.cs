@@ -25,6 +25,7 @@ namespace Uial.LiveConsole
             InteractionProviders = new List<IInteractionProvider>()
             {
                 new Interactions.Core.CoreInteractionProvider(),
+                new Interactions.Processes.ProcessInteractionProvider(),
                 new Interactions.Windows.VisualInteractionProvider(),
             };
             InteractionProvider = new GlobalInteractionProvider(InteractionProviders);
