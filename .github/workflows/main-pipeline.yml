@@ -12,6 +12,7 @@ jobs:
     strategy:
         matrix:
           configuration: [Debug, Release]
+          platform: [x64, arm64]
 
     runs-on: windows-latest
     
@@ -38,11 +39,11 @@ jobs:
     - name: Publish UIAL LiveConsole
       uses: actions/upload-artifact@v4
       with:	
-        name: 'uial-live-console-${{matrix.configuration}}'	
+        name: 'uial-live-console-${{matrix.configuration}}-${{matrix.platform}}'	
         path: '.\Uial.LiveConsole\bin\${{matrix.configuration}}\net9.0\'
         
     - name: Publish UIAL CLI
       uses: actions/upload-artifact@v4
       with:	
-        name: 'uial-cli-${{matrix.configuration}}'	
+        name: 'uial-cli-${{matrix.configuration}}-${{matrix.platform}}'	
         path: '.\Uial.Cli\bin\${{matrix.configuration}}\net9.0\'
