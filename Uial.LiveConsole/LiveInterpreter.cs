@@ -9,6 +9,7 @@ using Uial.Contexts.Windows;
 using Uial.Interactions;
 using Uial.Modules;
 using Uial.Parsing;
+using Uial.Scenarios;
 using Uial.Scopes;
 
 namespace Uial.LiveConsole
@@ -60,6 +61,7 @@ namespace Uial.LiveConsole
             Commands.Add("cd",           SetContext);
             Commands.Add("known",        ListKnownContexts);
             Commands.Add("run",          RunScenario);
+            Commands.Add("scenarios", (_) => ListScenarios());
             Commands.Add("import-catalog", ImportScriptFromCatalog);
             Commands.Add("all", ShowAllElements);
         }
@@ -267,6 +269,14 @@ namespace Uial.LiveConsole
                     contextString += "(" + string.Join(", ", contextDefinition.ParamNames) + ")";
                 }
                 OutputStream.WriteLine(contextString);
+            }
+        }
+
+        protected void ListScenarios()
+        {
+            foreach (ScenarioDefinition scenarioDefinition in ExecutionContext.Script.ScenarioDefinitions.Values)
+            {
+                OutputStream.WriteLine(scenarioDefinition.Name);
             }
         }
 
