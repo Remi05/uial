@@ -60,6 +60,7 @@ namespace Uial.LiveConsole
             Commands.Add("set-context",  SetContext);
             Commands.Add("cd",           SetContext);
             Commands.Add("known",        ListKnownContexts);
+            Commands.Add("actions",      ListAvailableActions);
             Commands.Add("run",          RunScenario);
             Commands.Add("scenarios", (_) => ListScenarios());
             Commands.Add("import-catalog", ImportScriptFromCatalog);
@@ -272,9 +273,69 @@ namespace Uial.LiveConsole
             }
         }
 
+        protected void ListAvailableActions(string line)
+        {
+            if (string.IsNullOrWhiteSpace (line))
+            {
+                ListAvailableActions(ExecutionContext.RootVisualContext);
+            }
+            if (Parser.IsCondition(line))
+            {
+                IConditionDefinition conditionDefinition = Parser.ParseConditionDefinition(line);
+                DefinitionScope currentScope = new DefinitionScope(ExecutionContext.Script.RootScope);
+                IContextDefinition contextDefinition = new ContextDefinition(currentScope, "", [], rootElementConditionDefiniton: conditionDefinition);
+                IWindowsVisualContext context = contextDefinition.Resolve(ExecutionContext.RootContext, []) as IWindowsVisualContext;
+                ListAvailableActions(context);
+            }
+            else if (Parser.IsBaseContext(line))
+            {
+                IBaseContextDefinition baseContextDefinition = Parser.ParseBaseContextDefinition(line);
+                IWindowsVisualContext context = baseContextDefinition.Resolve(ExecutionContext.RootContext, ExecutionContext.RootScope) as IWindowsVisualContext;
+                ListAvailableActions(context);
+            }
+        }
+
+        protected void ListAvailableActions(IWindowsVisualContext context)
+        {
+            if (context == null)
+            {
+                return;
+            }
+
+            Dictionary<int, string> knownAutomationPatterns = new()
+            {
+                { UIA_PatternIds.UIA_ExpandCollapsePatternId, "Expand, Collapse" },
+                { UIA_PatternIds.UIA_InvokePatternId, "Invoke" },
+                { UIA_PatternIds.UIA_RangeValuePatternId, "SetRangeValue" },
+                { UIA_PatternIds.UIA_ScrollItemPatternId, "ScrollIntoView" },
+                { UIA_PatternIds.UIA_ScrollPatternId, "Scroll, ScrollHorizontal, ScrollVertical, SetScrollPercent, SetHorizontalScrollPercent, SetVerticalScrollPercent" },
+                { UIA_PatternIds.UIA_SelectionItemPatternId, "Select" },
+                { UIA_PatternIds.UIA_TogglePatternId, "Toggle" },
+                { UIA_PatternIds.UIA_TransformPatternId, "Move, Resize" },
+                { UIA_PatternIds.UIA_ValuePatternId, "SetTextValue" },
+                { UIA_PatternIds.UIA_WindowPatternId, "Close, Minimize, Maximize, Restore" },
+            };
+
+            foreach (int automationPatternId in knownAutomationPatterns.Keys)
+            {
+                try
+                {
+                    object pattern = context.RootElement.GetCurrentPattern(automationPatternId);
+                    if (pattern != null)
+                    {
+                        OutputStream.WriteLine(knownAutomationPatterns[automationPatternId]);
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    // The pattern is not supported by the given context's root element.
+                }
+            }
+        }
+
         protected void ListScenarios()
         {
-            foreach (ScenarioDefinition scenarioDefinition in ExecutionContext.Script.ScenarioDefinitions.Values)
+            foreach (IScenarioDefinition scenarioDefinition in ExecutionContext.Script.ScenarioDefinitions.Values)
             {
                 OutputStream.WriteLine(scenarioDefinition.Name);
             }
@@ -282,7 +343,7 @@ namespace Uial.LiveConsole
 
         protected void RunScenario(string line)
         {
-            Scenarios.Scenario scenario = ExecutionContext.Script.ScenarioDefinitions[line.Trim()].Resolve(ExecutionContext.RootContext, ExecutionContext.InteractionProvider);
+            Scenario scenario = ExecutionContext.Script.ScenarioDefinitions[line.Trim()].Resolve(ExecutionContext.RootContext, ExecutionContext.InteractionProvider);
             scenario.Do();
         }
     }
