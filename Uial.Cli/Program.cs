@@ -92,6 +92,7 @@ namespace Uial.Cli
                 var interactionProviders = new List<IInteractionProvider>()
                 {
                     new Interactions.Core.CoreInteractionProvider(),
+                    new Interactions.Processes.ProcessInteractionProvider(),
                     new Interactions.Windows.VisualInteractionProvider(),
                     new Snapshots.SnapshotsInteractionProvider(),
                 };

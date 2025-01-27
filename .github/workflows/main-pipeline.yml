@@ -12,6 +12,7 @@ jobs:
     strategy:
         matrix:
           configuration: [Debug, Release]
+          platform: [x64, arm64]
 
     runs-on: windows-latest
     
@@ -36,13 +37,13 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       
     - name: Publish UIAL LiveConsole
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:	
-        name: 'UIAL LiveConsole'	
+        name: 'uial-live-console-${{matrix.configuration}}-${{matrix.platform}}'	
         path: '.\Uial.LiveConsole\bin\${{matrix.configuration}}\net9.0\'
         
     - name: Publish UIAL CLI
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:	
-        name: 'UIAL CLI'	
+        name: 'uial-cli-${{matrix.configuration}}-${{matrix.platform}}'	
         path: '.\Uial.Cli\bin\${{matrix.configuration}}\net9.0\'
