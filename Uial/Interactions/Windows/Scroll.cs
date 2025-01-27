@@ -42,7 +42,7 @@ namespace Uial.Interactions.Windows
             return new Scroll(context, horizontalScroll, verticalScroll);
         }
 
-        private static ScrollAmount ScrollAmountFromString(string scrollAmountStr)
+        public static ScrollAmount ScrollAmountFromString(string scrollAmountStr)
         {
             Dictionary<string, ScrollAmount> scrollAmountMap = new Dictionary<string, ScrollAmount>()
             {
