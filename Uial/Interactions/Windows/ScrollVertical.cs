@@ -34,7 +34,7 @@ namespace Uial.Interactions.Windows
             {
                 throw new InvalidParameterCountException(1, paramValues.Count());
             }
-            ScrollAmount verticalScroll = Scroll.ScrollAmountFromString(paramValues.ElementAt(1));
+            ScrollAmount verticalScroll = Scroll.ScrollAmountFromString(paramValues.ElementAt(0));
             return new ScrollVertical(context, verticalScroll);
         }
     }
