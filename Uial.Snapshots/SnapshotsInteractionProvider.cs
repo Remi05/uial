@@ -8,9 +8,17 @@ namespace Uial.Snapshots;
 
 public class SnapshotsInteractionProvider : IInteractionProvider
 {
+    protected delegate IInteraction VisualInteractionFactory(IWindowsVisualContext windowsVisualContext, RuntimeScope scope, IEnumerable<string> paramValues);
+
+    protected IDictionary<string, VisualInteractionFactory> KnownInteractions = new Dictionary<string, VisualInteractionFactory>()
+    {
+        { ScreenshotInteraction.Key, (windowsVisualContext, _, __) => new ScreenshotInteraction(windowsVisualContext) },
+        { SnapshotInteraction.Key,   (windowsVisualContext, _, __) => new SnapshotInteraction(windowsVisualContext) },
+    };
+
     public bool IsKnownInteraction(string interactionName)
     {
-        return interactionName == SnapshotInteraction.Key;
+        return KnownInteractions.ContainsKey(interactionName);
     }
 
     public IInteraction GetInteractionByName(IContext context, RuntimeScope scope, string interactionName, IEnumerable<string> paramValues)
@@ -20,10 +28,10 @@ public class SnapshotsInteractionProvider : IInteractionProvider
         {
             throw new InvalidWindowsVisualContextException(context);
         }
-        if (!IsKnownInteraction(interactionName))
+        else if (!IsKnownInteraction(interactionName))
         {
             throw new InteractionUnavailableException(interactionName);
         }
-        return new SnapshotInteraction(windowsVisualContext);
+        return KnownInteractions[interactionName](windowsVisualContext, scope, paramValues);
     }
 }
