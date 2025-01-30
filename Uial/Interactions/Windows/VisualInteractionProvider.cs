@@ -35,6 +35,8 @@ namespace Uial.Interactions.Windows
             { SetRangeValue.Key,              (windowsVisualContext, _, paramValues) => SetRangeValue.FromRuntimeValues(windowsVisualContext, paramValues) },
             { SetTextValue.Key,               (windowsVisualContext, _, paramValues) => SetTextValue.FromRuntimeValues(windowsVisualContext, paramValues) },
             { Toggle.Key,                     (windowsVisualContext, _, __) => new Toggle(windowsVisualContext) },
+            { ToggleOff.Key,                  (windowsVisualContext, _, __) => new ToggleOff(windowsVisualContext) },
+            { ToggleOn.Key,                   (windowsVisualContext, _, __) => new ToggleOn(windowsVisualContext) },
         };
 
         public bool IsKnownInteraction(string interactionName)
