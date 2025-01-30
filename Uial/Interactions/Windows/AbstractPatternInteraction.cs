@@ -17,10 +17,6 @@ namespace Uial.Interactions.Windows
         public override void Do()
         {
             base.Do();
-            if (!Context.IsAvailable())
-            {
-                throw new ContextUnavailableException(Context.Name);
-            }
             if (Pattern == null)
             {
                 throw new InteractionUnavailableException(Name);
