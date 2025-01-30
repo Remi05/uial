@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Threading;
 using UIAutomationClient;
@@ -33,6 +33,11 @@ namespace Uial.LiveConsole
 
         public string GetAncestorsRepresentation(IUIAutomationElement element)
         {
+            if (element is null)
+            {
+                return string.Empty;
+            }
+
             string elementRepresentation = GetElementRepresentation(element);
             if (element == UIAutomation.GetRootElement())
             {
