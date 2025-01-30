@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Threading;
 using UIAutomationClient;
@@ -45,7 +45,6 @@ namespace Uial.LiveConsole
 
         public string GetChildrenRepresentation(IUIAutomationElement element)
         {
-            Thread.Sleep(2000);
             var children = element.FindAll(TreeScope.TreeScope_Children, UIAutomation.CreateTrueCondition());
             StringBuilder childrenStrBuilder = new StringBuilder();
             for (int i = 0; i < children.Length; ++i)
